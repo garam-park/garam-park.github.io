@@ -4,8 +4,10 @@ layout: default
 
 <div class="post">
   <h1 class="post-title">{{ page.title }}</h1>
+  {% include ad.html %}
   <span class="post-date">{{ page.date | date_to_string }}</span>
   {{ content }}
+  {% include ad.html %}
 </div>
 
 <div class="related">
