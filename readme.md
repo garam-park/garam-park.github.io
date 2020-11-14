@@ -5,6 +5,11 @@ bundle install
 bundle exec jekyll serve
 ```
 
+**빌드하기**
+```
+bundle exec jekyll build # _site 에 생김
+```
+
 ## 우분투 설치
 
 ```
