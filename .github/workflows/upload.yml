@@ -1,0 +1,12 @@
+name: CI
+on:
+  push:
+    branches: [master]
+jobs:
+  upload_files:
+    name: upload _site to server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: push_to_server
+        run: FTP_USER=${{secrets.FTP_USER}} FTP_PASS=${{secrets.FTP_PASS}} FTP_HOST=${{secrets.FTP_HOST}}  ./scripts/upload.sh
