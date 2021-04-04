@@ -43,6 +43,6 @@ jobs:
           # ftp password
           password: ${{secrets.FTP_PASS}}
           # Folder to upload from, must end with trailing slash /
-          local-dir: ./_site
+          local-dir: ./_site/
           # Path to upload to on the server. Must end with trailing slash /
           server-dir: /public_html
