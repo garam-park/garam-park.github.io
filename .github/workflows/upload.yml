@@ -26,8 +26,23 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Jekyll Actions
+      - name: Build Jekyll
         # You may pin to the exact commit or the version.
-        # uses: helaili/jekyll-action@d305e465c911226c731afb6db07c8bde20e03ced
-        uses: helaili/jekyll-action@2.2.0
-        
+        # uses: jerryjvl/jekyll-build-action@0bab4194a14ea47ae5ca609fc5b95aaadab40060
+        uses: jerryjvl/jekyll-build-action@v1
+      - name: FTP Deploy
+        # You may pin to the exact commit or the version.
+        # uses: SamKirkland/FTP-Deploy-Action@2a4e9b1312ebeb73a1f72b9330c71831c1e4ce01
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+        #         run: FTP_USER= FTP_PASS= FTP_HOST=  ./scripts/upload.sh
+          # ftp server
+          server: ${{secrets.FTP_HOST}}
+          # ftp username
+          username: ${{secrets.FTP_USER}}
+          # ftp password
+          password: ${{secrets.FTP_PASS}}
+          # Folder to upload from, must end with trailing slash /
+          local-dir: ./_site
+          # Path to upload to on the server. Must end with trailing slash /
+          server-dir: /public_html
