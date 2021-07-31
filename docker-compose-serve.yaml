@@ -9,6 +9,6 @@ services:
       # 설정 파일들
       - ./:/home/ubuntu/jekyll
     # command: /bin/sh
-    command: /bin/sh -c "bundle install && /bin/sh"
+    command: /bin/sh -c "bundle install && bundle exec jekyll serve --host 0.0.0.0"
     stdin_open: true # docker run -i
     tty: true # docker run -t
