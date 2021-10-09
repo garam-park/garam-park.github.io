@@ -1,13 +1,14 @@
 ---
 layout: post_with_ad
-title: php7.4 gd extension
+title: "Install gd extension on php7.4 in Docker"
 date: 2021-10-09 11:46:58 +0900
-permalink: /phps/eng/install-php7.4-gd-in-docker
+permalink: /phps/eng/install-php74-gd-in-docker
 categories: php docker
-tags: [EN] php docker install gd extension
+tags: php docker install gd extension
+excerpt: use `--with-jpeg`, not `--with-jpeg-dir`, use `--with-freetype`, not `--with-freetype-dir`
 ---
 
-### Note
+**Note**
 
 - use `--with-jpeg`, not `--with-jpeg-dir`
 - use `--with-freetype`, not `--with-freetype-dir`

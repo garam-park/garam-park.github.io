@@ -1,10 +1,11 @@
 ---
 layout: post_with_ad
-title: php7.4 gd extension
+title: "php7.4 docker 에서 GD extension 설치하기"
 date: 2021-10-09 11:46:58 +0900
-permalink: /phps/kor/install-php7.4-gd-in-docker
+permalink: /phps/install-php74-gd-in-docker
 categories: php docker
 tags: php docker install gd extension
+excerpt: --with-jpeg --with-freetype
 ---
 
 ## 배경
@@ -21,7 +22,7 @@ pre-production 환경에서 extention 이 없어서 발생한 에러이기 때�
 
 현재 docker 기반 이미지를 php:7-fpm 을 사용하고 있었고, 관련한 답변도 있었다. 그 답변에 있는 내용은 다음과 같았다.
 
-```jsx
+``` docker
 FROM php:7-fpm
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql
