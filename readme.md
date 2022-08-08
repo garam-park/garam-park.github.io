@@ -1,3 +1,9 @@
+# bundler 설치
+
+``` sh
+sudo gem install bundler
+```
+
 # 지킬 사용법
 
 ```bash
