@@ -38,4 +38,4 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           port: ${{ secrets.REMOTE_PORT }}
           source: ./_site/*
-          target: /root/apps/blog/_site
+          target: /root/apps/blog
