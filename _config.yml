@@ -36,6 +36,11 @@ version: 0.0
 plugins: [jekyll-paginate]
 paginate: 5
 paginate_path: "page:num"
+exclude:
+  - docker-compose-serve.yml
+  - docker-compose.yml
+  - Dockerfile
+  - readme.md
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
