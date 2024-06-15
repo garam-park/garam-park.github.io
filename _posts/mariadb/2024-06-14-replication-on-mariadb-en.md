@@ -124,7 +124,7 @@ Restart MariaDB.
 service mariadb restart # if necessary sudo
 ```
 
-### 1.2 master 지정
+### 1.2 set master infomation
 
 Assume that the IP of the server where the master is running is 192.168.0.100 and the port is 3306.
 
@@ -153,6 +153,6 @@ If you connect to the master and execute the following, you can confirm that it 
 CREATE DATABASE foo;
 USE foo;
 CREATE TABLE users (name VARCHAR(255));
-INSERT INTO users (name) VALUES ('홍길동');
-INSERT INTO users (name) VALUES ('홍길순');
+INSERT INTO users (name) VALUES ('Alice');
+INSERT INTO users (name) VALUES ('Adam');
 ```
