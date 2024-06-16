@@ -82,7 +82,7 @@ Restart MariaDB afterwards.
 service mariadb restart #필요시 sudo
 ```
 
-### **1.3 binay log 확인**
+### **1.3 check binay log **
 
 ```sql
 show master status;
