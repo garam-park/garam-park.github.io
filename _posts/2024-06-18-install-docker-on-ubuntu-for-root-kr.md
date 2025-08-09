@@ -1,6 +1,6 @@
 ---
 layout: post_with_ad
-title: 우분투 도커 설치 (root user 용)
+title: Install Docker on Ubuntu (for root user)
 date: 2024-06-18 11:04:51 +0900
 permalink: /20240618/en/install-docker-on-ubuntu-for-root
 categories: web api

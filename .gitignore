@@ -4,3 +4,7 @@ _site
 .DS_Store
 .vscode
 ncftp-push.sh
+.jekyll-cache
+.jekyll-metadata
+vendor
+node_modules
