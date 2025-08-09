@@ -2,7 +2,7 @@
 layout: post_with_ad
 title: Setting up replication in MariaDB 11 version
 date: 2024-06-14 11:04:51 +0900
-permalink: /mariadb/2024-06-14-replication-on-mariadb
+permalink: /en/mariadb/2024-06-14-replication-on-mariadb
 categories: mariadb
 tags: mariadb, replication, slave, master
 excerpt: Let's learn about MariaDB replication.
