@@ -1,9 +1,13 @@
-<!--
+{% comment %}
   댓글: giscus (GitHub Discussions 기반).
-  설정값은 _config.yml 의 `giscus:` 키에서 채운다. 값이 비어 있으면 아무것도 렌더링하지 않는다.
+  설정값은 _config.yml 의 giscus 키에서 채운다. 값이 비어 있으면 아무것도 렌더링하지 않는다.
   값은 https://giscus.app 에서 repo·category 선택 후 발급받는다.
--->
-{% if site.giscus.repo and site.giscus.repo_id and site.giscus.category_id %}
+{% endcomment %}
+{% comment %} Liquid에서 빈 문자열("")은 truthy라, default로 nil·"" 모두 ""로 모은 뒤 비었는지 검사한다. {% endcomment %}
+{% assign g_repo = site.giscus.repo | default: "" %}
+{% assign g_repo_id = site.giscus.repo_id | default: "" %}
+{% assign g_category_id = site.giscus.category_id | default: "" %}
+{% if g_repo != "" and g_repo_id != "" and g_category_id != "" %}
 <section class="comments">
   <script src="https://giscus.app/client.js"
     data-repo="{{ site.giscus.repo }}"
