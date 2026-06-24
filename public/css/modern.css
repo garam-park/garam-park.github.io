@@ -123,9 +123,10 @@ a,
   background-size: 100% 2px;
   text-decoration: none;
 }
-/* 제목·연관글 링크는 본문 밑줄 애니메이션 제외 */
+/* 제목·연관글·페이지네이션 링크는 본문 밑줄 애니메이션 제외 */
 .post-title a,
-.related-posts a {
+.related-posts a,
+.pagination-item {
   background-image: none;
   padding-bottom: 0;
 }
@@ -331,36 +332,64 @@ a.sidebar-nav-item:focus {
 .related-posts li small { color: var(--text-muted); }
 
 /* ----------------------------------------------------------------------------
- * 페이지네이션 — 알약(pill) 버튼
+ * 페이지네이션 — 번호식
  * ------------------------------------------------------------------------- */
 .pagination {
   font-family: var(--sans);
   display: flex;
-  gap: .75rem;
-  margin: 3.5rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: .4rem;
+  margin: 3.5rem 0 1rem;
 }
 .pagination-item {
-  flex: 1;
-  padding: .85rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;       /* poole/lanyon의 width:50% · float:left 무력화 */
+  float: none;
+  width: auto;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 .55rem;
   color: var(--text-muted);
   font-weight: 600;
   font-size: .9rem;
+  background-color: var(--bg-elev);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 10px;
 }
 a.pagination-item {
   color: var(--accent);
-  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .1s ease;
 }
 a.pagination-item:hover {
   color: #fff;
   background-color: var(--accent);
   border-color: var(--accent);
+  text-decoration: none;
 }
-@media (min-width: 30rem) {
-  .pagination-item { float: none; width: auto; }
-  .pagination-item:first-child,
-  .pagination-item:last-child { margin: 0; border-radius: 999px; }
+a.pagination-item:active { transform: translateY(1px); }
+.pagination-item.is-current {
+  color: #fff;
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+.pagination-item.is-disabled {
+  opacity: .4;
+  border-style: dashed;
+}
+.pagination-item.nav-prev,
+.pagination-item.nav-next { font-size: 1.15rem; line-height: 1; }
+.pagination-ellipsis {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 2.4rem;
+  padding-bottom: .35rem;
+  color: var(--text-muted);
 }
 
 /* ----------------------------------------------------------------------------
