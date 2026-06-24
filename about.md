@@ -15,14 +15,6 @@ description: "AI와 인프라로 직접 사업을 만들고 굴리는 개발자�
 
 그 전부터 정리해 둔 기록도 함께 있습니다. 디자인 패턴, 자료구조·알고리즘, Docker, MariaDB, 정규표현식처럼 오래 쓰이는 기본기들은 상단 카테고리에서 찾아볼 수 있습니다.
 
-<ul class="about-topics" aria-label="주로 다루는 주제">
-  <li><img src="/images/featured/kubernetes.svg" alt="" width="40" height="40"><span>Kubernetes</span></li>
-  <li><img src="/images/featured/docker.svg" alt="" width="40" height="40"><span>Docker</span></li>
-  <li><img src="/images/featured/mariadb-replication.svg" alt="" width="40" height="40"><span>MariaDB</span></li>
-  <li><img src="/images/featured/letsencrypt.svg" alt="" width="40" height="40"><span>TLS · 보안</span></li>
-  <li><img src="/images/featured/solid-srp.svg" alt="" width="40" height="40"><span>디자인 패턴</span></li>
-</ul>
-
 ## 연락처
 
 - LinkedIn: [linkedin.com/in/garam-park](https://www.linkedin.com/in/garam-park-7ab39793/)
