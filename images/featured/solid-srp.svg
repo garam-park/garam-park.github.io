@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E130E"/><stop offset="1" stop-color="#070707"/>
+    </linearGradient>
+    <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#1DB954" opacity="0.10"/>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <rect width="200" height="200" fill="url(#dots)"/>
+  <g>
+    <rect x="41" y="41" width="52" height="52" rx="10" fill="#1DB954"/><rect x="107" y="41" width="52" height="52" rx="10" fill="#1DB954" fill-opacity="0.12" stroke="#1DB954" stroke-width="4"/>
+    <rect x="41" y="107" width="52" height="52" rx="10" fill="#1DB954" fill-opacity="0.12" stroke="#1DB954" stroke-width="4"/><rect x="107" y="107" width="52" height="52" rx="10" fill="#1DB954" fill-opacity="0.12" stroke="#1DB954" stroke-width="4"/>
+  </g>
+  <rect x="84" y="178" width="32" height="4" rx="2" fill="#1DB954" opacity="0.45"/>
+</svg>

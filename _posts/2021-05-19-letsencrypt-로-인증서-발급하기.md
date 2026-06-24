@@ -8,6 +8,7 @@ tags : ssl tls https letsencrypt certbot
 lang: ko
 description: "certbot과 Docker로 Let's Encrypt 와일드카드(*.도메인) TLS 인증서를 DNS 챌린지 방식으로 발급하는 명령어를 정리합니다."
 featured: true
+image: /images/featured/letsencrypt.svg
 ---
 
 아래의 명령어를 활용하면 certbot 으로 tls 인증서를 발급 가능

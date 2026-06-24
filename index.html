@@ -17,8 +17,11 @@ title : Home
     {% for post in featured_posts limit:5 %}
     <li class="featured-item">
       <a class="featured-link" href="{{ post.url }}">
-        <span class="featured-post-title">{{ post.title }}</span>
-        {% if post.description %}<span class="featured-desc">{{ post.description }}</span>{% endif %}
+        {% if post.image %}<img class="featured-thumb" src="{{ post.image }}" alt="" width="76" height="76" loading="lazy">{% endif %}
+        <span class="featured-body">
+          <span class="featured-post-title">{{ post.title }}</span>
+          {% if post.description %}<span class="featured-desc">{{ post.description }}</span>{% endif %}
+        </span>
       </a>
     </li>
     {% endfor %}
