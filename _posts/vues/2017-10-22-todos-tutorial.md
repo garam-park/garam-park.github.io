@@ -6,6 +6,8 @@ permalink : /vue-js-posts/todos-tutorial
 categories: vuejs
 tags : vuejs 튜토리얼, vue, vuejs, tutorial, restful, vuejs, 튜토리얼, 예제 연습, vuejs 입문, Vue js 입문
 excerpt : VueJs는 놀라우리만큼 간단하면서 직관적이고 배우기 쉽고 필요한 모든 게 준비된 front-end framework 입니다. front-end 개발자가 아닌 제가 공부하면 엄청난 생상성의 향상이 있음을 깨닫고 적극적으로 사내 프로젝트에 적용했습니다.VueJs의 모든 기능을 공부하기 보다는 간단한 예제를 만들어 보세요.
+lang: ko
+description: "Vue.js 입문자를 위한 빠른 시작 튜토리얼. 간단한 Todo 앱을 직접 만들며 Vue의 기본 개념과 생산성을 체험합니다."
 ---
 <br>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/b_sZiPXezSo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>{:style="width:100%"}

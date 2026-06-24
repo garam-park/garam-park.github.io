@@ -5,6 +5,8 @@ date: 2021-03-06 23:46:46 +0900
 permalink: /rest-api-response-body-best-pratics
 categories: rest
 tags: restful, restful api, rest api, rest
+lang: ko
+description: "REST API 응답 바디를 code·message·result 세 가지로 설계하는 실무 구조를 제안합니다. HTTP 상태코드를 확장한 5~6자리 커스텀 코드 설계법까지 경험을 바탕으로 정리했습니다."
 ---
 
 필자는 다양한 REST API 설계 및 개발, 유지보수를 해왔고 그 경험을 바탕으로 간단하면서도 합리적은 Response 구조를 정립했습니다. 만약 더 개선 되어야 할 점이 발견된다면 이 포스트도 업데이트 될 것입니다.

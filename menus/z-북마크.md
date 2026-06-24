@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 북마크
+title: 추천 링크
 permalink: /bookmarks/
 ---
 

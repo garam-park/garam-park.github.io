@@ -6,6 +6,8 @@ categories : 맛집 마카롱 카페
 tags :  맛집, 마카롱, 마카롱 카페, 단국대 맛집, 단국대 카페 
 permalink : /reviews/restorants/le-reve-de-bebe
 excerpt : "[맛집][카페]단국대 근처 마카롱을 먹고 싶다면!!"
+lang: ko
+description: "단국대 근처 마카롱 카페 르헤브드베베 방문 후기. 마카롱 맛과 분위기를 담은 카페 리뷰입니다."
 ---
 
 ## **단국대 근처 마카롱 카페 - 르헤브드베베**

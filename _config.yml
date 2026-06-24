@@ -18,15 +18,21 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Story's G Blog — 개발자가 AI/인프라로 사업 굴리는 법
-tagline: 온프렘·K8s·DevOps 실측 기록
-email: gr.park@storyg.co
-description: > # this means to ignore newlines until "baseurl:"
-  멈춰있던 내 사업을 AI/인프라로 다시 굴리는 개발 일지. 온프렘·K8s·DevOps 실측 기록.
-# 기존 SEO 키워드 자산 유지 (+ 새 니치 키워드)
-keywords: "Docker, MariaDB, Kubernetes, K8s, DevOps, 온프렘, 인프라, AI, 개발 일지, 사업"
+title: Story's G Blog
+email: garam-park@naver.com
+description: "개발자가 AI와 인프라로 자기 사업을 직접 굴리는 실측기. K8s·DevOps·AI 운영부터 실서비스까지."
+tagline: "AI와 인프라로 내 사업을 굴리는 개발자의 실측 기록"
+author: Garam Park
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://garam-park.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
+# 댓글 (giscus) — GitHub Discussions 기반. https://giscus.app 에서 repo·category 선택 후 값 채우기.
+# 네 값이 모두 채워지면 포스트 하단에 자동 노출되고, 비어 있으면 댓글 영역은 렌더링되지 않는다.
+giscus:
+  repo: ""         # 예: garam-park/garam-park.github.io
+  repo_id: ""      # giscus.app 에서 발급되는 repo ID
+  category: ""     # 예: Announcements
+  category_id: ""  # giscus.app 에서 발급되는 category ID
 # twitter_username: jekyllrb
 # github_username:  jekyll
 

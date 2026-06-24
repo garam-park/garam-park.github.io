@@ -5,6 +5,8 @@ date: 2024-06-09 14:30:00 +0900
 permalink: /synology/synology-nas-nfs
 categories: synology
 tags: synology nas, synology nas nfs, synology nas nfs 사용법, synology nas nfs 사용법
+lang: ko
+description: "Synology NAS에 NFS를 설정해 DB 백업 파일을 보관하는 과정 기록. 가상화 서버에 NFS 마운트하고 rsync로 백업을 옮기기까지의 실측 메모입니다."
 ---
 
 클라우드 서비스를 사용하는 이유는 여러가지가 있지만 가장 큰 이유는 안정성이다. 그런데 고객이 가장 바쁜 시간대에 문제가 발생하면서 적어도 오늘 할 작업에 대해서 readonly만 가능하라도 제공해야 하는 것을 뼈저리게 느껴서 nas 를 구매해서 데이터를 백업 하기로 마음 먹었다.

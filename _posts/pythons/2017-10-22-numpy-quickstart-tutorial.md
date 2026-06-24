@@ -7,6 +7,8 @@ date:   2017-10-22 05:16:56 +0900
 categories: numpy, python
 tags : numpy, python, garam, blog
 excerpt : NumPy의 주요한 객체는 동일한 요소를 갖는 다중 배열입니다. 대부분 같은 숫자로 되어있는 요소들의 테이블 입니다. 요소는 양의 정수의 튜플로 인덱스 되어있습니다. Numpy에서는 차원을 축(axes)이라고 불리우고. 축의 개수가 랭크(rank)입니다.
+lang: ko
+description: "NumPy 입문 자습서. 다차원 배열(ndarray)의 개념과 축(axes)·랭크(rank)를 예제로 설명하며 NumPy의 기본 사용법을 익힙니다."
 ---
 
 ## **기초**

@@ -6,6 +6,8 @@ permalink : /mariadb/create-admin-user-on-mariadb
 categories: database, db, mariadb
 tags : create user, mariadb, admin
 excerpt : root 유저 말고 다른 유저로 어드민 권한을 주고 싶을때 어떻게 해야할까?
+lang: ko
+description: "MariaDB에서 root 대신 사용할 관리자(Admin) 계정을 만드는 방법. 사용자 생성과 접속 호스트 제한, 권한 부여(GRANT) 과정을 예제로 정리합니다."
 ---
 
 MariaDB를 설치하고 나서 root 말고 맞춤형으로

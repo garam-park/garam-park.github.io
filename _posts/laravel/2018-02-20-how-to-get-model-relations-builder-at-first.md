@@ -6,6 +6,8 @@ permalink: /laravels/how-to-get-model-relations-builder-at-first
 categories: 라라벨, laravel
 tags : laravel, laravel builder, laravel model, laravel model builder, 라라벨, 라라벨 모델, 라라벨 모델 빌더, 라라벨 꿀팁,꿀팁
 excerpt : 모델의 관계에서 빌더를 사용할 필요가 있다. 그럴 때 다음과 같은 예제를 사용해보자.
+lang: ko
+description: "라라벨 모델의 관계(Relation)에서 쿼리 빌더를 처음부터 사용해야 할 때의 해결법. 관계에 조건부 쿼리를 적용하는 예제를 정리합니다."
 ---
 
 ## **적용**

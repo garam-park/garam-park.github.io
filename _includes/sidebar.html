@@ -10,21 +10,29 @@
 
   <nav class="sidebar-nav">
     <a class="sidebar-nav-item
-      {% if page.title == "Home" %} 
+      {% if page.title == "Home" %}
         active
       {% endif %}" href="/">
       Home
     </a>
 
+    <a class="sidebar-nav-item
+      {% if page.url == "/about/" %}
+        active
+      {% endif %}" href="/about/">
+      소개
+    </a>
+
     {% comment %}
       The code below dynamically generates a sidebar nav of pages with
       `layout: page` in the front-matter. See readme for usage.
+      About(소개)는 위에서 상단 고정으로 노출하므로 자동 목록에서는 제외한다.
     {% endcomment %}
 
     {% assign pages_list = site.pages %}
     {% for node in pages_list %}
       {% if node.title != null %}
-        {% if node.layout == "page" %}
+        {% if node.layout == "page" and node.url != "/about/" %}
           <a class="sidebar-nav-item
             {% if page.url == node.url %}
               active
@@ -35,15 +43,11 @@
         {% endif %}
       {% endif %}
     {% endfor %}
-
-    <!-- <a class="sidebar-nav-item" href="{{ site.github.repo }}/archive/v{{ site.version }}.zip">Download</a> -->
-    <!-- <a class="sidebar-nav-item" href="{{ site.github.repo }}">GitHub project</a> -->
-    <span class="sidebar-nav-item">Currently v{{ site.version }}</span>
   </nav>
 
   <div class="sidebar-item">
     <p>
-      &copy; {{ site.time | date: '%Y' }}. All rights reserved.
+      &copy; 2012&ndash;{{ site.time | date: '%Y' }}. All rights reserved.
     </p>
   </div>
 </div>

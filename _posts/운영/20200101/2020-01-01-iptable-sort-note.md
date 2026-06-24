@@ -6,6 +6,8 @@ permalink : /운영/iptables/iptables-방화벽-관리
 categories: web os linux
 tags : operation, iptables, linux, iwinv
 excerpt : iwinv 에서 방화벽 처리 삽질 해결
+lang: ko
+description: "iptables로 방화벽 포트를 열고 닫는 방법을 정리합니다. iwinv 인스턴스 기본 방화벽 때문에 겪은 포트 차단 문제 해결 경험을 담았습니다."
 ---
 
 <!-- ## **방화벽** -->

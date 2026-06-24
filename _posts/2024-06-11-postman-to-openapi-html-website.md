@@ -5,6 +5,8 @@ date: 2024-06-11 11:23:00 +0900
 permalink: /publish-openapi-from-postman
 categories: web api
 tags: restful, restful api, rest api, rest
+lang: ko
+description: "유료 Postman 대신 postman-to-openapi로 컬렉션을 OpenAPI YAML로 변환하고 Redocly로 API 문서를 무료 배포하는 과정을 단계별로 소개합니다."
 ---
 
 ## 개발 과정에서 Postman을 OpenAPI로 배포하기

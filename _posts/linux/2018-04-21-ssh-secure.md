@@ -6,6 +6,8 @@ permalink  : /linuxs/ubuntu-setup-security
 categories : ubuntu linux
 tags       : ssh sshd secure root 접근제한 암호제한
 excerpt    : 우분투에서 외부 접속을 좀 더 안전하게 하기
+lang: ko
+description: "우분투 서버의 SSH 접속 보안을 강화하는 방법. 접속 계정 제한, root 접근 제한, SSH 키 자체에 암호 설정까지 세 가지 보안 설정을 다룹니다."
 ---
 # **1 소개**
 

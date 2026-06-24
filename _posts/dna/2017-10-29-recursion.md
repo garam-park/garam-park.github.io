@@ -6,6 +6,8 @@ date: 2017-10-29 19:46:07 +0900
 categories: dna, data structure and algorithm
 tags : 알고리즘, 자료구조, 재귀함수,재귀호출, algorithm, data structure, recursion, recursive function
 excerpt : 재귀함수는 무엇일까요? 대단한 것이 없습니다. 자기자신을 호출하는 함수를 말합니다. 하지만 재귀함수가 개발에서 어떤 의미를 가지는 지 알기위해서는 좀더 자세히 살펴보아야 합니다. 이 글은 재귀함수를 좀 더 잘 사용하기 위해서 알아야 하는 것들을 서술 했습니다.
+lang: ko
+description: "재귀 함수(Recursion)의 개념과 동작을 PHP 예제로 설명합니다. 재귀를 더 잘 쓰기 위해 알아야 할 핵심 포인트를 자료구조·알고리즘 관점에서 정리합니다."
 ---
 
 ## 재귀(Recursion)란?

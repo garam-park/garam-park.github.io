@@ -5,6 +5,8 @@ date: 2021-07-31 18:50:06 +0900
 permalink: /node/typescript-기본-프로젝트-생성
 categories: node typescript
 tags: node typescript
+lang: ko
+description: "TypeScript 기본 프로젝트를 세팅하는 방법. npm init부터 typescript 설치와 tsconfig 구성까지 최소 프로젝트 구조를 잡는 과정을 정리합니다."
 ---
 
 ### ts project 구조 잡기

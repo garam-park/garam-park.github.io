@@ -6,6 +6,8 @@ permalink : /rabbitmqs/rabbitmq-install-on-ubuntu
 categories: rabbitmq, ubuntu
 tags : rabbitmq, ubuntu
 excerpt : 우분투에 RabbtiMQ 설치하기
+lang: ko
+description: "우분투에 RabbitMQ를 Apt 저장소로 설치하는 방법. RabbitMQ 버전별로 호환되는 Erlang 버전을 맞추는 주의점까지 정리합니다."
 ---
 # 우분투에 RabbtiMQ 설치하기
 

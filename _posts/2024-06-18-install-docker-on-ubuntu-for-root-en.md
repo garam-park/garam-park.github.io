@@ -6,6 +6,8 @@ permalink: /20240618/kr/install-docker-on-ubuntu-for-root
 categories: web api
 tags: docker, ubuntu
 excerpt: (root 용)우분투에 도커를 설치하는 방법을 알아봅시다.
+lang: ko
+description: "우분투에 root 사용자로 Docker를 설치하는 방법을 단계별로 정리합니다. 공식 GPG 키·리포지토리 추가부터 부팅 시 자동 실행 설정까지 따라 할 수 있습니다."
 ---
 
 ## **목차**

@@ -6,6 +6,8 @@ permalink : /vue-js-posts/vue-router-nginx-config
 categories: vuejs
 tags : vue, vuejs, tutorial, restful, vuejs, 튜토리얼, 예제 연습, vuejs 입문, Vue js 입문, VueJs 튜토리얼, Nginx
 excerpt : Nginx에서 Vue-router를 호스팅하기 위해서 다음의 코드 조각을 사용합니다.
+lang: ko
+description: "Vue Router의 history 모드를 Nginx로 호스팅할 때 필요한 설정. 새로고침 시 404가 나지 않도록 하는 try_files 설정 예시를 정리합니다."
 ---
 
 ## **vue-router 용 Nginx 설정**

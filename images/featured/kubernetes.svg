@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E130E"/><stop offset="1" stop-color="#070707"/>
+    </linearGradient>
+    <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#1DB954" opacity="0.10"/>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <rect width="200" height="200" fill="url(#dots)"/>
+  <g fill="none" stroke="#1DB954" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round">
+    <g stroke-width="3" opacity="0.85"><line x1="100" y1="100" x2="100.0" y2="40.0"/><line x1="100" y1="100" x2="146.9" y2="62.6"/><line x1="100" y1="100" x2="158.5" y2="113.4"/><line x1="100" y1="100" x2="126.0" y2="154.1"/><line x1="100" y1="100" x2="74.0" y2="154.1"/><line x1="100" y1="100" x2="41.5" y2="113.4"/><line x1="100" y1="100" x2="53.1" y2="62.6"/></g>
+    <polygon points="100.0,40.0 146.9,62.6 158.5,113.4 126.0,154.1 74.0,154.1 41.5,113.4 53.1,62.6"/>
+    <polygon points="100.0,82.0 115.6,91.0 115.6,109.0 100.0,118.0 84.4,109.0 84.4,91.0" fill="#0A0A0A"/>
+    <polygon points="100.0,82.0 115.6,91.0 115.6,109.0 100.0,118.0 84.4,109.0 84.4,91.0" fill="none"/>
+  </g>
+  <rect x="84" y="178" width="32" height="4" rx="2" fill="#1DB954" opacity="0.45"/>
+</svg>

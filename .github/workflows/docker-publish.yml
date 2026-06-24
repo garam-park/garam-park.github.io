@@ -8,6 +8,11 @@ on:
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/blog
 
+# 같은 브랜치의 배포가 겹치지 않게 한다.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -38,3 +43,22 @@ jobs:
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # 빌드·푸시가 끝나면 프로덕션 서버에 SSH로 접속해 blog 서비스만 갱신한다.
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production over SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            set -e
+            cd "${{ secrets.REMOTE_PATH }}"
+            docker compose pull blog
+            docker compose up -d blog
+            docker image prune -f

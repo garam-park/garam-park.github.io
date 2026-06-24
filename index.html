@@ -2,10 +2,42 @@
 layout: default
 title : Home
 ---
+{% if paginator.page == 1 %}
+<header class="home-intro">
+  <h2 class="home-intro-tagline">AI와 인프라로 내 사업을 굴리는 개발자의 실측 기록</h2>
+  <p class="home-intro-desc">K8s·DevOps·AI 운영부터 실서비스까지. 돈과 장애가 걸린 현장에서 나온 기록을 남깁니다.</p>
+  <p class="home-intro-links"><a href="/about/">소개 &rarr;</a></p>
+</header>
+
+{% assign featured_posts = site.posts | where_exp: "p", "p.featured" %}
+{% if featured_posts.size > 0 %}
+<section class="featured">
+  <h2 class="featured-title">추천 글</h2>
+  <ul class="featured-list">
+    {% for post in featured_posts limit:5 %}
+    <li class="featured-item">
+      <a class="featured-link" href="{{ post.url }}">
+        {% if post.image %}<img class="featured-thumb" src="{{ post.image }}" alt="" width="76" height="76" loading="lazy">{% endif %}
+        <span class="featured-body">
+          <span class="featured-post-title">{{ post.title }}</span>
+          {% if post.description %}<span class="featured-desc">{{ post.description }}</span>{% endif %}
+        </span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endif %}
 {% include ad.html %}
-<div class="posts">
+<nav class="lang-filter" aria-label="언어 필터">
+  <button type="button" class="lang-filter-btn is-active" data-filter="all">전체</button>
+  <button type="button" class="lang-filter-btn" data-filter="ko">한국어</button>
+  <button type="button" class="lang-filter-btn" data-filter="en">English</button>
+</nav>
+<div class="posts" id="post-list">
   {% for post in paginator.posts %}
-  <div class="post">
+  <div class="post" data-lang="{{ post.lang | default: 'ko' }}">
     <h1 class="post-title">
       <a href="{{ post.url }}">
         {{ post.title }}
@@ -17,6 +49,7 @@ title : Home
   </div>
   {% endfor %}
 </div>
+<p class="lang-filter-empty" hidden>이 페이지에는 선택한 언어의 글이 없습니다. 다른 페이지나 <strong>전체</strong>를 확인해 보세요.</p>
 {% include ad.html %}
 <nav class="pagination" aria-label="페이지 네비게이션">
   {% comment %} 이전(최신 방향) {% endcomment %}
@@ -62,3 +95,5 @@ title : Home
     <span class="pagination-item nav-next is-disabled" aria-hidden="true">›</span>
   {% endif %}
 </nav>
+
+<script src="/assets/js/lang-filter.js"></script>
