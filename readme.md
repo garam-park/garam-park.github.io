@@ -49,9 +49,21 @@ docker run --rm -p 8080:80 blog
 
 ### docker compose 로 실행
 
+운영과 동일하게 멀티스테이지 이미지를 빌드해 nginx로 서빙한다.
+
 ```sh
 docker compose up --build
-# http://localhost:8080
+# http://localhost:9090
+```
+
+### 로컬 개발 (라이브 리로드)
+
+소스를 마운트해 `jekyll serve`로 띄운다. 글·레이아웃을 고치면 즉시 반영되며
+이미지를 다시 빌드할 필요가 없다.
+
+```sh
+docker compose -f docker-compose.dev.yml up --build
+# http://localhost:4000
 ```
 
 ### 레지스트리(ghcr.io) 배포
