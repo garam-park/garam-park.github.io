@@ -20,10 +20,9 @@
 
 title: Story's G Blog
 email: gr.park@storyg.co
-description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+description: "개발자가 AI와 인프라로 자기 사업을 직접 굴리는 실측기. K8s·DevOps·AI 운영부터 실서비스까지."
+tagline: "AI와 인프라로 내 사업을 굴리는 개발자의 실측 기록"
+author: Garam Park
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://garam-park.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
