@@ -64,4 +64,10 @@ exclude:
   - .DS_Store
   - tsconfig.json
   - .gitignore
-  - dagger.ts
+  - Dockerfile
+  - .dockerignore
+  - docker-compose.yml
+  - nginx.conf
+  - readme.md
+  - readme.old.md
+  - scripts/

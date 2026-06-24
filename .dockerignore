@@ -1,0 +1,29 @@
+# 버전 관리 / IDE
+.git
+.gitignore
+.github
+.vscode
+.DS_Store
+
+# 빌드 산출물 (이미지 안에서 새로 빌드한다)
+_site
+.jekyll-cache
+.jekyll-metadata
+.sass-cache
+vendor
+
+# Node / dagger 관련 (빌드에 불필요)
+node_modules
+package.json
+yarn.lock
+tsconfig.json
+dagger.ts
+
+# 배포 스크립트
+scripts
+
+# 비밀 정보 — 컨텍스트에 절대 포함하지 않는다
+id_ed25519
+id_ed25519.pub
+*.key
+*.pem
