@@ -56,8 +56,8 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
           port: ${{ secrets.REMOTE_PORT }}
-          script_stop: true
           script: |
+            set -e
             cd "${{ secrets.REMOTE_PATH }}"
             docker compose pull blog
             docker compose up -d blog
