@@ -67,6 +67,7 @@ exclude:
   - Dockerfile
   - .dockerignore
   - docker-compose.yml
+  - docker-compose.dev.yml
   - nginx.conf
   - readme.md
   - readme.old.md
