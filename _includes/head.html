@@ -23,12 +23,10 @@
   <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
   
-  {% if site.description %}
-  <meta name="description" content="{{ site.description}}">
-  {% endif %}
-
-  {% if page.tags %}
-  <meta name="description" content="{{page.tags}}">
+  {% if page.description %}
+  <meta name="description" content="{{ page.description }}">
+  {% elsif site.description %}
+  <meta name="description" content="{{ site.description }}">
   {% endif %}
   
   <title>
