@@ -25,6 +25,14 @@ tagline: "AI와 인프라로 내 사업을 굴리는 개발자의 실측 기록"
 author: Garam Park
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://garam-park.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
+# 댓글 (giscus) — GitHub Discussions 기반. https://giscus.app 에서 repo·category 선택 후 값 채우기.
+# 네 값이 모두 채워지면 포스트 하단에 자동 노출되고, 비어 있으면 댓글 영역은 렌더링되지 않는다.
+giscus:
+  repo: ""         # 예: garam-park/garam-park.github.io
+  repo_id: ""      # giscus.app 에서 발급되는 repo ID
+  category: ""     # 예: Announcements
+  category_id: ""  # giscus.app 에서 발급되는 category ID
 # twitter_username: jekyllrb
 # github_username:  jekyll
 
