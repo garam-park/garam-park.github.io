@@ -1,61 +1,66 @@
 /*
- * modern.css — 헌터 그린 모던 리디자인 오버라이드 레이어
+ * modern.css — "Tech · Minimal · Green" 브랜드 오버라이드 레이어
  *
  * poole.css / lanyon.css / syntax.css 다음에 마지막으로 로드되어
- * 색·타이포·여백·컴포넌트를 현대적으로 덮는다. 마크업은 변경하지 않는다.
- * 라이트/다크는 prefers-color-scheme로 전환한다.
+ * 색·타이포·여백·컴포넌트를 브랜드 팔레트로 덮는다. 마크업은 변경하지 않는다.
+ *
+ * 디자인 방향: flat (그림자·그라디언트 제거), 미니멀, 넉넉한 여백.
+ * 라이트가 기준 팔레트이고, 다크는 Circuit Green을 기반으로 변형해 시스템 외관에 연동한다.
+ * 헤더(사이드바)·푸터·코드블록은 라이트/다크 공통으로 Obsidian Black 다크 크롬을 유지한다.
  */
 
 /* ----------------------------------------------------------------------------
- * 팔레트 (라이트)
+ * 팔레트 (라이트) — 브랜드 기준색
  * ------------------------------------------------------------------------- */
 :root {
-  --accent:        #2C5F2D;   /* 헌터 그린 */
-  --accent-strong: #234D24;
-  --accent-soft:   rgba(44, 95, 45, .10);
-  --brand-surface:   #1E3A28; /* 사이드바 딥 그린 */
-  --brand-surface-2: #15291C;
+  --color-bg:           #FFFFFF;            /* Pure White — 본문 배경 */
+  --color-section:      #EFEFEF;            /* Cloud — 섹션/뱃지 배경 */
+  --color-row:          #F7F7F7;            /* 표 zebra (section보다 옅게) */
+  --color-text:         #0D0D0D;            /* Obsidian Black — 본문 텍스트 */
+  --color-subtext:      #6B6B6B;            /* Steel Gray — 날짜·태그 등 보조 텍스트 */
+  --color-border:       #C2C2C2;            /* Mist — 구분선/테두리 */
+  --color-accent:       #1DB954;            /* Circuit Green — 링크/CTA/액센트 */
+  --color-accent-hover: #0A7A3B;            /* Deep Forest — hover/active */
+  --color-accent-soft:  rgba(29, 185, 84, .10); /* 액센트 옅은 틴트 */
+  --color-dark:         #0D0D0D;            /* 다크 크롬 — 헤더/푸터 배경 */
+  --color-on-dark:      #FFFFFF;            /* 다크 크롬 위 텍스트/아이콘 */
 
-  --bg:        #FAFAF7;       /* 따뜻한 페이퍼 */
-  --bg-elev:   #FFFFFF;
-  --text:      #1F211E;
-  --heading:   #16241A;       /* 딥 그린-블랙 */
-  --text-muted:#6B6F69;
-  --border:    #E6E7E0;
+  --color-code-bg:      #0D0D0D;            /* 코드블록 배경 (터미널 느낌) */
+  --color-code-text:    #1DB954;            /* 인라인 코드 텍스트 (터미널 그린) */
+  --color-code-base:    #D6DCD4;            /* 코드블록 비토큰 텍스트 (다크 위 가독) */
 
-  --code-bg:   #F3F4EE;
-  --code-text: #2C5F2D;
+  --selection:          rgba(29, 185, 84, .18);
 
-  --selection: rgba(44, 95, 45, .16);
-  --shadow:    0 1px 2px rgba(20, 40, 28, .04), 0 10px 30px -16px rgba(20, 40, 28, .18);
-
-  --mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, "Cascadia Code", "Courier New", monospace;
-  --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  /* 폰트: 시스템 폰트 스택 유지 (Pretendard는 한글 본문 우선, 이후 시스템 폴백) */
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco,
+               "Cascadia Code", "Courier New", monospace;
 }
 
 /* ----------------------------------------------------------------------------
- * 팔레트 (다크) — 시스템 외관 연동
+ * 팔레트 (다크) — Circuit Green 기반 변형, 시스템 외관 연동
+ * 다크 크롬(헤더/푸터/코드)은 라이트와 동일하게 Obsidian Black 유지한다.
  * ------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
-    --accent:        #84C088;
-    --accent-strong: #A6DAAA;
-    --accent-soft:   rgba(132, 192, 136, .14);
-    --brand-surface:   #13241A;
-    --brand-surface-2: #0C1813;
+    --color-bg:           #0D0D0D;
+    --color-section:      #161616;
+    --color-row:          #141414;
+    --color-text:         #EFEFEF;
+    --color-subtext:      #9A9A9A;
+    --color-border:       #2A2A2A;
+    --color-accent:       #1DB954;
+    --color-accent-hover: #3FD673;          /* 다크에선 hover를 더 밝게 */
+    --color-accent-soft:  rgba(29, 185, 84, .16);
+    --color-dark:         #0D0D0D;
+    --color-on-dark:      #FFFFFF;
 
-    --bg:        #0E1611;
-    --bg-elev:   #16211A;
-    --text:      #E3E7E1;
-    --heading:   #F1F4EF;
-    --text-muted:#93A192;
-    --border:    #233029;
+    --color-code-bg:      #000000;           /* 페이지 배경과 구분되도록 더 어둡게 */
+    --color-code-text:    #1DB954;
+    --color-code-base:    #D6DCD4;
 
-    --code-bg:   #111B15;
-    --code-text: #A6DAAA;
-
-    --selection: rgba(132, 192, 136, .22);
-    --shadow:    0 1px 2px rgba(0, 0, 0, .35), 0 12px 34px -16px rgba(0, 0, 0, .6);
+    --selection:          rgba(29, 185, 84, .26);
   }
 }
 
@@ -71,25 +76,24 @@ html {
 }
 
 body {
-  font-family: var(--sans);
-  color: var(--text);
-  background-color: var(--bg);
-  line-height: 1.75;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.7;                          /* 넉넉한 본문 행간 */
   letter-spacing: -0.003em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "ss01", "tnum";
   transition: background-color .3s ease, color .3s ease;
 }
 
 ::selection { background: var(--selection); }
 
-p { margin-bottom: 1.15rem; }
-p, li { overflow-wrap: break-word; }
+p { margin-bottom: 1.2rem; }
+p, li, td, th { color: var(--color-text); overflow-wrap: break-word; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--sans);
-  color: var(--heading);
+  font-family: var(--font-sans);
+  color: var(--color-text);
   line-height: 1.25;
   letter-spacing: -0.02em;
   text-wrap: balance;
@@ -99,102 +103,104 @@ h3, h4, h5, h6 { font-weight: 700; }
 h2 { margin-top: 2.4rem; }
 h3 { margin-top: 1.9rem; }
 
-strong { color: var(--heading); font-weight: 700; }
+strong { color: var(--color-text); font-weight: 700; }
 
-/* 링크 — 헌터 그린, 부드러운 밑줄 애니메이션 */
+/* ----------------------------------------------------------------------------
+ * 링크 — Circuit Green, 밑줄 없음 (색으로만 구분)
+ * ------------------------------------------------------------------------- */
 a,
 .container a,
+.content a,
 .post-title a,
-.related-posts li a:hover {
-  color: var(--accent);
-}
-.content a {
+.related-posts li a {
+  color: var(--color-accent);
   text-decoration: none;
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 100% 1px;
-  transition: background-size .25s ease, color .2s ease;
-  padding-bottom: 1px;
+  transition: color .2s ease;
 }
+a:hover,
+a:focus,
 .content a:hover,
 .content a:focus {
-  color: var(--accent-strong);
-  background-size: 100% 2px;
+  color: var(--color-accent-hover);
   text-decoration: none;
 }
-/* 제목·연관글·페이지네이션 링크는 본문 밑줄 애니메이션 제외 */
-.post-title a,
-.related-posts a,
-.pagination-item {
-  background-image: none;
-  padding-bottom: 0;
-}
 
-/* 구분선 */
+/* ----------------------------------------------------------------------------
+ * 구분선
+ * ------------------------------------------------------------------------- */
 hr {
   margin: 2.6rem 0;
   border: 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--color-border);
 }
 
-/* 인용 */
+/* 인용 — flat, 섹션 배경 + 액센트 좌측 바 */
 blockquote {
   margin: 1.6rem 0;
-  padding: .55rem 1.3rem;
-  color: var(--text-muted);
-  background: var(--accent-soft);
-  border-left: 3px solid var(--accent);
+  padding: .7rem 1.3rem;
+  color: var(--color-subtext);
+  background: var(--color-section);
+  border-left: 3px solid var(--color-accent);
   border-radius: 0 8px 8px 0;
 }
 @media (min-width: 30rem) {
   blockquote { padding-right: 1.3rem; }
 }
 
-/* 이미지 */
+/* 이미지 — flat, 가는 테두리만 */
 img {
   display: block;
   max-width: 100%;
   height: auto;
   margin: 1.4rem 0;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border);
 }
 
-/* 표 */
+/* ----------------------------------------------------------------------------
+ * 표
+ * ------------------------------------------------------------------------- */
 table {
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   border-collapse: separate;
   border-spacing: 0;
   overflow: hidden;
 }
-td, th { border: 0; border-bottom: 1px solid var(--border); }
-th { background: var(--accent-soft); color: var(--heading); font-weight: 700; text-align: left; }
+td, th { border: 0; border-bottom: 1px solid var(--color-border); }
+th {
+  background: var(--color-section);
+  color: var(--color-text);
+  font-weight: 700;
+  text-align: left;
+}
 tbody tr:nth-child(odd) td,
-tbody tr:nth-child(odd) th { background-color: var(--code-bg); }
+tbody tr:nth-child(odd) th { background-color: var(--color-row); }
 tbody tr:last-child td { border-bottom: 0; }
 
 /* ----------------------------------------------------------------------------
- * 코드
+ * 코드 — 항상 다크 배경(터미널 느낌). syntax.css 토큰을 다크용으로 항상 덮는다.
  * ------------------------------------------------------------------------- */
-code, pre, .highlight { font-family: var(--mono); }
+code, pre, .highlight { font-family: var(--font-mono); }
 
+/* 인라인 코드 — 터미널 그린 */
 code {
   padding: .14em .42em;
   font-size: .86em;
-  color: var(--code-text);
-  background-color: var(--code-bg);
-  border: 1px solid var(--border);
+  color: var(--color-code-text);
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
 }
+/* 코드블록 — 다크 배경 + 밝은 기본 텍스트(토큰은 아래에서 색 지정) */
 pre {
   margin: 1.4rem 0;
   padding: 1.1rem 1.25rem;
   font-size: .82rem;
   line-height: 1.6;
-  background-color: var(--code-bg);
-  border: 1px solid var(--border);
+  color: var(--color-code-base);
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow-x: auto;
   white-space: pre;
@@ -208,8 +214,41 @@ pre code {
   background: transparent;
   font-size: 100%;
 }
-.highlight { margin: 1.4rem 0; border-radius: 12px; }
-.highlight pre { margin: 0; }
+.highlight {
+  margin: 1.4rem 0;
+  border-radius: 12px;
+  color: var(--color-code-base);
+  background-color: var(--color-code-bg);
+}
+.highlight pre { margin: 0; border: 0; }
+
+/*
+ * 신택스 토큰 — 코드블록이 라이트/다크 모두에서 다크 배경이므로
+ * 밝은 글자 기준 팔레트를 항상 적용한다(과거 dark-only 블록을 승격).
+ */
+.highlight .c,  .highlight .c1, .highlight .cm,
+.highlight .cs, .highlight .cp { color: #76857A; font-style: italic; }   /* 주석 */
+.highlight .k,  .highlight .kc, .highlight .kd,
+.highlight .kn, .highlight .kp, .highlight .kr { color: #7FB0E0; }        /* 키워드 */
+.highlight .kt { color: #5FC8C0; }                                       /* 타입 */
+.highlight .o,  .highlight .ow { color: #B7C2B6; }                       /* 연산자 */
+.highlight .nt { color: #79B8E8; }                                       /* 태그 */
+.highlight .na { color: #9CCBE8; }                                       /* 속성 */
+.highlight .nb, .highlight .bp, .highlight .nc,
+.highlight .nn, .highlight .no { color: #5FD0A8; }                        /* 빌트인/클래스/네임스페이스 */
+.highlight .nf { color: #C99BE8; }                                       /* 함수 */
+.highlight .nv, .highlight .vc, .highlight .vg,
+.highlight .vi { color: #8FD9C4; }                                       /* 변수 */
+.highlight .s,  .highlight .s1, .highlight .s2, .highlight .sb,
+.highlight .sc, .highlight .sd, .highlight .sh, .highlight .sx,
+.highlight .se, .highlight .si, .highlight .sr { color: #E69977; }        /* 문자열 */
+.highlight .m,  .highlight .mf, .highlight .mh,
+.highlight .mi, .highlight .mo, .highlight .il { color: #E8B06B; }        /* 숫자 */
+.highlight .ss { color: #E8C85F; }                                       /* 심볼 */
+.highlight .gh, .highlight .gu { color: #A6DAAA; }                        /* 헤딩 */
+.highlight .gp { color: var(--color-accent); }                           /* 프롬프트 → 터미널 그린 */
+.highlight .go { color: #9A9A9A; }                                       /* 출력 */
+.highlight .err { color: #E66; background: transparent; }                /* 에러 */
 
 /* ----------------------------------------------------------------------------
  * 레이아웃 — 컨테이너 / 마스트헤드
@@ -222,61 +261,63 @@ pre code {
   padding-top: 2rem;
   padding-bottom: 1.4rem;
   margin-bottom: 3rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--color-border);
 }
 .masthead-title {
-  color: var(--heading);
+  color: var(--color-text);
   font-weight: 800;
   letter-spacing: -0.03em;
 }
-.masthead-title a { color: var(--heading); }
-.masthead-title a:hover { color: var(--accent); text-decoration: none; }
+.masthead-title a { color: var(--color-text); }
+.masthead-title a:hover { color: var(--color-accent); text-decoration: none; }
 .masthead-title small {
   display: inline-block;
   margin-left: .1rem;
-  color: var(--text-muted);
+  color: var(--color-subtext);
   font-size: 64%;
   font-weight: 500;
   letter-spacing: 0;
 }
-/* 좌측 헌터 그린 악센트 바 (데스크톱) */
+/* 좌측 액센트 바 (데스크톱) */
 @media (min-width: 48rem) {
   .masthead-title {
     padding-left: .95rem;
-    border-left: 4px solid var(--accent);
+    border-left: 4px solid var(--color-accent);
   }
 }
 
 /* ----------------------------------------------------------------------------
- * 사이드바 (딥 그린 — 라이트/다크 공통)
+ * 사이드바 = 헤더/네비 — Obsidian Black 다크 크롬 (flat, 라이트/다크 공통)
  * ------------------------------------------------------------------------- */
 .sidebar {
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   color: rgba(255, 255, 255, .66);
-  background-color: var(--brand-surface);
-  background-image: linear-gradient(180deg, var(--brand-surface) 0%, var(--brand-surface-2) 100%);
+  background-color: var(--color-dark);
 }
-.sidebar a { color: #fff; }
+.sidebar a { color: var(--color-on-dark); }
 .sidebar-nav-item.active,
 a.sidebar-nav-item:hover,
 a.sidebar-nav-item:focus {
   background-color: rgba(255, 255, 255, .08);
-  box-shadow: inset 3px 0 0 var(--accent);
+  box-shadow: inset 3px 0 0 var(--color-accent);
 }
 
-/* 토글 버튼 */
+/* 푸터(저작권) — 다크 크롬 위 보조 텍스트 */
+.sidebar-item p { color: rgba(255, 255, 255, .55); }
+
+/* 토글 버튼 — flat, 그림자 제거 */
 .sidebar-toggle {
-  color: var(--accent);
-  background-color: var(--bg-elev);
-  border: 1px solid var(--border);
+  color: var(--color-accent);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  box-shadow: var(--shadow);
+  box-shadow: none;
 }
 .sidebar-toggle:active,
 #sidebar-checkbox:checked ~ .wrap .sidebar-toggle {
-  color: #fff;
-  background-color: var(--accent);
-  border-color: var(--accent);
+  color: var(--color-on-dark);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
 /* ----------------------------------------------------------------------------
@@ -284,7 +325,7 @@ a.sidebar-nav-item:focus {
  * ------------------------------------------------------------------------- */
 .page-title,
 .post-title,
-.post-title a { color: var(--heading); }
+.post-title a { color: var(--color-text); }
 
 .post-title {
   font-weight: 800;
@@ -293,13 +334,13 @@ a.sidebar-nav-item:focus {
 }
 .posts .post-title { font-size: 1.62rem; }
 .post-title a { transition: color .2s ease; }
-.posts .post-title a:hover { color: var(--accent); text-decoration: none; }
+.posts .post-title a:hover { color: var(--color-accent); text-decoration: none; }
 
-/* 날짜 — 대문자 트래킹 + 헌터 그린 마커 */
+/* 날짜 — 보조 텍스트 + 액센트 마커 */
 .post-date {
   margin-top: 0;
   margin-bottom: 1.1rem;
-  color: var(--text-muted);
+  color: var(--color-subtext);
   font-size: .74rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -312,7 +353,7 @@ a.sidebar-nav-item:focus {
   height: .5rem;
   margin-right: .55rem;
   vertical-align: baseline;
-  background: var(--accent);
+  background: var(--color-accent);
   border-radius: 2px;
   transform: rotate(45deg) translateY(-1px);
 }
@@ -320,22 +361,22 @@ a.sidebar-nav-item:focus {
 .posts .post {
   margin-bottom: 3rem;
   padding-bottom: 3rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--color-border);
 }
 .posts .post:last-child { border-bottom: 0; }
 
 /* 연관 글 */
-.related { border-top: 1px solid var(--border); }
+.related { border-top: 1px solid var(--color-border); }
 .related-posts li { margin-bottom: .35rem; }
-.related-posts li a { color: var(--text); }
-.related-posts li a:hover { color: var(--accent); }
-.related-posts li small { color: var(--text-muted); }
+.related-posts li a { color: var(--color-text); }
+.related-posts li a:hover { color: var(--color-accent); }
+.related-posts li small { color: var(--color-subtext); }
 
 /* ----------------------------------------------------------------------------
- * 페이지네이션 — 번호식
+ * 페이지네이션 — 번호식 (활성/hover = CTA 그린)
  * ------------------------------------------------------------------------- */
 .pagination {
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -353,28 +394,28 @@ a.sidebar-nav-item:focus {
   min-width: 2.4rem;
   height: 2.4rem;
   padding: 0 .55rem;
-  color: var(--text-muted);
+  color: var(--color-subtext);
   font-weight: 600;
   font-size: .9rem;
-  background-color: var(--bg-elev);
-  border: 1px solid var(--border);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
 }
 a.pagination-item {
-  color: var(--accent);
+  color: var(--color-accent);
   transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .1s ease;
 }
 a.pagination-item:hover {
-  color: #fff;
-  background-color: var(--accent);
-  border-color: var(--accent);
+  color: var(--color-on-dark);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
   text-decoration: none;
 }
 a.pagination-item:active { transform: translateY(1px); }
 .pagination-item.is-current {
-  color: #fff;
-  background-color: var(--accent);
-  border-color: var(--accent);
+  color: var(--color-on-dark);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 .pagination-item.is-disabled {
   opacity: .4;
@@ -389,39 +430,67 @@ a.pagination-item:active { transform: translateY(1px); }
   min-width: 1.6rem;
   height: 2.4rem;
   padding-bottom: .35rem;
-  color: var(--text-muted);
+  color: var(--color-subtext);
+}
+
+/* ----------------------------------------------------------------------------
+ * 버튼 / CTA — 마크업에 .btn/button이 추가될 때를 위한 브랜드 기본형
+ * ------------------------------------------------------------------------- */
+.btn,
+button,
+input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .55rem 1.1rem;
+  color: var(--color-on-dark);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  background-color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.btn:hover,
+button:hover,
+input[type="submit"]:hover {
+  color: var(--color-on-dark);
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  text-decoration: none;
+}
+
+/* ----------------------------------------------------------------------------
+ * 태그 / 뱃지 — 배경 Cloud, 텍스트 Steel Gray, 액센트형은 Circuit Green
+ * ------------------------------------------------------------------------- */
+.tag,
+.badge {
+  display: inline-block;
+  padding: .15rem .6rem;
+  color: var(--color-subtext);
+  font-size: .78rem;
+  font-weight: 600;
+  background-color: var(--color-section);
+  border-radius: 999px;
+}
+.tag--accent,
+.badge--accent {
+  color: var(--color-accent);
+  background-color: var(--color-accent-soft);
 }
 
 /* ----------------------------------------------------------------------------
  * 메시지 / 광고 영역
  * ------------------------------------------------------------------------- */
 .message {
-  color: var(--text-muted);
-  background-color: var(--code-bg);
-  border: 1px solid var(--border);
+  color: var(--color-subtext);
+  background-color: var(--color-section);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
 }
 ins.adsbygoogle { background: transparent; }
-
-/* ----------------------------------------------------------------------------
- * 다크 모드 코드 토큰 가독성 보정 (syntax.css는 라이트 기준)
- * ------------------------------------------------------------------------- */
-@media (prefers-color-scheme: dark) {
-  .highlight, pre, code { color: #D6DCD4; }
-  .c, .c1, .cm, .cs { color: #76857A; }                    /* 주석 */
-  .k, .kc, .kd, .kn, .kp, .kr { color: #7FB0E0; }          /* 키워드 */
-  .kt { color: #5FC8C0; }                                  /* 타입 */
-  .o, .ow { color: #B7C2B6; }                              /* 연산자 */
-  .nt { color: #79B8E8; }                                  /* 태그 */
-  .na { color: #9CCBE8; }                                  /* 속성 */
-  .nb, .bp, .nc, .nn { color: #5FD0A8; }                   /* 빌트인/클래스/네임스페이스 */
-  .nf { color: #C99BE8; }                                  /* 함수 */
-  .nv, .vc, .vg, .vi, .no { color: #8FD9C4; }              /* 변수/상수 */
-  .s, .s1, .s2, .sb, .sc, .sd, .sh, .sx, .se, .si { color: #E69977; } /* 문자열 */
-  .m, .mf, .mh, .mi, .mo, .il { color: #E8B06B; }          /* 숫자 */
-  .ss { color: #E8C85F; }                                  /* 심볼 */
-  .gh, .gu { color: #A6DAAA; }                             /* 헤딩 */
-}
 
 /* ----------------------------------------------------------------------------
  * 모션 — 홈 진입 시 포스트 순차 등장 (접근성 고려)
