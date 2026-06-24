@@ -359,6 +359,37 @@ a.sidebar-nav-item:focus {
 }
 
 /* ----------------------------------------------------------------------------
+ * 언어 필터 토글 (홈) — data-lang 기반 클라이언트 필터
+ * ------------------------------------------------------------------------- */
+.lang-filter {
+  display: flex;
+  gap: .4rem;
+  margin-bottom: 1.5rem;
+}
+.lang-filter-btn {
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  padding: .3rem .85rem;
+  color: var(--color-subtext);
+  background: var(--color-section);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
+}
+.lang-filter-btn:hover { color: var(--color-text); }
+.lang-filter-btn.is-active {
+  color: var(--color-on-dark);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.lang-filter-empty {
+  padding: 1.5rem 0;
+  color: var(--color-subtext);
+}
+
+/* ----------------------------------------------------------------------------
  * 포스트 목록 / 본문
  * ------------------------------------------------------------------------- */
 .page-title,
