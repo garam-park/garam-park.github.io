@@ -8,6 +8,23 @@ title : Home
   <p class="home-intro-desc">K8s·DevOps·AI 운영부터 실서비스까지. 돈과 장애가 걸린 현장에서 나온 기록을 남깁니다.</p>
   <p class="home-intro-links"><a href="/about/">소개 &rarr;</a></p>
 </header>
+
+{% assign featured_posts = site.posts | where_exp: "p", "p.featured" %}
+{% if featured_posts.size > 0 %}
+<section class="featured">
+  <h2 class="featured-title">추천 글</h2>
+  <ul class="featured-list">
+    {% for post in featured_posts limit:5 %}
+    <li class="featured-item">
+      <a class="featured-link" href="{{ post.url }}">
+        <span class="featured-post-title">{{ post.title }}</span>
+        {% if post.description %}<span class="featured-desc">{{ post.description }}</span>{% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
 {% endif %}
 {% include ad.html %}
 <nav class="lang-filter" aria-label="언어 필터">
