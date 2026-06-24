@@ -18,6 +18,10 @@
   {% endif %}
   <!-- Enable responsiveness on mobile devices-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- 모바일 주소창 색상 (라이트/다크) -->
+  <meta name="theme-color" content="#FAFAF7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1611" media="(prefers-color-scheme: dark)">
   
   {% if site.description %}
   <meta name="description" content="{{ site.description}}">
@@ -35,11 +39,15 @@
     {% endif %}
   </title>
 
-  <!-- CSS -->
+  <!-- Font: Pretendard (한글 본문). 코드용 모노는 시스템 스택 사용 -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
+
+  <!-- CSS (modern.css는 마지막에 로드되어 오버라이드한다) -->
   <link rel="stylesheet" href="/public/css/poole.css">
   <link rel="stylesheet" href="/public/css/syntax.css">
   <link rel="stylesheet" href="/public/css/lanyon.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+  <link rel="stylesheet" href="/public/css/modern.css">
 
   <!-- Icons -->
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
