@@ -18,12 +18,13 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Story's G Blog
+title: Story's G Blog — 개발자가 AI/인프라로 사업 굴리는 법
+tagline: 온프렘·K8s·DevOps 실측 기록
 email: gr.park@storyg.co
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  멈춰있던 내 사업을 AI/인프라로 다시 굴리는 개발 일지. 온프렘·K8s·DevOps 실측 기록.
+# 기존 SEO 키워드 자산 유지 (+ 새 니치 키워드)
+keywords: "Docker, MariaDB, Kubernetes, K8s, DevOps, 온프렘, 인프라, AI, 개발 일지, 사업"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://garam-park.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
