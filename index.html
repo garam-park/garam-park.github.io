@@ -45,6 +45,11 @@ title : Home
     </h1>
 
     <span class="post-date">{{ post.date | date_to_string }}</span>
+    {% if post.image %}
+    <a class="post-thumb-link" href="{{ post.url }}" aria-hidden="true" tabindex="-1">
+      <img class="post-thumb" src="{{ post.image }}" alt="" loading="lazy">
+    </a>
+    {% endif %}
     {{ post.excerpt }}
   </div>
   {% endfor %}

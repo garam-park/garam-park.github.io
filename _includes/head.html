@@ -15,6 +15,7 @@
   
   {% if page.image %}
     <meta property="og:image" content="{{site.url}}{{page.image}}">
+    <meta name="twitter:image" content="{{site.url}}{{page.image}}">
   {% endif %}
   <!-- Enable responsiveness on mobile devices-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -28,7 +29,35 @@
   {% elsif site.description %}
   <meta name="description" content="{{ site.description }}">
   {% endif %}
-  
+
+  <!-- SEO: 공통 메타 (페이지 우선, 없으면 사이트 기본값) -->
+  {% if page.title %}
+    {% capture seo_title %}{{ page.title }} &middot; {{ site.title }}{% endcapture %}
+  {% else %}
+    {% assign seo_title = site.title %}
+  {% endif %}
+  {% if page.tags %}
+    {% assign seo_desc = page.tags | join: ", " %}
+  {% else %}
+    {% assign seo_desc = site.description | strip_newlines | strip %}
+  {% endif %}
+
+  {% if site.keywords or page.tags %}
+  <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' }}, {% endif %}{{ site.keywords }}">
+  {% endif %}
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ seo_title }}">
+  <meta property="og:description" content="{{ seo_desc }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ seo_title }}">
+  <meta name="twitter:description" content="{{ seo_desc }}">
+
   <title>
     {% if page.title %}
       {{ page.title }} &middot; {{ site.title }}
