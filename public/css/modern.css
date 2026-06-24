@@ -448,6 +448,44 @@ a.sidebar-nav-item:focus {
 }
 
 /* ----------------------------------------------------------------------------
+ * About 페이지 — 히어로 배너 + 주제 칩
+ * ------------------------------------------------------------------------- */
+.about-hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  margin: .5rem 0 2rem;
+}
+.about-topics {
+  list-style: none;
+  margin: 1.5rem 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+}
+.about-topics li {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0;
+  padding: .35rem .9rem .35rem .35rem;
+  background: var(--color-section);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.about-topics img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+/* ----------------------------------------------------------------------------
  * 포스트 목록 / 본문
  * ------------------------------------------------------------------------- */
 .page-title,
