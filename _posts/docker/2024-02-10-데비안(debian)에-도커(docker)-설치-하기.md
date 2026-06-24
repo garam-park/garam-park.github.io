@@ -5,6 +5,8 @@ date: 2024-02-10 04:43:47 +0900
 permalink: /docker/데비안(debian)에-도커(docker)-설치-하기
 categories: docker
 tags: docker install
+lang: ko
+description: "데비안(Debian)에 Docker를 설치하는 방법을 root 사용자 기준으로 단계별로 정리합니다. 필요한 패키지 설치부터 Docker 엔진 설치까지 따라 할 수 있습니다."
 ---
 
 root 사용자로 진행한다는 전제입니다.

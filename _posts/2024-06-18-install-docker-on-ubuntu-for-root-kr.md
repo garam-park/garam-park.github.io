@@ -6,6 +6,8 @@ permalink: /20240618/en/install-docker-on-ubuntu-for-root
 categories: web api
 tags: docker, ubuntu
 excerpt: (for root) Let's learn how to install Docker on Ubuntu.
+lang: en
+description: "A step-by-step guide to installing Docker on Ubuntu as the root user, from adding the official GPG key and repository to enabling Docker to start automatically on boot."
 ---
 
 ## **Table of Contents**

@@ -6,6 +6,8 @@ permalink: /en/mariadb/2024-06-14-replication-on-mariadb
 categories: mariadb
 tags: mariadb, replication, slave, master
 excerpt: Let's learn about MariaDB replication.
+lang: en
+description: "Learn how to configure master-slave replication on MariaDB 11: what replication is, its benefits, and the step-by-step setup for distributing data across servers."
 ---
 
 ## What is MariaDB Replication?

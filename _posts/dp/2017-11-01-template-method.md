@@ -6,6 +6,8 @@ date: 2017-11-01 00:43:50 +0900
 categories: design pattern
 tags : design-pattern, 디자인패턴, 디자인 패턴, design, pattern,design pattern,template method , template method pattern,gof pattern, gof 패턴
 excerpt : 많은 경우에 일정한 절차를 가진 프로그램을 하는 경우가 많이 있습니다. 안드로이드 개발에서는 액티비티(Activity) 생명주기(Life Cycle)가 있고 VueJs 개발에서는 인스턴스 생명주기, iOS에서 View 생명주기 등이 템플릿 메소드입니다. 
+lang: ko
+description: "템플릿 메소드 패턴(Template Method)을 설명합니다. 절차는 상위에서 정의하고 구현은 하위 클래스에 위임하는 방식으로, 안드로이드·Vue·iOS 생명주기 예시로 이해합니다."
 ---
 
 ### **탬플릿 메소드 패턴 요약 설명**

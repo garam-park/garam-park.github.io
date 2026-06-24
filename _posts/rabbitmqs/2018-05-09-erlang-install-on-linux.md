@@ -6,6 +6,8 @@ permalink : /rabbitmqs/erlang-install-on-linux
 categories: rabbitmq, erlang
 tags :  erlang, install, ubuntu, erlang install, erlang ubuntu, erlang install on ubuntu
 excerpt : Erlang 을 우분투에 설치하려면...
+lang: ko
+description: "RabbitMQ 실행에 필요한 Erlang을 우분투에 설치하는 방법. Erlang Solutions 저장소를 추가하고 설치하는 과정을 단계별로 정리합니다."
 ---
 # **우분투에 Erlang 설치하기**
 

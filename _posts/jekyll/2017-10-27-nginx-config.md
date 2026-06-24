@@ -6,6 +6,8 @@ permalink : /jekylls/nginx-config
 categories: jekylls
 tags : jekyll,Nginx, jekyll nginx-config
 excerpt : Nginx에서 Vue-router를 호스팅하기 위해서 다음의 코드 조각을 사용합니다.
+lang: ko
+description: "Jekyll로 빌드한 정적 사이트(_site)를 Nginx로 호스팅하기 위한 server 블록 설정 예시를 정리합니다."
 ---
 
 ## **jekyll 용 Nginx 설정**

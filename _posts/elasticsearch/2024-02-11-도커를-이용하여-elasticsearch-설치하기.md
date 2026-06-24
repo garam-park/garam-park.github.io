@@ -5,6 +5,8 @@ date: 2024-02-11 15:53:25 +0900
 permalink: /elasticsearch/01-도커를-이용하여-elasticsearch-설치하기
 categories: elasticsearch
 tags: docker elasticsearch
+lang: ko
+description: "Docker Compose로 Elasticsearch를 설치하는 방법을 정리합니다. 공식 가이드대로 안 될 때 참고할 수 있는 실제 동작하는 compose yaml 예시를 담았습니다."
 ---
 
 > docker compose 를 이용하여 해봤는데 잊어버릴까바 기록하기 위해서 작성한다.

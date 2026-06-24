@@ -6,6 +6,8 @@ permalink : /mariadb/install-mariadb-on-unbuntu
 categories: database, db, mariadb
 tags : install, mariadb
 excerpt : 마리아디비를 우분투에 설치해보자
+lang: ko
+description: "우분투에 MariaDB를 설치하는 방법. apt로 서버를 설치하고 보안 초기 설정까지 진행하는 과정을 정리합니다."
 ---
 
 ## 설치

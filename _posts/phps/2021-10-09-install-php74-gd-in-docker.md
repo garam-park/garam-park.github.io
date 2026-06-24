@@ -6,6 +6,8 @@ permalink: /phps/install-php74-gd-in-docker
 categories: php docker
 tags: php docker install gd extension
 excerpt: --with-jpeg --with-freetype
+lang: ko
+description: "Docker의 PHP 7.4 환경에서 GD 확장을 설치하는 방법. --with-jpeg-dir 대신 --with-jpeg, --with-freetype-dir 대신 --with-freetype를 써야 하는 이유와 해결 과정을 정리합니다."
 ---
 
 ## 배경

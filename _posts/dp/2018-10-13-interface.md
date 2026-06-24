@@ -5,6 +5,8 @@ date:   2018-10-13 04:09:10 +0900
 permalink : /design-patterns/인터페이스-개념
 categories: 디자인 패턴, 컴퓨터 사이언스
 tags : design pattern, computer science, cs, dp, interface
+lang: ko
+description: "객체지향의 interface 개념을 선언과 구현의 분리 관점에서 설명합니다. 인터페이스가 없는 언어의 대안까지, 디자인 패턴 이해의 기초를 다집니다."
 ---
 
 자바나 C#, PHP, Typescript 등에서 에는 interface를 제공하지만 interface 를 제공하지 않는 언어도 많습니다. interface 가 없는 언어는 순수 추상 클래스 등 인터페이스를 대신하는 기능을 제공합니다. 그렇다면 이제 인터페이스에 대해서 이야기해보죠.

@@ -6,6 +6,8 @@ date: 2017-10-25 07:49:24 +0900
 categories: design pattern
 tags : laravel, laravel install, nginx, install laravel, laravel install with nginx, laravel inatll with php7, php7, 라라벨설치, 라라벨 설치
 excerpt : PHP7에서 놀라운 성능계선이 있었기 때문에 PHP5 버전을 사용하기 보다는 PHP7버전을 사용하는 것이 좋고 보안적으로도 좋아졌다고 합니다. 이 글에서는 라라벨을 PHP7과 nginx로 서버설정하는 방법에 대해서 설명합니다.
+lang: ko
+description: "우분투 16에 PHP 7.0과 Nginx로 라라벨(Laravel) 개발 환경을 구축하는 방법. Composer 설치부터 서버 설정까지 단계별로 안내합니다."
 ---
 
 ## **시작하기**

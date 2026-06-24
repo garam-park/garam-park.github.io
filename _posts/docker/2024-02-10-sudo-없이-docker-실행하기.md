@@ -5,6 +5,8 @@ date: 2024-02-10 04:22:57 +0900
 permalink: /docker/sudo-없이-docker-실행하기
 categories: docker
 tags: docker sudo
+lang: ko
+description: "Docker 명령을 sudo 없이 실행하는 방법. docker 그룹을 만들고 사용자를 추가해 권한을 부여하는 절차를 정리합니다."
 ---
 
 ### 도커그룹생성

@@ -5,6 +5,8 @@ permalink: /linuxs/ubuntu-adduser-sudo-user
 date:   2017-10-20 05:16:56 +0900
 categories: linux adduser useradd
 excerpt: 위의 명령어는 'username' 라는 사용자를 만드는 명령어이다. 명령어를 실행하면 비밀번호(password)와 사용자의 정보를 입력하게 되어있다. 알맞게 작성하는 방법이외에 enter 를 눌러서 넘어갈 수 있다.
+lang: ko
+description: "우분투에서 root만 있는 상황에 sudo 권한을 가진 새 사용자를 만드는 방법. adduser와 sudo 그룹 추가 과정을 단계별로 정리합니다."
 ---
 
 ## **1.소개**

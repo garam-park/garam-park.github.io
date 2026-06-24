@@ -5,6 +5,8 @@ date: 2022-07-31 19:10:26 +0900
 permalink: /etcs/
 categories: telegram 
 tags: tblib dockerfile
+lang: ko
+description: "JavaScript에서 쓰기 위한 Telegram tdlib를 빌드하는 Dockerfile 예시. Ubuntu 기반으로 필요한 빌드 의존성을 설치해 tdlib를 컴파일하는 설정을 정리합니다."
 ---
 
 ``` dockerfile

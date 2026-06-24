@@ -6,6 +6,8 @@ date:   2018-02-11 21:49:02 +09:00
 categories: python3 covariance
 tags :  python
 excerpt : 공분산의 개념을 알아보자
+lang: ko
+description: "공분산(Covariance)의 개념을 파이썬 코드로 처음부터 직접 구현하며 이해합니다. 평균에서 출발해 공분산을 계산하는 과정을 단계별로 따라갑니다."
 ---
 
 # **공분산**

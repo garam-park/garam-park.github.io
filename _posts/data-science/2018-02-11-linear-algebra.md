@@ -6,6 +6,8 @@ date:   2018-02-11 14:33:51 +09:00
 categories: python3
 tags :  python
 excerpt : hello data science
+lang: ko
+description: "데이터 과학을 위한 선형대수 기초. 벡터의 개념과 벡터 합 등 핵심 연산을 파이썬 코드와 함께 정리합니다."
 ---
 
 ## 선형대수

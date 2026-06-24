@@ -6,6 +6,8 @@ permalink: /mariadb/2024-06-14-replication-on-mariadb
 categories: mariadb
 tags: mariadb, replication, slave, master
 excerpt: MariaDB Replication에 대해 알아보겠습니다.
+lang: ko
+description: "MariaDB 11에서 마스터-슬레이브 복제(Replication)를 구성하는 방법을 정리합니다. 복제의 개념과 이점부터 실제 설정 절차까지 단계별로 다룹니다."
 ---
 
 ## MariaDB 복제(Replication)란?
