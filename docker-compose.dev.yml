@@ -1,0 +1,26 @@
+# 로컬 개발용: 소스를 마운트해 jekyll serve로 라이브 리로드한다.
+# 글/레이아웃을 고치면 즉시 반영되며 이미지 재빌드가 필요 없다.
+#
+#   docker compose -f docker-compose.dev.yml up --build
+#   http://localhost:4000
+#
+# (운영과 동일하게 nginx로 서빙해 보려면 docker-compose.yml 사용)
+services:
+  jekyll:
+    build:
+      context: .
+      target: builder   # Dockerfile의 ruby 빌드 스테이지(gem 설치 완료)를 재사용
+    working_dir: /srv/jekyll
+    # livereload 기본 포트(35729)는 다른 개발 도구와 자주 충돌해 35730을 쓴다.
+    command: >
+      bundle exec jekyll serve
+      --host 0.0.0.0
+      --watch
+      --force_polling
+      --livereload
+      --livereload-port 35730
+    volumes:
+      - .:/srv/jekyll   # 소스 실시간 반영 (gem은 이미지의 /usr/local/bundle 사용)
+    ports:
+      - "4000:4000"     # jekyll 개발 서버
+      - "35730:35730"   # livereload

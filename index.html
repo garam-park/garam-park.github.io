@@ -18,19 +18,47 @@ title : Home
   {% endfor %}
 </div>
 {% include ad.html %}
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="/page{{paginator.next_page}}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
+<nav class="pagination" aria-label="페이지 네비게이션">
+  {% comment %} 이전(최신 방향) {% endcomment %}
   {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-      <a class="pagination-item newer" href="/">Newer</a>
+    {% if paginator.previous_page == 1 %}
+      <a class="pagination-item nav-prev" href="/" rel="prev" aria-label="이전 페이지">‹</a>
     {% else %}
-      <a class="pagination-item newer" href="/page{{paginator.previous_page}}">Newer</a>
+      <a class="pagination-item nav-prev" href="/page{{ paginator.previous_page }}" rel="prev" aria-label="이전 페이지">‹</a>
     {% endif %}
   {% else %}
-    <span class="pagination-item newer">Newer</span>
+    <span class="pagination-item nav-prev is-disabled" aria-hidden="true">‹</span>
   {% endif %}
-</div>
+
+  {% comment %} 번호: 1 … (현재±1) … 마지막 {% endcomment %}
+  {% assign cur = paginator.page %}
+  {% assign total = paginator.total_pages %}
+  {% assign lo = cur | minus: 1 %}
+  {% assign hi = cur | plus: 1 %}
+  {% assign gap = false %}
+  {% for page in (1..total) %}
+    {% assign show = false %}
+    {% if page == 1 or page == total or page == cur %}{% assign show = true %}{% endif %}
+    {% if page >= lo and page <= hi %}{% assign show = true %}{% endif %}
+    {% if show %}
+      {% if page == cur %}
+        <span class="pagination-item is-current" aria-current="page">{{ page }}</span>
+      {% elsif page == 1 %}
+        <a class="pagination-item" href="/">{{ page }}</a>
+      {% else %}
+        <a class="pagination-item" href="/page{{ page }}">{{ page }}</a>
+      {% endif %}
+      {% assign gap = true %}
+    {% elsif gap %}
+      <span class="pagination-ellipsis" aria-hidden="true">…</span>
+      {% assign gap = false %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} 다음(이전글 방향) {% endcomment %}
+  {% if paginator.next_page %}
+    <a class="pagination-item nav-next" href="/page{{ paginator.next_page }}" rel="next" aria-label="다음 페이지">›</a>
+  {% else %}
+    <span class="pagination-item nav-next is-disabled" aria-hidden="true">›</span>
+  {% endif %}
+</nav>

@@ -1,0 +1,7 @@
+services:
+  blog:
+    build: .
+    image: ghcr.io/garam-park/blog:latest
+    ports:
+      - "9090:80"
+    restart: unless-stopped

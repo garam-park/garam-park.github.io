@@ -1,0 +1,442 @@
+/*
+ * modern.css — 헌터 그린 모던 리디자인 오버라이드 레이어
+ *
+ * poole.css / lanyon.css / syntax.css 다음에 마지막으로 로드되어
+ * 색·타이포·여백·컴포넌트를 현대적으로 덮는다. 마크업은 변경하지 않는다.
+ * 라이트/다크는 prefers-color-scheme로 전환한다.
+ */
+
+/* ----------------------------------------------------------------------------
+ * 팔레트 (라이트)
+ * ------------------------------------------------------------------------- */
+:root {
+  --accent:        #2C5F2D;   /* 헌터 그린 */
+  --accent-strong: #234D24;
+  --accent-soft:   rgba(44, 95, 45, .10);
+  --brand-surface:   #1E3A28; /* 사이드바 딥 그린 */
+  --brand-surface-2: #15291C;
+
+  --bg:        #FAFAF7;       /* 따뜻한 페이퍼 */
+  --bg-elev:   #FFFFFF;
+  --text:      #1F211E;
+  --heading:   #16241A;       /* 딥 그린-블랙 */
+  --text-muted:#6B6F69;
+  --border:    #E6E7E0;
+
+  --code-bg:   #F3F4EE;
+  --code-text: #2C5F2D;
+
+  --selection: rgba(44, 95, 45, .16);
+  --shadow:    0 1px 2px rgba(20, 40, 28, .04), 0 10px 30px -16px rgba(20, 40, 28, .18);
+
+  --mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, "Cascadia Code", "Courier New", monospace;
+  --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+/* ----------------------------------------------------------------------------
+ * 팔레트 (다크) — 시스템 외관 연동
+ * ------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent:        #84C088;
+    --accent-strong: #A6DAAA;
+    --accent-soft:   rgba(132, 192, 136, .14);
+    --brand-surface:   #13241A;
+    --brand-surface-2: #0C1813;
+
+    --bg:        #0E1611;
+    --bg-elev:   #16211A;
+    --text:      #E3E7E1;
+    --heading:   #F1F4EF;
+    --text-muted:#93A192;
+    --border:    #233029;
+
+    --code-bg:   #111B15;
+    --code-text: #A6DAAA;
+
+    --selection: rgba(132, 192, 136, .22);
+    --shadow:    0 1px 2px rgba(0, 0, 0, .35), 0 12px 34px -16px rgba(0, 0, 0, .6);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+ * 기반 타이포그래피
+ * ------------------------------------------------------------------------- */
+html {
+  font-size: 17px;
+  -webkit-text-size-adjust: 100%;
+}
+@media (min-width: 38rem) {
+  html { font-size: 18px; }
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--text);
+  background-color: var(--bg);
+  line-height: 1.75;
+  letter-spacing: -0.003em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "tnum";
+  transition: background-color .3s ease, color .3s ease;
+}
+
+::selection { background: var(--selection); }
+
+p { margin-bottom: 1.15rem; }
+p, li { overflow-wrap: break-word; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--sans);
+  color: var(--heading);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h1, h2 { font-weight: 800; }
+h3, h4, h5, h6 { font-weight: 700; }
+h2 { margin-top: 2.4rem; }
+h3 { margin-top: 1.9rem; }
+
+strong { color: var(--heading); font-weight: 700; }
+
+/* 링크 — 헌터 그린, 부드러운 밑줄 애니메이션 */
+a,
+.container a,
+.post-title a,
+.related-posts li a:hover {
+  color: var(--accent);
+}
+.content a {
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: background-size .25s ease, color .2s ease;
+  padding-bottom: 1px;
+}
+.content a:hover,
+.content a:focus {
+  color: var(--accent-strong);
+  background-size: 100% 2px;
+  text-decoration: none;
+}
+/* 제목·연관글·페이지네이션 링크는 본문 밑줄 애니메이션 제외 */
+.post-title a,
+.related-posts a,
+.pagination-item {
+  background-image: none;
+  padding-bottom: 0;
+}
+
+/* 구분선 */
+hr {
+  margin: 2.6rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* 인용 */
+blockquote {
+  margin: 1.6rem 0;
+  padding: .55rem 1.3rem;
+  color: var(--text-muted);
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+@media (min-width: 30rem) {
+  blockquote { padding-right: 1.3rem; }
+}
+
+/* 이미지 */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.4rem 0;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* 표 */
+table {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+td, th { border: 0; border-bottom: 1px solid var(--border); }
+th { background: var(--accent-soft); color: var(--heading); font-weight: 700; text-align: left; }
+tbody tr:nth-child(odd) td,
+tbody tr:nth-child(odd) th { background-color: var(--code-bg); }
+tbody tr:last-child td { border-bottom: 0; }
+
+/* ----------------------------------------------------------------------------
+ * 코드
+ * ------------------------------------------------------------------------- */
+code, pre, .highlight { font-family: var(--mono); }
+
+code {
+  padding: .14em .42em;
+  font-size: .86em;
+  color: var(--code-text);
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+pre {
+  margin: 1.4rem 0;
+  padding: 1.1rem 1.25rem;
+  font-size: .82rem;
+  line-height: 1.6;
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font-size: 100%;
+}
+.highlight { margin: 1.4rem 0; border-radius: 12px; }
+.highlight pre { margin: 0; }
+
+/* ----------------------------------------------------------------------------
+ * 레이아웃 — 컨테이너 / 마스트헤드
+ * ------------------------------------------------------------------------- */
+@media (min-width: 56rem) {
+  .container { max-width: 40rem; }
+}
+
+.masthead {
+  padding-top: 2rem;
+  padding-bottom: 1.4rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.masthead-title {
+  color: var(--heading);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.masthead-title a { color: var(--heading); }
+.masthead-title a:hover { color: var(--accent); text-decoration: none; }
+.masthead-title small {
+  display: inline-block;
+  margin-left: .1rem;
+  color: var(--text-muted);
+  font-size: 64%;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+/* 좌측 헌터 그린 악센트 바 (데스크톱) */
+@media (min-width: 48rem) {
+  .masthead-title {
+    padding-left: .95rem;
+    border-left: 4px solid var(--accent);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+ * 사이드바 (딥 그린 — 라이트/다크 공통)
+ * ------------------------------------------------------------------------- */
+.sidebar {
+  font-family: var(--sans);
+  color: rgba(255, 255, 255, .66);
+  background-color: var(--brand-surface);
+  background-image: linear-gradient(180deg, var(--brand-surface) 0%, var(--brand-surface-2) 100%);
+}
+.sidebar a { color: #fff; }
+.sidebar-nav-item.active,
+a.sidebar-nav-item:hover,
+a.sidebar-nav-item:focus {
+  background-color: rgba(255, 255, 255, .08);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+/* 토글 버튼 */
+.sidebar-toggle {
+  color: var(--accent);
+  background-color: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+.sidebar-toggle:active,
+#sidebar-checkbox:checked ~ .wrap .sidebar-toggle {
+  color: #fff;
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ----------------------------------------------------------------------------
+ * 포스트 목록 / 본문
+ * ------------------------------------------------------------------------- */
+.page-title,
+.post-title,
+.post-title a { color: var(--heading); }
+
+.post-title {
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.18;
+}
+.posts .post-title { font-size: 1.62rem; }
+.post-title a { transition: color .2s ease; }
+.posts .post-title a:hover { color: var(--accent); text-decoration: none; }
+
+/* 날짜 — 대문자 트래킹 + 헌터 그린 마커 */
+.post-date {
+  margin-top: 0;
+  margin-bottom: 1.1rem;
+  color: var(--text-muted);
+  font-size: .74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.post-date::before {
+  content: "";
+  display: inline-block;
+  width: .5rem;
+  height: .5rem;
+  margin-right: .55rem;
+  vertical-align: baseline;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+.posts .post {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.posts .post:last-child { border-bottom: 0; }
+
+/* 연관 글 */
+.related { border-top: 1px solid var(--border); }
+.related-posts li { margin-bottom: .35rem; }
+.related-posts li a { color: var(--text); }
+.related-posts li a:hover { color: var(--accent); }
+.related-posts li small { color: var(--text-muted); }
+
+/* ----------------------------------------------------------------------------
+ * 페이지네이션 — 번호식
+ * ------------------------------------------------------------------------- */
+.pagination {
+  font-family: var(--sans);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: .4rem;
+  margin: 3.5rem 0 1rem;
+}
+.pagination-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;       /* poole/lanyon의 width:50% · float:left 무력화 */
+  float: none;
+  width: auto;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 .55rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: .9rem;
+  background-color: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+a.pagination-item {
+  color: var(--accent);
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .1s ease;
+}
+a.pagination-item:hover {
+  color: #fff;
+  background-color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+a.pagination-item:active { transform: translateY(1px); }
+.pagination-item.is-current {
+  color: #fff;
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+.pagination-item.is-disabled {
+  opacity: .4;
+  border-style: dashed;
+}
+.pagination-item.nav-prev,
+.pagination-item.nav-next { font-size: 1.15rem; line-height: 1; }
+.pagination-ellipsis {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 2.4rem;
+  padding-bottom: .35rem;
+  color: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------------------
+ * 메시지 / 광고 영역
+ * ------------------------------------------------------------------------- */
+.message {
+  color: var(--text-muted);
+  background-color: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+ins.adsbygoogle { background: transparent; }
+
+/* ----------------------------------------------------------------------------
+ * 다크 모드 코드 토큰 가독성 보정 (syntax.css는 라이트 기준)
+ * ------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  .highlight, pre, code { color: #D6DCD4; }
+  .c, .c1, .cm, .cs { color: #76857A; }                    /* 주석 */
+  .k, .kc, .kd, .kn, .kp, .kr { color: #7FB0E0; }          /* 키워드 */
+  .kt { color: #5FC8C0; }                                  /* 타입 */
+  .o, .ow { color: #B7C2B6; }                              /* 연산자 */
+  .nt { color: #79B8E8; }                                  /* 태그 */
+  .na { color: #9CCBE8; }                                  /* 속성 */
+  .nb, .bp, .nc, .nn { color: #5FD0A8; }                   /* 빌트인/클래스/네임스페이스 */
+  .nf { color: #C99BE8; }                                  /* 함수 */
+  .nv, .vc, .vg, .vi, .no { color: #8FD9C4; }              /* 변수/상수 */
+  .s, .s1, .s2, .sb, .sc, .sd, .sh, .sx, .se, .si { color: #E69977; } /* 문자열 */
+  .m, .mf, .mh, .mi, .mo, .il { color: #E8B06B; }          /* 숫자 */
+  .ss { color: #E8C85F; }                                  /* 심볼 */
+  .gh, .gu { color: #A6DAAA; }                             /* 헤딩 */
+}
+
+/* ----------------------------------------------------------------------------
+ * 모션 — 홈 진입 시 포스트 순차 등장 (접근성 고려)
+ * ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .posts .post {
+    animation: post-rise .6s cubic-bezier(.22, .61, .36, 1) both;
+  }
+  .posts .post:nth-child(2) { animation-delay: .07s; }
+  .posts .post:nth-child(3) { animation-delay: .14s; }
+  .posts .post:nth-child(4) { animation-delay: .21s; }
+  .posts .post:nth-child(5) { animation-delay: .28s; }
+
+  @keyframes post-rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
