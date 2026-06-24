@@ -15,7 +15,7 @@ description: "AI와 인프라로 직접 사업을 만들고 굴리는 개발자�
 
 ## 연락처
 
-- LinkedIn: [{{LINKEDIN_URL}}]({{LINKEDIN_URL}})
+- LinkedIn: [linkedin.com/in/garam-park](https://www.linkedin.com/in/garam-park-7ab39793/)
 - GitHub: [github.com/garam-park](https://github.com/garam-park)
 - YouTube: [@story.g](https://www.youtube.com/@story.g)
 - Email: [garam-park@naver.com](mailto:garam-park@naver.com)
