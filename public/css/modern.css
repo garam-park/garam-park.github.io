@@ -305,8 +305,11 @@ a.sidebar-nav-item:focus {
 /* 푸터(저작권) — 다크 크롬 위 보조 텍스트 */
 .sidebar-item p { color: rgba(255, 255, 255, .55); }
 
-/* 토글 버튼 — flat, 그림자 제거 */
+/* 토글 버튼 — flat, 그림자 제거 + masthead 제목 라인과 세로 중앙 정렬 */
 .sidebar-toggle {
+  /* 제목(h3) 세로 중앙(≈padding-top 2rem + 제목높이 절반)에서 버튼높이 절반을 뺀 위치.
+     모든 값이 rem 기반이라 모바일·데스크톱 모두 같은 비율로 맞는다. */
+  top: 1.9rem;
   color: var(--color-accent);
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
