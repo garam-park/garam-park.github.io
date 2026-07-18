@@ -222,6 +222,19 @@ pre code {
 }
 .highlight pre { margin: 0; border: 0; }
 
+/* Mermaid 다이어그램 — 코드블록 스타일을 제거하고 본문 폭에 맞춘다. */
+pre.mermaid {
+  padding: 1rem 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  text-align: center;
+}
+pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
 /*
  * 신택스 토큰 — 코드블록이 라이트/다크 모두에서 다크 배경이므로
  * 밝은 글자 기준 팔레트를 항상 적용한다(과거 dark-only 블록을 승격).

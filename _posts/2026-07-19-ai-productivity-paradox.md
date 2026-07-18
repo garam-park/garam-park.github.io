@@ -6,9 +6,13 @@ permalink: /20260719/ai-productivity-paradox
 categories: ai productivity organization
 tags: AI, 생산성, 조직, 업무 프로세스, 자동화, 개발자 생산성
 lang: ko
+image: /images/20260719_1.png
+mermaid: true
 description: "AI가 개인의 작업 속도를 높여도 조직 성과가 곧바로 개선되지 않는 이유를 연구 사례와 함께 살펴보고, 검증·의사결정·운영 병목을 줄이는 실무 해법과 30일 실험을 제안합니다."
 excerpt: "AI는 생성을 빠르게 했지만 검토와 판단은 같은 속도로 빨라지지 않았습니다. 개인의 속도를 조직의 성과로 바꾸기 위해 업무 흐름을 어떻게 다시 설계해야 하는지 살펴봅니다."
 ---
+
+![AI가 빠르게 산출물을 생성하지만 검토 단계에 문서와 코드가 쌓여 새로운 병목이 생기는 모습을 표현한 일러스트](/images/20260719_1.png){:style="width:100%"}
 
 ChatGPT로 문서 초안을 만들고, 코딩 도구로 반복 코드를 작성하고, 회의 내용을 몇 초 만에 요약합니다. 분명 예전보다 빠릅니다. 그런데 이상합니다. 개인은 빨라졌다고 느끼는데 프로젝트 완료일은 크게 당겨지지 않고, 의사결정은 여전히 늦으며, 누군가는 더 많은 문서와 코드를 검토하느라 바쁩니다.
 
@@ -60,7 +64,7 @@ AI 도입 전에는 초안을 만들거나 구현하는 과정이 느렸습니�
 
 ```mermaid
 flowchart LR
-    A[기획] --> B[<병목><br/>작성·구현] --> C[검토] --> D[승인] --> E[실행]
+    A[기획] --> B[병목<br/>작성·구현] --> C[검토] --> D[승인] --> E[실행]
     classDef bottleneck fill:#ffd6d6,stroke:#c00,stroke-width:3px,color:#000
     class B bottleneck
 ```
@@ -69,7 +73,7 @@ AI 도입 후에는 생성이 빨라지고 산출량이 늘어납니다.
 
 ```mermaid
 flowchart LR
-    A[기획] --> B[AI 생성 증가<br/>속도 향상 구간] --> C[<병목><br/>검증] --> D[판단] --> E[조율] --> F[승인] --> G[실행]
+    A[기획] --> B[AI 생성 증가<br/>속도 향상 구간] --> C[병목<br/>검토] --> D[승인] --> E[실행]
     classDef bottleneck fill:#ffd6d6,stroke:#c00,stroke-width:3px,color:#000
     class C bottleneck
 ```
