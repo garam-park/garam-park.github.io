@@ -73,7 +73,7 @@ AI 도입 후에는 생성이 빨라지고 산출량이 늘어납니다.
 
 ```mermaid
 flowchart LR
-    A[기획] --> B[AI 생성 증가<br/>속도 향상 구간] --> C[병목<br/>검토] --> D[승인] --> E[실행]
+    A[기획] --> B[작성·구현] --> C[병목<br/>검토] --> D[승인] --> E[실행]
     classDef bottleneck fill:#ffd6d6,stroke:#c00,stroke-width:3px,color:#000
     class C bottleneck
 ```
