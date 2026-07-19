@@ -1,6 +1,6 @@
 ---
 layout: post_with_ad
-title: "The AI Productivity Paradox: Individuals Got Faster, So Why Haven't Organizations?"
+title: "The AI Productivity Paradox: Individuals Got Faster, So Why Haven't Organizations Kept Up?"
 date: 2026-07-19 00:00:00 +0900
 permalink: /en/20260719/ai-productivity-paradox
 categories: ai productivity organization
@@ -34,9 +34,9 @@ The first thing AI reduces is the time an individual spends on a task.
 - Formatting emails and reports
 - Exploring multiple ideas quickly
 
-Research has demonstrated these effects. An NBER study analyzed 5,179 customer support agents using a generative AI assistant. The number of issues resolved per hour increased by 14% on average. The improvement was especially large—34%—among novice and lower-skilled agents, while the impact on experienced agents was small. ([NBER study](https://www.nber.org/papers/w31161))
+Research has demonstrated these effects. An NBER study analyzed 5,179 customer support agents who used a generative AI assistant. The number of issues resolved per hour increased by 14% on average. The improvement was especially large—34%—among novice and lower-skilled agents, while the impact on experienced agents was small. ([NBER study](https://www.nber.org/papers/w31161))
 
-The takeaway is clear: AI can make people work faster. But the effect varies by task and level of expertise.
+The takeaway is clear: AI can help people work faster. But the effect varies by task and level of expertise.
 
 More importantly, organizational productivity is not the sum of individual working hours.
 
@@ -75,11 +75,11 @@ flowchart TB
     class I value
 ```
 
-If AI only accelerates `writing and implementation`, the whole system will not speed up by the same amount. If the downstream stages remain unchanged, the bottleneck has not disappeared. It has only moved.
+If AI only accelerates `writing and implementation`, the whole system will not speed up at the same rate. If the downstream stages remain unchanged, the bottleneck has not disappeared. It has only moved.
 
 Think of a factory. If the packaging machine becomes ten times faster while inspection and shipping remain unchanged, output will not increase tenfold. Packaged goods will simply pile up in front of the inspection station.
 
-In an office, those goods are documents, code, plans, analyses, images, and ideas. The more deliverables AI produces, the more people must read, choose, verify, and agree on.
+In an office, those goods are documents, code, plans, analyses, images, and ideas. The more deliverables AI produces, the more people must read, select, verify, and agree on.
 
 ## 2. AI Did Not Remove the Bottleneck. It Moved It
 
@@ -141,7 +141,7 @@ Having more candidates is useful. But unless the ability to select and verify th
 
 ### The Quality Bottleneck: Can We Trust It?
 
-AI can be fluent even when it is wrong, which makes review more difficult. Reviewers must separate whether a sentence or a piece of code looks convincing from whether it is actually correct.
+AI can sound fluent even when it is wrong, which makes review more difficult. Reviewers must distinguish whether a sentence or a piece of code looks convincing from whether it is actually correct.
 
 ```text
 "AI organized this. Please check it."
@@ -169,11 +169,11 @@ AI is strong at general knowledge and common patterns. But it does not know an o
 - Which approaches have already been tried and discarded
 - Which undocumented constraints must still be respected
 
-Without this context, AI produces an answer that is plausible on average. It may not be an answer we can use directly in our work. Someone must put the context back in and substantially revise the result.
+Without this context, AI produces an answer that sounds plausible on average. It may not be an answer we can use directly in our work. Someone must put the context back in and substantially revise the result.
 
 ### The Decision Bottleneck: What Should We Reject?
 
-AI makes it easy to expand the set of options: 20 marketing taglines, 10 feature ideas, or three implementation approaches.
+AI makes it easy to expand the set of options: 20 marketing taglines, 10 feature ideas, or 3 implementation approaches.
 
 The hard part is choosing. We still need to decide what is good, what to discard, and what to do first. In the AI era, the scarce resource is not ideas but **explicit decision criteria**.
 
@@ -191,7 +191,7 @@ The work did not disappear. It moved downstream.
 
 ## 4. What Should Organizations Change?
 
-Changing the tool is not enough. Individual work habits, team operations, and the system used for verification all need to change together.
+Changing the tool is not enough. Individual work habits, team operations, and the verification system all need to change together.
 
 The 2025 DORA report also treats AI less as a standalone productivity tool and more as an amplifier of an organization's existing capabilities. It explains that turning AI's effects into organizational performance requires foundational capabilities such as clear workflows, internal context, automated testing, and fast feedback. ([2025 DORA report](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report))
 
@@ -236,7 +236,7 @@ Each type of work may need a different checklist. Even so, the following questio
 □ Is the person ultimately accountable clearly identified?
 ```
 
-A checklist does not mean blindly trusting AI, nor does it mean trusting nothing. It turns the necessary verification into a repeatable process.
+A checklist does not mean blindly trusting AI, nor does it mean distrusting everything. It turns the necessary verification into a repeatable process.
 
 ### Structure Review Requests
 
@@ -260,7 +260,7 @@ For feature prioritization, instead of asking whether something "looks good," yo
 - Ease of reversal
 - Whether success can be measured
 
-With criteria in place, AI becomes more than a tool for generating options. It can organize alternatives against the same standards. A person still makes the final decision, but the cost of preparing for that decision falls.
+With criteria in place, AI shifts from simply generating options to organizing alternatives by shared standards. A person still makes the final decision, but the cost of preparing for that decision falls.
 
 ### Build a Team Context Package
 
@@ -295,7 +295,7 @@ Formatting checks
 → Human review
 ```
 
-For documents, tools can automatically check for missing required sections, broken links, prohibited language, formatting violations, and duplication. In customer support, they can first check for personal information, policy-sensitive responses, and incorrect amount or date formats.
+For documents, tools can automatically check for missing required sections, broken links, prohibited language, formatting violations, and duplication. In customer support, they can first check for personal information, policy-sensitive responses, and incorrectly formatted amounts or dates.
 
 Automated verification does not eliminate human responsibility. It reduces low-value repetitive checks before human judgment is needed.
 
@@ -354,7 +354,7 @@ Saved time can be reinvested in:
 - Sharing team context
 - Learning and recovery
 
-Set the goal of AI adoption as "producing more," and production volume will rise. Set it as "improving the flow to completion," and time will be spent removing bottlenecks.
+If you set the goal of AI adoption as "producing more," production volume will rise. If you set it as "improving the flow to completion," time will be spent removing bottlenecks.
 
 ## 6. Try a 30-Day Experiment
 
@@ -362,7 +362,7 @@ Rather than encouraging AI use across the entire organization, choose one recurr
 
 ### Week 1: Measure the Full Flow and Its Bottleneck
 
-Break the work into request, creation, review, approval, and execution stages. Record both working time and waiting time for each stage. If AI is already in use, observe whose time decreases and whose increases.
+Break the work into request, creation, review, approval, and execution stages. Record both working time and waiting time for each stage. If AI is already in use, observe who gains time and who loses it.
 
 ### Week 2: Define Standards for What Comes After Creation
 
@@ -379,7 +379,7 @@ Instead of counting AI usage, compare the following before and after:
 - Total completion time
 - Review and approval wait time
 - Rework and errors
-- Actual utilization of the output
+- Actual use of the output
 - Fatigue among the people responsible
 - Value delivered to the customer or the next team
 
