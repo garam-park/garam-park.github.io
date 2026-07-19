@@ -40,16 +40,39 @@ AI가 먼저 줄이는 것은 개인의 작업 시간입니다.
 
 그리고 더 중요한 점이 있습니다. 조직의 생산성은 개인 작업 시간의 합이 아닙니다.
 
-```text
-요청 이해
-→ 자료 수집
-→ 작성·구현
-→ 검증
-→ 판단
-→ 이해관계자 조율
-→ 승인
-→ 실행·배포
-→ 고객 가치
+```mermaid
+flowchart TB
+    subgraph G1[문제 파악]
+        direction LR
+        A[요청 이해] --> B[자료 수집]
+    end
+
+    subgraph G2[산출물 생성]
+        direction LR
+        C[작성·구현]
+    end
+
+    subgraph G3[품질과 판단]
+        direction LR
+        D[검증] --> E[판단]
+    end
+
+    subgraph G4[조직 조율]
+        direction LR
+        F[이해관계자 조율] --> G[승인]
+    end
+
+    subgraph G5[가치 전달]
+        direction LR
+        H[실행·배포] --> I[고객 가치]
+    end
+
+    G1 --> G2 --> G3 --> G4 --> G5
+
+    classDef phase fill:#f6f8fa,stroke:#9aa4b2,stroke-width:1px,color:#111
+    classDef value fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#111
+    class G1,G2,G3,G4,G5 phase
+    class I value
 ```
 
 AI가 이 중 `작성·구현`만 빠르게 만들었다면 전체 속도는 그만큼 빨라지지 않습니다. 뒤 단계가 그대로라면 병목은 사라지지 않습니다. 위치만 바뀝니다.
