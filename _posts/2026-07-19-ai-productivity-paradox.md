@@ -87,18 +87,42 @@ AI 도입 전에는 초안 작성이나 구현이 느린 경우가 많았습니�
 
 ```mermaid
 flowchart LR
-    A[기획] --> B[병목<br/>작성·구현] --> C[검토] --> D[승인] --> E[실행]
-    classDef bottleneck fill:#ffd6d6,stroke:#c00,stroke-width:3px,color:#000
-    class B bottleneck
+    A[기획]
+
+    subgraph X[병목]
+        direction LR
+        B[작성·구현]
+    end
+
+    C[검토]
+    D[승인]
+    E[실행]
+
+    A --> B --> C --> D --> E
+
+    classDef bottleneckBox fill:#fff1f2,stroke:#dc2626,stroke-width:2px,color:#111
+    class X bottleneckBox
 ```
 
 AI 도입 후에는 작성과 구현이 빨라집니다. 대신 검토와 판단 앞에 일이 쌓입니다.
 
 ```mermaid
 flowchart LR
-    A[기획] --> B[작성·구현] --> C[병목<br/>검토] --> D[승인] --> E[실행]
-    classDef bottleneck fill:#ffd6d6,stroke:#c00,stroke-width:3px,color:#000
-    class C bottleneck
+    A[기획]
+    B[작성·구현]
+
+    subgraph X[병목]
+        direction LR
+        C[검토]
+    end
+
+    D[승인]
+    E[실행]
+
+    A --> B --> C --> D --> E
+
+    classDef bottleneckBox fill:#fff1f2,stroke:#dc2626,stroke-width:2px,color:#111
+    class X bottleneckBox
 ```
 
 그래서 질문을 바꿔야 합니다.
