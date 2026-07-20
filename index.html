@@ -2,14 +2,9 @@
 layout: default
 title : Home
 ---
-{% if paginator.page == 1 %}
-  <h1 class="home-intro-tagline" id="home-heading">{{ site.tagline }}</h1>
-{% else %}
-  <h1 class="home-intro-tagline" id="archive-heading">전체 글 목록</h1>
-{% endif %}
-
 <header class="home-intro">
   {% if paginator.page == 1 %}
+    <h1 class="home-intro-tagline" id="home-heading">{{ site.tagline }}</h1>
     <p class="home-intro-desc">K8s·DevOps·AI 운영부터 실서비스까지. 돈과 장애가 걸린 현장에서 나온 기록을 남깁니다.</p>
     <p class="home-intro-links"><a href="/about/">소개 &rarr;</a></p>
 
@@ -32,6 +27,8 @@ title : Home
       </ul>
     </section>
     {% endif %}
+  {% else %}
+    <h1 class="home-intro-tagline" id="archive-heading">전체 글 목록</h1>
   {% endif %}
 </header>
 {% include ad.html %}

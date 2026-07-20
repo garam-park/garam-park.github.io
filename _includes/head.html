@@ -31,9 +31,12 @@
   {% endif %}
 
   <!-- SEO: 공통 메타 (페이지 우선, 없으면 사이트 기본값) -->
+  {% assign paginator_page = paginator.page | default: 0 %}
   {% if page.url == "/" %}
     {% comment %} 홈 페이지는 페이지 제목 대신 사이트 태그라인을 사용해 'Home' 리터럴 노출을 피한다. {% endcomment %}
     {% capture seo_title %}{{ site.tagline }} &middot; {{ site.title }}{% endcapture %}
+  {% elsif paginator_page > 1 %}
+    {% capture seo_title %}전체 글 목록 {{ paginator_page }}페이지 &middot; {{ site.title }}{% endcapture %}
   {% elsif page.title %}
     {% capture seo_title %}{{ page.title }} &middot; {{ site.title }}{% endcapture %}
   {% else %}
@@ -66,6 +69,8 @@
   <title>
     {% if page.url == "/" %}
       {{ site.tagline }} &middot; {{ site.title }}
+    {% elsif paginator_page > 1 %}
+      전체 글 목록 {{ paginator_page }}페이지 &middot; {{ site.title }}
     {% elsif page.title %}
       {{ page.title }} &middot; {{ site.title }}
     {% else %}
