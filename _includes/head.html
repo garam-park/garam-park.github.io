@@ -85,4 +85,9 @@
 
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- SEO: 게시글 구조화 데이터 (JSON-LD) -->
+  {% if page.layout == "post" or page.layout == "post_with_ad" %}
+    {% include structured-data.html %}
+  {% endif %}
 </head>
