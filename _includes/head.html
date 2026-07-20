@@ -47,6 +47,8 @@
   {% endif %}
 
   <!-- Open Graph -->
+  <!-- 두 배포 도메인 모두에서 검색 원본은 blog.storyg.co로 고정한다. -->
+  <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
   <meta property="og:title" content="{{ seo_title }}">
   <meta property="og:description" content="{{ seo_desc }}">
   <meta property="og:type" content="website">
