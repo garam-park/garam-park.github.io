@@ -3,21 +3,53 @@
 canonical과 동일하게 검색 원본 도메인(site.url = blog.storyg.co)을 기준 URL로 쓴다.
 GitHub Pages에서 열어도 대표 URL은 blog.storyg.co를 가리킨다.
 값이 없는 선택 필드는 빈 문자열로 출력하지 않고 아예 생략한다.
+
+문자열 출력은 모두 `jsonify | replace: "</", "<\/"` 를 거친다.
+jsonify는 JSON 이스케이프만 하고 `<`, `/` 는 그대로 두는데, 이 값들이 <script> 안에
+들어가므로 제목이나 description에 `</script>` 가 있으면 HTML 파서가 그 지점에서
+블록을 닫아 버린다. JSON 문법상 `\/` 는 `/` 와 동등하므로 이 치환은 값을 바꾸지 않으면서
+태그 탈출만 막는다.
 {% endcomment %}
 
-{% assign canonical_url = site.url | append: site.baseurl | append: page.url %}
+{%- assign canonical_url = site.url | append: site.baseurl | append: page.url -%}
 
-{% if page.description %}
-  {% assign ld_description = page.description %}
-{% elsif page.excerpt %}
-  {% assign ld_description = page.excerpt | strip_html | normalize_whitespace | strip | truncate: 200 %}
-{% endif %}
+{%- comment -%} description: front matter 우선, 없으면 본문 발췌. 빈 문자열은 없는 것으로 본다. {%- endcomment -%}
+{%- assign ld_description = page.description | default: "" | strip -%}
+{%- if ld_description == "" -%}
+  {%- assign ld_excerpt = page.excerpt | default: "" | strip_html | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&amp;', '&' | normalize_whitespace | strip -%}
+  {%- assign ld_description = ld_excerpt | truncate: 200 -%}
+{%- endif -%}
 
-{% if page.last_modified_at %}
-  {% assign ld_modified = page.last_modified_at | date_to_xmlschema %}
-{% else %}
-  {% assign ld_modified = page.date | date_to_xmlschema %}
-{% endif %}
+{%- comment -%}
+  keywords: Jekyll은 문자열 tags를 공백으로 split하므로, 콤마로 구분한 다중 단어 태그가
+  잘리고 콤마가 토큰에 붙어 남는다. join으로 원문을 복원한 뒤 표기 형식에 맞게 다시 나눈다.
+{%- endcomment -%}
+{%- assign tags_raw = page.tags | join: " " | normalize_whitespace | strip -%}
+{%- if tags_raw contains "," -%}
+  {%- assign tag_list = tags_raw | split: "," -%}
+{%- else -%}
+  {%- assign tag_list = tags_raw | split: " " -%}
+{%- endif -%}
+{%- assign ld_keywords = "" -%}
+{%- for t in tag_list -%}
+  {%- assign tag = t | strip -%}
+  {%- if tag != blank -%}
+    {%- if ld_keywords == "" -%}
+      {%- assign ld_keywords = tag -%}
+    {%- else -%}
+      {%- assign ld_keywords = ld_keywords | append: ", " | append: tag -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if page.last_modified_at -%}
+  {%- assign ld_modified = page.last_modified_at | date_to_xmlschema -%}
+{%- else -%}
+  {%- assign ld_modified = page.date | date_to_xmlschema -%}
+{%- endif -%}
+
+{%- assign ld_headline = page.title | strip | truncate: 110 -%}
+{%- assign author_url = site.url | append: site.baseurl | append: "/about/" -%}
 
 <script type="application/ld+json">
 {
@@ -25,25 +57,26 @@ GitHub Pages에서 열어도 대표 URL은 blog.storyg.co를 가리킨다.
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": {{ canonical_url | jsonify }}
+    "@id": {{ canonical_url | jsonify | replace: "</", "<\/" }}
   },
-  "url": {{ canonical_url | jsonify }},
-  "headline": {{ page.title | strip_html | strip | truncate: 110 | jsonify }},
-  {% if ld_description %}"description": {{ ld_description | jsonify }},
+  "url": {{ canonical_url | jsonify | replace: "</", "<\/" }},
+  "headline": {{ ld_headline | jsonify | replace: "</", "<\/" }},
+  {% if ld_description != "" %}"description": {{ ld_description | jsonify | replace: "</", "<\/" }},
   {% endif %}"datePublished": {{ page.date | date_to_xmlschema | jsonify }},
   "dateModified": {{ ld_modified | jsonify }},
   "inLanguage": {{ page.lang | default: "ko" | jsonify }},
-  {% if page.tags and page.tags != empty %}"keywords": {{ page.tags | join: ", " | jsonify }},
-  {% endif %}{% if page.image %}"image": {{ site.url | append: page.image | jsonify }},
+  {% if ld_keywords != "" %}"keywords": {{ ld_keywords | jsonify | replace: "</", "<\/" }},
+  {% endif %}{% if page.image and page.image != "" %}"image": {{ site.url | append: page.image | jsonify | replace: "</", "<\/" }},
   {% endif %}"author": {
     "@type": "Person",
-    "name": {{ site.author | jsonify }},
-    "url": {{ site.url | jsonify }}
+    "@id": {{ author_url | jsonify | replace: "</", "<\/" }},
+    "name": {{ site.author | jsonify | replace: "</", "<\/" }},
+    "url": {{ author_url | jsonify | replace: "</", "<\/" }}
   },
   "publisher": {
     "@type": "Organization",
-    "name": {{ site.title | jsonify }},
-    "url": {{ site.url | jsonify }},
+    "name": {{ site.title | jsonify | replace: "</", "<\/" }},
+    "url": {{ site.url | jsonify | replace: "</", "<\/" }},
     "logo": {
       "@type": "ImageObject",
       "url": {{ site.url | append: "/public/apple-touch-icon.png" | jsonify }},
@@ -62,14 +95,14 @@ GitHub Pages에서 열어도 대표 URL은 blog.storyg.co를 가리킨다.
     {
       "@type": "ListItem",
       "position": 1,
-      "name": {{ site.title | jsonify }},
+      "name": {{ site.title | jsonify | replace: "</", "<\/" }},
       "item": {{ site.url | append: site.baseurl | append: "/" | jsonify }}
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": {{ page.title | strip_html | strip | jsonify }},
-      "item": {{ canonical_url | jsonify }}
+      "name": {{ page.title | strip | jsonify | replace: "</", "<\/" }},
+      "item": {{ canonical_url | jsonify | replace: "</", "<\/" }}
     }
   ]
 }
