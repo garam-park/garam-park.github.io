@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Search Console에 제출할 검색 원본 사이트맵
+Sitemap: https://blog.storyg.co/sitemap.xml
