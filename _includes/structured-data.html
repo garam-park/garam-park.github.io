@@ -89,9 +89,9 @@ raw text 안에서 `<` 를 완전히 없앤다. 아래 excerpt 폴백이 엔티�
   "url": {{ canonical_url | jsonify | replace: "<", "\u003c" }},
   "headline": {{ ld_headline | jsonify | replace: "<", "\u003c" }},
   {% if ld_description != "" %}"description": {{ ld_description | jsonify | replace: "<", "\u003c" }},
-  {% endif %}"datePublished": {{ page.date | date_to_xmlschema | jsonify }},
-  "dateModified": {{ ld_modified | jsonify }},
-  "inLanguage": {{ page.lang | default: "ko" | jsonify }},
+  {% endif %}"datePublished": {{ page.date | date_to_xmlschema | jsonify | replace: "<", "\u003c" }},
+  "dateModified": {{ ld_modified | jsonify | replace: "<", "\u003c" }},
+  "inLanguage": {{ page.lang | default: "ko" | jsonify | replace: "<", "\u003c" }},
   {% if ld_keywords != "" %}"keywords": {{ ld_keywords | jsonify | replace: "<", "\u003c" }},
   {% endif %}{% if ld_image != "" %}"image": {{ ld_image | jsonify | replace: "<", "\u003c" }},
   {% endif %}"author": {
