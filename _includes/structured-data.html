@@ -1,0 +1,136 @@
+{% comment %}
+게시글 구조화 데이터(JSON-LD).
+canonical과 동일하게 검색 원본 도메인(site.url = blog.storyg.co)을 기준 URL로 쓴다.
+GitHub Pages에서 열어도 대표 URL은 blog.storyg.co를 가리킨다.
+값이 없는 선택 필드는 빈 문자열로 출력하지 않고 아예 생략한다.
+
+문자열 출력은 모두 `jsonify | replace: "<", "\u003c"` 를 거친다.
+jsonify는 JSON 이스케이프만 하고 `<` 는 그대로 두는데, 이 값들은 <script> 안,
+즉 HTML5의 raw text 컨텍스트에 들어간다. 여기서 `<` 는 세 방향으로 위험하다.
+
+  1. `</script>` — 블록을 그 자리에서 닫는다.
+  2. `<!--` 뒤에 `<script` 가 오면 토크나이저가 script data double escaped 상태로
+     전이해 이후의 `</script>` 가 블록을 닫지 못한다. 그러면 이 블록이 뒤따르는
+     BreadcrumbList와 body 전체를 자기 텍스트로 삼켜 페이지가 통째로 빈 화면이 된다.
+
+`</` 만 치환해서는 2번을 막을 수 없으므로 `<` 전체를 `\u003c` 로 바꾼다.
+`\u003c` 는 JSON 문자열에서 `<` 와 동등하게 파싱되므로 값의 의미는 그대로 두면서
+raw text 안에서 `<` 를 완전히 없앤다. 아래 excerpt 폴백이 엔티티를 디코딩해
+`&lt;` 를 `<` 로 되돌리기 때문에 이 이스케이프는 선택이 아니라 필수 전제다.
+{% endcomment %}
+
+{%- assign canonical_url = site.url | append: site.baseurl | append: page.url -%}
+
+{%- comment -%} description: front matter 우선, 없으면 본문 발췌. 빈 문자열은 없는 것으로 본다. {%- endcomment -%}
+{%- assign ld_description = page.description | default: "" | strip -%}
+{%- if ld_description == "" -%}
+  {%- assign ld_excerpt = page.excerpt | default: "" | strip_html | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&amp;', '&' | normalize_whitespace | strip -%}
+  {%- assign ld_description = ld_excerpt | truncate: 200 -%}
+{%- endif -%}
+
+{%- comment -%}
+  keywords: front matter tags 는 두 가지 표기가 섞여 있다.
+    (a) 콤마형 문자열  `tags: rest api, spring boot`  — 다중 단어 태그
+    (b) 공백형 문자열  `tags: ssh sshd secure`        — 단어 하나가 태그 하나
+  Jekyll은 문자열 tags를 공백으로 split하므로 (a)의 다중 단어 태그가 쪼개지고
+  토큰에 콤마가 붙어 남는다. 센티널로 join해 원소 경계를 보존한 뒤,
+  콤마 유무로 표기를 판별해 다시 나눈다. 센티널을 쓰면 YAML 배열
+  (`tags: [AI, 업무 프로세스]`)의 다중 단어 원소도 공백에서 쪼개지지 않는다.
+  판별 전에 끝에 붙은 콤마는 제거한다. 오타 하나로 (b)가 (a)로 오판되면
+  모든 태그가 한 덩어리로 합쳐지기 때문이다.
+{%- endcomment -%}
+{%- assign tags_joined = page.tags | join: "|~|" -%}
+{%- assign tags_probe = tags_joined | replace: "|~|", " " | normalize_whitespace | strip | split: "," | join: "," -%}
+{%- if tags_probe contains "," -%}
+  {%- assign tag_list = tags_probe | split: "," -%}
+{%- else -%}
+  {%- assign tag_list = tags_joined | split: "|~|" -%}
+{%- endif -%}
+{%- assign ld_keywords = "" -%}
+{%- for t in tag_list -%}
+  {%- assign tag = t | strip | split: "," | join: "," | strip -%}
+  {%- if tag != "" -%}
+    {%- if ld_keywords == "" -%}
+      {%- assign ld_keywords = tag -%}
+    {%- else -%}
+      {%- assign ld_keywords = ld_keywords | append: ", " | append: tag -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if page.last_modified_at -%}
+  {%- assign ld_modified = page.last_modified_at | date_to_xmlschema -%}
+{%- else -%}
+  {%- assign ld_modified = page.date | date_to_xmlschema -%}
+{%- endif -%}
+
+{%- comment -%} image 는 절대 URL이면 그대로 두고, 상대경로일 때만 사이트 주소를 붙인다. {%- endcomment -%}
+{%- assign ld_image = "" -%}
+{%- if page.image and page.image != "" -%}
+  {%- if page.image contains "://" -%}
+    {%- assign ld_image = page.image -%}
+  {%- else -%}
+    {%- assign ld_image = site.url | append: site.baseurl | append: page.image -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign ld_headline = page.title | strip | truncate: 110 -%}
+{%- assign author_url = site.url | append: site.baseurl | append: "/about/" -%}
+{%- assign logo_url = site.url | append: site.baseurl | append: "/public/apple-touch-icon.png" -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ canonical_url | jsonify | replace: "<", "\u003c" }}
+  },
+  "url": {{ canonical_url | jsonify | replace: "<", "\u003c" }},
+  "headline": {{ ld_headline | jsonify | replace: "<", "\u003c" }},
+  {% if ld_description != "" %}"description": {{ ld_description | jsonify | replace: "<", "\u003c" }},
+  {% endif %}"datePublished": {{ page.date | date_to_xmlschema | jsonify | replace: "<", "\u003c" }},
+  "dateModified": {{ ld_modified | jsonify | replace: "<", "\u003c" }},
+  "inLanguage": {{ page.lang | default: "ko" | jsonify | replace: "<", "\u003c" }},
+  {% if ld_keywords != "" %}"keywords": {{ ld_keywords | jsonify | replace: "<", "\u003c" }},
+  {% endif %}{% if ld_image != "" %}"image": {{ ld_image | jsonify | replace: "<", "\u003c" }},
+  {% endif %}"author": {
+    "@type": "Person",
+    "@id": {{ author_url | jsonify | replace: "<", "\u003c" }},
+    "name": {{ site.author | jsonify | replace: "<", "\u003c" }},
+    "url": {{ author_url | jsonify | replace: "<", "\u003c" }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.title | jsonify | replace: "<", "\u003c" }},
+    "url": {{ site.url | append: site.baseurl | jsonify | replace: "<", "\u003c" }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ logo_url | jsonify | replace: "<", "\u003c" }},
+      "width": 180,
+      "height": 180
+    }
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ site.title | jsonify | replace: "<", "\u003c" }},
+      "item": {{ site.url | append: site.baseurl | append: "/" | jsonify | replace: "<", "\u003c" }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ page.title | strip | jsonify | replace: "<", "\u003c" }},
+      "item": {{ canonical_url | jsonify | replace: "<", "\u003c" }}
+    }
+  ]
+}
+</script>

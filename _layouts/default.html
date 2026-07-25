@@ -5,6 +5,9 @@
 
   <body>
 
+    {% comment %} 접근성: 키보드 사용자가 사이드바를 건너뛰고 본문으로 즉시 이동한다. {% endcomment %}
+    <a class="skip-link" href="#main-content">본문 바로가기</a>
+
     {% include sidebar.html %}
 
     <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
@@ -25,9 +28,9 @@
         </div>
       </div>
 
-      <div class="container content">
+      <main class="container content" id="main-content" tabindex="-1">
         {{ content }}
-      </div>
+      </main>
 
     </div>
 
