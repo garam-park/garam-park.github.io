@@ -1,6 +1,6 @@
 ---
 layout: post_with_ad
-title: Debian에서 Docker 설치 전 확인: 지원 버전·패키지 충돌·방화벽
+title: "Debian에서 Docker 설치 전 확인: 지원 버전·패키지 충돌·방화벽"
 date: 2026-07-23 08:00:00 +0900
 permalink: /docker/debian-docker-설치-전-확인
 categories: docker

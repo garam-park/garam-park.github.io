@@ -16,7 +16,7 @@ RUN bundle install
 
 # 나머지 소스를 복사한 뒤 정적 사이트를 _site로 빌드한다.
 COPY . .
-RUN bundle exec jekyll build
+RUN bundle exec jekyll build --strict_front_matter
 
 # ---- Runtime stage: 빌드 결과물을 nginx로 서빙한다 ----
 FROM nginx:alpine
