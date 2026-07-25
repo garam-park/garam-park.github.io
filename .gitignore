@@ -8,3 +8,4 @@ ncftp-push.sh
 .jekyll-metadata
 vendor
 node_modules
+scripts/mcp/notion/.env
