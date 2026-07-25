@@ -1,13 +1,16 @@
 ---
 layout: post_with_ad
-title: sudo 없이 Docker 실행하기: docker 그룹 권한 설정
+title: "sudo 없이 Docker 실행하기: docker 그룹 권한 설정"
 date: 2024-02-10 04:22:57 +0900
+last_modified_at: 2026-07-23 10:16:00 +0900
 permalink: /docker/sudo-없이-docker-실행하기
 categories: docker
 tags: docker sudo rootless permissions
 lang: ko
 description: "Docker를 sudo 없이 실행하도록 docker 그룹에 사용자를 추가하는 방법과 root 수준 권한 주의사항을 정리합니다."
 ---
+
+> **Docker 공식 문서 기준 · 2026-07-23 업데이트**
 
 > Docker 설치가 먼저 필요하다면 [Debian에 Docker 설치하기](/docker/데비안(debian)에-도커(docker)-설치-하기)를 확인하세요.
 

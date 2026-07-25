@@ -2,6 +2,7 @@
 layout: post_with_ad
 title: 데비안(debian)에 도커(docker) 설치 하기
 date: 2024-02-10 04:43:47 +0900
+last_modified_at: 2026-07-23 10:16:00 +0900
 permalink: /docker/데비안(debian)에-도커(docker)-설치-하기
 categories: docker
 tags: docker install debian docker-engine
