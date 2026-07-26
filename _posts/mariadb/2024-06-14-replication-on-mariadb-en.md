@@ -1,160 +1,344 @@
 ---
 layout: post_with_ad
-title: Setting up replication in MariaDB 11 version
+title: "MariaDB 11.4 Master-Master Replication: Safe Two-Node GTID Ring"
 date: 2024-06-14 11:04:51 +0900
+last_modified_at: 2026-07-26 14:56:00 +0900
 permalink: /en/mariadb/2024-06-14-replication-on-mariadb
 categories: mariadb
-tags: mariadb, replication, slave, master
-excerpt: Let's learn about MariaDB replication.
+tags: [mariadb, replication, gtid, master-master, ring-replication]
+excerpt: "Build a two-node MariaDB 11.4 GTID ring with a consistent snapshot, unique server identities, serialized write tests, and fail-closed verification."
 lang: en
-description: "Learn how to configure master-slave replication on MariaDB 11: what replication is, its benefits, and the step-by-step setup for distributing data across servers."
+description: "Configure two-node MariaDB 11.4 master-master ring replication with GTID, a consistent snapshot, conflict-safe write ownership, and verifiable health checks."
+mermaid: true
 ---
 
-## What is MariaDB Replication?
+A two-node MariaDB 11.4 master-master setup is an **asynchronous GTID ring**: each node is both a primary and a replica of the other. Both nodes must run the same MariaDB 11.4.x major-minor release and start from one consistent snapshot. Ring replication is not Galera and has no automatic conflict resolution, so production writes need documented row- or table-level single-writer ownership.
 
-MariaDB replication is the process of automatically transferring data changes that occur on a master database server to one or more slave database servers. This allows for maintaining duplicate copies of data, providing the following benefits:
+This guide uses the historical term *master-master* once for search compatibility. The explanation otherwise uses *primary*, *replica*, Node A, and Node B; MariaDB SQL such as `CHANGE MASTER TO` and status fields such as `Master_Host` retain their official names.
 
-- Data distribution and load balancing
-- Data backup and recovery
-- Failover and high availability
-- Support for data warehousing and data mining analysis tasks
+## Scope and safety contract
 
-## Overview of the Replication Process
+Use this procedure only when all of these conditions are true:
 
-1. The master server records SQL statements in the binary log.
-2. The I/O thread of the slave server reads the binary log events from the master and records them in the relay log.
-3. The SQL thread of the slave executes the relay log events to replicate the data.
+- Node A and Node B both run MariaDB 11.4.x.
+- Application writes can be frozen during bootstrap and verification.
+- The nodes can reach each other on the MariaDB port through a protected network path.
+- One consistent Node A snapshot will initialize Node B.
+- Every active table or row range has one documented writer. The same row or key is never changed concurrently on both nodes.
+- DDL and schema changes run during one coordinated maintenance window, on one node at a time, after writes are stopped.
 
-## Replication Setup Process
+This setup does not provide synchronous commits, automatic failover, or conflict resolution. Use [MariaDB Galera Cluster](https://mariadb.com/docs/galera-cluster/) when the requirement is synchronous multi-primary behavior rather than an asynchronous ring.
 
-1. Master server configuration
-    1. Enable binary logging
-    2. Assign a unique server ID
-2. Configure the master server information on the slave server
-3. Start the replication process on the slave
+## Two-node ring topology
 
-After this, data changes on the master server are automatically replicated to the slave. You can monitor the replication status and perform failover if necessary.
-
----
-
-### MariaDB Server Configuration
-
-- server-id: Sets the unique identifier for the server. Used to identify each server when operating multiple servers.
-- log_bin: Specifies the path to the binary log file. Used to log database changes and track the state of the database.
-- expire_logs_days: Sets the number of days the binary log files are retained. Previous log files are automatically deleted after the specified number of days.
-- max_binlog_size: Sets the maximum size of the binary log file. A new log file is created when the file size exceeds the specified size.
-
----
-
-# Configuration
-
-MariaDB 11 version does not have the `mysql` command, instead, it is executed with the `mariadb` command.
-
-## 1. Master
-
-### 1.1 Configuration
-
-Configure `/etc/mysql/mariadb.conf.d/50-server.cnf`. It works as described for each setting above.
-
-```bash
-server-id              = 1
-log_bin                = /var/log/mysql/mysql-bin.log
-expire_logs_days       = 10
-max_binlog_size        = 100M
+```mermaid
+flowchart LR
+    A["Node A<br/>MariaDB 11.4.x<br/>Primary for owned rows/tables"]
+    B["Node B<br/>MariaDB 11.4.x<br/>Primary for different owned rows/tables"]
+    A -->|"async GTID replication"| B
+    B -->|"async GTID replication"| A
 ```
 
-<aside>
-💡 Tested with server-id set to 0, but it did not work properly. server-id must start from 1
+Each node writes its local transactions to the binary log and also logs replicated transactions with `log_slave_updates`. Unique `server_id` values let a returning event be recognized instead of circulating forever. Unique `gtid_domain_id` values distinguish transactions generated by each primary.
 
-Fatal error: The slave I/O thread stops because master and slave have equal MariaDB server ids; these ids must be different for replication to work (or the --replicate-same-server-id option must be used on slave but this does not always make sense; please check the manual before using it).
+## Prerequisites
 
-</aside>
+### Confirm the same MariaDB 11.4.x release
 
-### 1.2 Create an account for the slave
-
-Run `mariadb -u root -p` to create an account to be used on the slave.
+Run this on both nodes:
 
 ```sql
-grant replication slave on *.* to 'slave_db' @'%' identified by 'slave_password';
+SELECT VERSION();
 ```
 
-Restart MariaDB afterwards.
+Both results must begin with `11.4.`. Mixed minor releases and cross-version migrations are outside this guide's support contract.
 
-```bash
-service mariadb restart #필요시 sudo
+Example network values used below:
+
+| Role | Host | Address |
+| --- | --- | --- |
+| Node A | `db-a.example.net` | `10.0.0.11` |
+| Node B | `db-b.example.net` | `10.0.0.12` |
+
+Replace every example hostname, address, user, and secret. Restrict the replication port with a firewall and use TLS when traffic crosses an untrusted network.
+
+### Assign write ownership before enabling the ring
+
+Write down which node owns each table or row range. Even with separate `AUTO_INCREMENT` sequences, two nodes can still update or delete the same row differently. Do not enable application writes until the ownership rules and a single coordinated DDL window are enforced.
+
+## Configure unique node identities
+
+Apply these settings in the MariaDB server option file, such as `/etc/mysql/mariadb.conf.d/50-server.cnf`.
+
+Node A:
+
+```ini
+[mariadb]
+server_id=11
+gtid_domain_id=101
+log_bin=mariadb-bin
+binlog_format=ROW
+log_slave_updates=ON
+gtid_strict_mode=ON
+auto_increment_increment=2
+auto_increment_offset=1
 ```
 
-### **1.3 check binay log **
+Node B:
+
+```ini
+[mariadb]
+server_id=12
+gtid_domain_id=102
+log_bin=mariadb-bin
+binlog_format=ROW
+log_slave_updates=ON
+gtid_strict_mode=ON
+auto_increment_increment=2
+auto_increment_offset=2
+```
+
+The increment of `2` gives Node A odd generated IDs and Node B even generated IDs. It reduces `AUTO_INCREMENT` collisions, but it does not resolve conflicting updates, explicit duplicate keys, or divergent DDL.
+
+Do not restart Node B with an empty or unrelated data directory yet. The safe bootstrap order below restores the shared snapshot before the final Node B start.
+
+## Bootstrap both nodes from one snapshot
+
+### 1. Freeze writes and create the replication accounts
+
+Stop application and maintenance writes on both nodes. On canonical Node A, create only the accounts that the two peer addresses need:
 
 ```sql
-show master status;
+CREATE USER 'repl_ring'@'10.0.0.11' IDENTIFIED BY 'replace-with-a-secret';
+CREATE USER 'repl_ring'@'10.0.0.12' IDENTIFIED BY 'replace-with-a-secret';
+
+GRANT REPLICATION SLAVE ON *.* TO 'repl_ring'@'10.0.0.11';
+GRANT REPLICATION SLAVE ON *.* TO 'repl_ring'@'10.0.0.12';
 ```
 
-```bash
-MariaDB [(none)]> show master status;
-```
+Create the accounts before the snapshot so the account transactions and grants are present on both nodes after restore. Prefer exact peer addresses over `%`, protect credentials outside shell history, and configure certificate verification when TLS is required.
 
-```bash
-+------------------+----------+--------------+------------------+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
-+------------------+----------+--------------+------------------+
-| mysql-bin.000002 |      342 |              |                  |
-+------------------+----------+--------------+------------------+
-1 row in set (0.000 sec)
-```
+### 2. Record Node A state and take the backup
 
-Save the File and Position values. The Position value will change every time there is a change in the master database.
-
-# Slave
-
-### 1.1 Configuration
-
-Configure `/etc/mysql/mariadb.conf.d/50-server.cnf`.
-
-```bash
-server-id              = 2
-```
-
-<aside>
-💡 The slave can operate even if only the `server-id` is set. If necessary, other options can also be specified.
-
-</aside>
-
-Restart MariaDB.
-
-```bash
-service mariadb restart # if necessary sudo
-```
-
-### 1.2 set master infomation
-
-Assume that the IP of the server where the master is running is 192.168.0.100 and the port is 3306.
-
-Run `show master status;` and put the obtained value `FILE` as `MASTER_LOG_FILE`, `Position` as `MASTER_LOG_POS`.
+With application writes still frozen, record the live GTID set:
 
 ```sql
-CHANGE MASTER TO MASTER_HOST = "192.168.0.100",
-MASTER_USER = "slave_db",
-MASTER_PASSWORD = "slave_password",
-MASTER_PORT = 3306,
-MASTER_LOG_FILE = "mysql-bin.000002",
-MASTER_LOG_POS = 342;
+SELECT @@global.gtid_current_pos;
+SHOW MASTER STATUS;
 ```
 
-If it is applied correctly, start the slave.
+Take a full physical backup with the MariaDB Backup version compatible with MariaDB 11.4.x:
+
+```bash
+sudo mariadb-backup \
+  --backup \
+  --binlog-info=ON \
+  --target-dir=/backup/node-a \
+  --user=backup_operator \
+  --password
+```
+
+Record the generated backup metadata without editing it:
+
+```bash
+sudo cat /backup/node-a/mariadb_backup_binlog_info
+```
+
+The metadata stores the binary-log coordinates and the `gtid_current_pos` associated with the backup. Keep it together with the earlier SQL output and backup checksum.
+
+Prepare the snapshot:
+
+```bash
+sudo mariadb-backup \
+  --prepare \
+  --target-dir=/backup/node-a
+```
+
+### 3. Restore the snapshot on Node B
+
+Stop MariaDB on Node B. Its destination data directory must be empty; preserve any old directory separately instead of overwriting it.
+
+```bash
+sudo systemctl stop mariadb
+sudo mariadb-backup \
+  --copy-back \
+  --target-dir=/backup/node-a
+sudo chown -R mysql:mysql /var/lib/mysql
+```
+
+Apply Node B's unique option-file settings, then restart both nodes:
+
+```bash
+sudo systemctl restart mariadb
+```
+
+Confirm the effective identities:
 
 ```sql
-start slave;
+SELECT
+  @@global.server_id,
+  @@global.gtid_domain_id,
+  @@global.log_bin,
+  @@global.log_slave_updates,
+  @@global.gtid_strict_mode,
+  @@global.auto_increment_increment,
+  @@global.auto_increment_offset,
+  @@global.gtid_current_pos;
 ```
 
-# Test
+Node A must report server/domain `11/101` and offset `1`; Node B must report `12/102` and offset `2`.
 
-If you connect to the master and execute the following, you can confirm that it is applied the same way on the slave.
+### 4. Compare data and GTID provenance before connecting
+
+Compare representative row counts, checksums appropriate to the dataset, the backup metadata, and `@@global.gtid_current_pos` on both nodes.
+
+MariaDB GTIDs use `domain-server-sequence` components. Because the nodes have different `gtid_domain_id` values, do **not** require the complete GTID strings to be textually equal. Instead, verify that:
+
+1. every snapshot-derived domain and sequence matches the recorded backup metadata;
+2. both nodes contain the same restored data;
+3. any additional local transaction is expected, documented with its domain/server/sequence, and explained;
+4. no unplanned write occurred after the snapshot.
+
+If the data differs, snapshot-derived GTIDs are missing, or an unexplained local GTID exists, stop here. Do not run `CHANGE MASTER TO`.
+
+## Connect both replication directions
+
+`MASTER_USE_GTID=current_pos` is safe here only because writes remain frozen and the previous step proved the current positions came from the common snapshot plus documented local transactions. Local writes while replication is stopped change `gtid_current_pos`; if that happens, repeat the fail-closed comparison before connecting.
+
+On Node B, connect to Node A:
 
 ```sql
-CREATE DATABASE foo;
-USE foo;
-CREATE TABLE users (name VARCHAR(255));
-INSERT INTO users (name) VALUES ('Alice');
-INSERT INTO users (name) VALUES ('Adam');
+CHANGE MASTER TO
+  MASTER_HOST='10.0.0.11',
+  MASTER_USER='repl_ring',
+  MASTER_PASSWORD='replace-with-a-secret',
+  MASTER_PORT=3306,
+  MASTER_USE_GTID=current_pos,
+  MASTER_CONNECT_RETRY=10;
+
+START REPLICA;
 ```
+
+On Node A, connect to Node B:
+
+```sql
+CHANGE MASTER TO
+  MASTER_HOST='10.0.0.12',
+  MASTER_USER='repl_ring',
+  MASTER_PASSWORD='replace-with-a-secret',
+  MASTER_PORT=3306,
+  MASTER_USE_GTID=current_pos,
+  MASTER_CONNECT_RETRY=10;
+
+START REPLICA;
+```
+
+If the deployment requires TLS, add the appropriate `MASTER_SSL`, CA, client certificate, key, and server-certificate verification options instead of sending credentials over an unprotected path.
+
+## Verify both replication links
+
+Keep application writes stopped. Wait for any initial lag to drain, then run on both nodes:
+
+```sql
+SHOW REPLICA STATUS\G
+```
+
+Use field names rather than fixed column positions. The two sides should meet these conditions:
+
+| Check | Node A expects | Node B expects |
+| --- | --- | --- |
+| `Master_Host` | `10.0.0.12` | `10.0.0.11` |
+| `Using_Gtid` | `Current_Pos` | `Current_Pos` |
+| `Slave_IO_Running` | `Yes` | `Yes` |
+| `Slave_SQL_Running` | `Yes` | `Yes` |
+| `Last_IO_Errno` | `0` | `0` |
+| `Last_SQL_Errno` | `0` | `0` |
+| lag | drained while writes are stopped | drained while writes are stopped |
+
+`Seconds_Behind_Master` alone is not a sufficient health check. Require both threads to be running, both error numbers to be zero, and the expected opposite host to be connected.
+
+## Run a serialized two-way write test
+
+This is a controlled bootstrap test while application writes are still frozen. It is not permission for concurrent production writes to the same table.
+
+On Node A, create the verification table and wait until it appears on Node B:
+
+```sql
+CREATE DATABASE IF NOT EXISTS replication_verify;
+CREATE TABLE replication_verify.ring_probe (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  token VARCHAR(80) NOT NULL,
+  written_by ENUM('node-a', 'node-b') NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_ring_probe_token (token)
+) ENGINE=InnoDB;
+```
+
+Insert the Node A token:
+
+```sql
+INSERT INTO replication_verify.ring_probe (token, written_by)
+VALUES ('node-a-20260726', 'node-a');
+
+SELECT LAST_INSERT_ID() AS node_a_id;
+```
+
+The ID must be odd. On Node B, wait until that exact token and odd ID are visible:
+
+```sql
+SELECT id, token, written_by
+FROM replication_verify.ring_probe
+WHERE token = 'node-a-20260726';
+```
+
+Only after the Node A row is confirmed, insert on Node B:
+
+```sql
+INSERT INTO replication_verify.ring_probe (token, written_by)
+VALUES ('node-b-20260726', 'node-b');
+
+SELECT LAST_INSERT_ID() AS node_b_id;
+```
+
+The Node B ID must be even and different from the Node A ID. Finally, run this on both nodes:
+
+```sql
+SELECT id, token, written_by
+FROM replication_verify.ring_probe
+WHERE token IN ('node-a-20260726', 'node-b-20260726')
+ORDER BY id;
+```
+
+Pass only when both nodes show the same two-row set, the tokens are unique, the IDs differ, Node A's ID is odd, and Node B's ID is even. Resume application writes only after this test and another clean `SHOW REPLICA STATUS\G` check.
+
+## Stop on errors or divergence
+
+Stop new writes immediately when any of these conditions appears:
+
+- `Slave_IO_Running` or `Slave_SQL_Running` is not `Yes`;
+- `Last_IO_Errno` or `Last_SQL_Errno` is nonzero;
+- duplicate-key or row-conflict errors occur;
+- data or GTID provenance differs from the recorded snapshot;
+- an application violates row/table ownership;
+- replication lag does not drain while writes are frozen.
+
+Capture `SHOW REPLICA STATUS\G`, the relevant MariaDB error log, both GTID sets, the snapshot metadata, and the affected rows. Diagnose the initial dataset, GTID relationship, network/TLS settings, account host restrictions, and ownership rules before changing replication state. Do not skip an event merely to make the threads appear healthy; an unexplained skipped transaction can preserve divergence.
+
+## Operating limits
+
+- Ring replication is asynchronous. A disconnected node can accept local writes, which increases conflict risk when the link returns.
+- MariaDB ring replication does not resolve conflicting inserts, updates, deletes, or DDL.
+- `AUTO_INCREMENT` offsets protect generated keys only; they do not protect explicit keys or existing rows.
+- Run DDL from one coordinated node during a write freeze and wait for it to replicate before continuing.
+- Backups, restore drills, monitoring, routing, and failover policy remain separate operational responsibilities.
+- Validate this procedure on staging nodes before production use.
+
+## Official MariaDB references
+
+- [Multi-Master Ring Replication](https://mariadb.com/docs/server/ha-and-performance/standard-replication/multi-master-ring-replication)
+- [Setting Up Replication](https://mariadb.com/docs/server/ha-and-performance/standard-replication/setting-up-replication)
+- [Global Transaction ID](https://mariadb.com/docs/server/ha-and-performance/standard-replication/gtid)
+- [AUTO_INCREMENT](https://mariadb.com/docs/server/reference/data-types/auto_increment)
+- [SHOW REPLICA STATUS](https://mariadb.com/docs/server/reference/sql-statements/administrative-sql-statements/show/show-replica-status)
+- [Files Created by mariadb-backup](https://mariadb.com/docs/server/server-usage/backup-and-restore/mariadb-backup/files-created-by-mariadb-backup)
