@@ -1,7 +1,7 @@
 interface:
-  display_name: "Notion 할 일 명세화"
-  short_description: "분석 결과를 승인 후 Notion 할 일 명세로 안전하게 반영"
-  default_prompt: "Use $notion-specify-task with 작업 ID: <ID> to turn the matching analysis into a Notion task specification."
+  display_name: "Notion 할 일 명세 초안"
+  short_description: "분석 결과를 Notion 관리 명세 초안으로 저장하고 자동 리뷰 준비"
+  default_prompt: "Use $notion-specify-task with 작업 ID: <ID> to save the matching analysis as a review-ready Notion specification draft."
 
 dependencies:
   tools:

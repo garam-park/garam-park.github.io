@@ -1,30 +1,35 @@
 ---
 name: notion-specify-task
-description: Turn an existing StoryG Blog task analysis into a clear implementation specification for exactly one task identified by an explicit exact task ID, then update only the managed section of that Notion task body after ID-bound user approval. Use when the user supplies `작업 ID: ID값` and asks to organize the matching analysis, prepare or revise an implementation-ready specification, or save an approved specification without starting implementation.
+description: >-
+  Turn the existing analysis for exactly one StoryG Blog task identified by an explicit exact task ID into an implementation-ready review draft, save only the managed section of that Notion task body, and set 명세리뷰 to 리뷰전 without waiting for human approval. Use when the user supplies `작업 ID: ID값` and asks to draft, prepare, revise, or automatically continue the task specification workflow. Stop before specification review or implementation.
 ---
 
-# Notion 프로젝트 할 일 명세화
+# Notion 할 일 명세 초안 작성
 
-분석 결과를 구현 가능한 명세로 정리하고, 사용자가 승인한 내용만 해당 Notion 할 일 본문에 반영한 뒤 멈춘다.
+분석 결과를 구현 가능한 명세 초안으로 정리해 대상 Notion 할 일의 관리 구역에 저장하고 `명세리뷰=리뷰전`으로 둔 뒤 멈춘다.
 
 ## 작업 ID 계약
 
-- 현재 요청에 `작업 ID: <정확한 값>`과 같은 ID의 기존 분석 결과가 반드시 있어야 한다.
+- 현재 요청에 `작업 ID: <정확한 값>`과 같은 ID의 분석 결과가 반드시 있어야 한다.
 - 이전 대화, 제목, URL, 페이지 UUID만으로 대상을 추론하지 않는다.
-- 데이터베이스의 작업 식별자 속성에 exact match해 한 페이지와 StoryG Blog relation을 확인한다.
-- 명세 저장 승인에도 같은 작업 ID가 명시돼야 한다.
-- ID가 누락되거나 분석·페이지·승인 ID가 다르면 쓰지 않는다.
+- 데이터베이스 `ID` unique_id에 exact match하고 StoryG Blog relation을 확인한다.
+- ID가 누락되거나 분석·페이지 ID가 다르면 쓰지 않는다.
 
-## 작업 경계
+## 권한과 경계
 
-- 입력으로 정확한 작업 ID와 같은 ID의 기존 분석 결과를 요구한다.
-- 승인 전에는 Notion을 변경하지 않는다.
-- 승인 후에는 대상 할 일 본문의 관리 구역만 생성하거나 갱신한다.
-- Notion 상태, `명세리뷰`를 포함한 속성, 다른 페이지를 변경하지 않는다.
-- 코드와 파일을 수정하거나 브랜치, commit, push, PR, CI, 배포 작업을 하지 않는다.
-- 명세 저장 뒤 구현을 시작하지 않는다.
+정확한 작업 ID를 포함해 이 스킬을 실행해 달라는 요청은 다음을 승인한 것으로 본다.
 
-Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `notion`인 MCP만 사용한다. 노출된 도구 이름이 있다면 `mcp__notion__...`만 사용한다. 다른 Notion 플러그인, `mcp__codex_apps__notion`, 브라우저 자동화, 직접 API 호출로 우회하지 않는다. 프로젝트 Notion MCP를 사용할 수 없으면 중단하고 알린다.
+- 대상 본문의 ``notion-specify-project-task/v1`` 관리 구역 생성 또는 초안 갱신
+- `명세리뷰`를 `리뷰전`으로 설정
+
+다음은 하지 않는다.
+
+- 사용자 작성 본문, 다른 관리 구역, 다른 Notion 속성·페이지 변경
+- 명세 자동 확정 또는 `리뷰완료` 변경
+- 코드·파일·branch·worktree·commit·push·PR·CI·배포 변경
+- 명세 저장 뒤 구현 시작
+
+Notion에는 이 저장소 `.codex/config.toml`의 이름이 정확히 `notion`인 MCP만 사용한다. 노출된 도구 이름이 있다면 `mcp__notion__...`만 허용한다. 다른 Notion 플러그인, `mcp__codex_apps__notion`, 브라우저 자동화, 직접 API 호출로 우회하지 않는다.
 
 ## 고정 대상
 
@@ -32,33 +37,37 @@ Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `n
 | --- | --- |
 | 프로젝트 | `StoryG Blog` |
 | 프로젝트 페이지 ID | `3a48e829-7400-81a5-9f3c-cfd701dd3c6c` |
-| 할 일 데이터베이스 ID | `3a28e829-7400-808f-b53b-c35b8fef93a8` |
-| 현재 data source ID | `3a28e829-7400-80b2-80bf-000bb0ab59ac` |
+| 할 일 data source ID | `3a28e829-7400-80b2-80bf-000bb0ab59ac` |
 | 연결 속성 | `프로젝트` |
+| 명세 리뷰 속성 | `명세리뷰` |
+| 초안 값 | `리뷰전` |
 
-대상 할 일이 이 데이터베이스에 속하고 `프로젝트` relation으로 StoryG Blog에 연결됐는지 읽기 전용으로 검증한다. ID나 스키마를 추측하지 않는다.
+실행할 때 data source와 옵션을 다시 읽고 이름·유형·값이 일치하는지 확인한다.
 
 ## 실행 순서
 
 ### 1. 입력 검증
 
-입력한 작업 ID를 exact match한다. 분석 결과에서 확인된 사실, 추론, 열린 질문을 구분하고 분석에 기록된 ID와 실제 TODO ID가 모두 같은지 확인한다.
+입력한 작업 ID를 exact match한다. 분석의 사실, 추론, 열린 질문을 구분하고 분석 ID와 실제 TODO ID가 같은지 확인한다.
 
-다음 경우에는 본문을 갱신하지 않는다.
+다음 경우에는 쓰지 않는다.
 
 - 대상 TODO를 하나로 식별할 수 없음
-- StoryG Blog에 연결된 할 일이 아님
-- 분석 결과가 없거나 다른 TODO의 결과임
-- 구현 방향을 바꾸는 중요한 질문이 남아 있음
+- StoryG Blog 작업이 아님
+- 분석이 없거나 다른 작업의 결과임
+- 목표 자체를 정해야 하는 중대한 제품 질문이 남아 있음
 
 ### 2. 명세 초안 작성
 
-아래 형식으로 관리 구역 전체를 작성한다.
+아래 관리 구역 전체를 작성한다.
 
 ```markdown
 ## Codex 구현 명세
 
 `notion-specify-project-task/v1`
+
+명세 상태: 검토 초안
+확정 방식: 자동 검토 대기
 
 ### 배경
 
@@ -79,48 +88,40 @@ Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `n
 ### 열린 질문
 ```
 
-- 완료 조건은 검증 가능한 체크리스트로 작성한다.
-- 분석에서 확인되지 않은 내용은 사실처럼 쓰지 않고 가정 또는 열린 질문으로 표시한다.
-- 파일 경로는 저장소에서 확인된 경우에만 구체적으로 적는다.
-- 구현 방법을 과도하게 고정하지 말고 결과와 제약을 중심으로 쓴다.
-- 중요한 열린 질문이 있으면 먼저 사용자와 해결하고 초안을 갱신한다.
+- 완료 조건을 검증 가능한 체크리스트로 작성한다.
+- 확인되지 않은 내용은 가정이나 열린 질문으로 표시한다.
+- 파일 경로는 저장소에서 확인한 경우에만 적는다.
+- 구현 방법보다 결과와 제약을 중심으로 작성한다.
+- 사람의 제품 결정이 필요한 열린 질문은 숨기지 않는다.
 
-### 3. 승인 대기
+### 3. 초안 저장
 
-대상 TODO와 본문에 들어갈 관리 구역 전체를 사용자에게 보여 주고 다음을 명시적으로 확인한다.
+쓰기 직전에 페이지와 스키마를 다시 읽는다.
 
-> 작업 ID `<정확한 값>`의 Notion 본문을 이 명세로 갱신할까요? 승인 답변에 같은 작업 ID를 포함해 주세요.
+- 관리 구역이 없으면 본문 끝에 한 번 추가한다.
+- 관리 구역이 하나이고 아직 `검토 초안`이면 해당 구역만 교체한다.
+- 관리 구역이 이미 `확정`이면 자동으로 되돌리지 않는다.
+- marker가 둘 이상이면 쓰지 않는다.
+- 사용자 작성 영역과 다른 관리 구역을 덮어쓰지 않는다.
 
-“전체 진행”, 이전 단계 승인, ID 없는 긍정은 본문 갱신 승인으로 간주하지 않는다. 승인은 답변에 명시된 정확한 작업 ID와 제시한 명세 내용에만 유효하다. 승인 뒤 내용이 실질적으로 바뀌면 다시 승인받는다.
+관리 구역을 저장한 뒤 재조회해 초안과 기존 본문 보존을 확인한다. 그 다음 `명세리뷰`가 이미 `리뷰전`이면 중복 쓰지 않고, 다른 값이면 `리뷰전`으로 변경한다.
 
-### 4. 본문 갱신
+### 4. 결과 검증
 
-쓰기 직전에 페이지 메타데이터와 본문을 다시 읽는다. 초안 작성 뒤 사용자가 본문을 변경했다면 최신 내용을 반영해 충돌 여부를 확인하고, 제안 명세가 달라지면 다시 승인받는다.
+다음을 재조회한다.
 
-관리 구역은 제목 `## Codex 구현 명세`와 marker ``notion-specify-project-task/v1``로 식별한다.
+1. marker가 정확히 하나임
+2. `명세 상태: 검토 초안`임
+3. 저장된 구역이 생성한 초안과 일치함
+4. `명세리뷰`가 `리뷰전`임
+5. 사용자 본문과 다른 속성이 보존됨
 
-- 관리 구역이 없으면 본문 끝에 한 번만 추가한다.
-- 관리 구역이 하나면 그 구역만 정확히 교체한다.
-- 같은 marker가 둘 이상이면 쓰지 말고 중복을 보고한다.
-- marker 없는 기존 명세나 사용자 작성 영역을 덮어쓰거나 삭제하지 않는다.
-- 페이지 전체 교체보다 기존 관리 구역의 정확한 find-and-replace 또는 끝 삽입을 우선한다.
-- 승인된 명세와 무관한 서식 정리도 하지 않는다.
-
-### 5. 결과 검증
-
-갱신 뒤 페이지 본문을 다시 읽고 다음을 확인한다.
-
-1. 관리 marker가 정확히 하나임
-2. 저장된 관리 구역이 승인본과 일치함
-3. 기존 사용자 본문이 보존됨
-4. Notion 속성이 바뀌지 않음
-
-검증에 실패하면 추가 쓰기를 반복하지 말고 실제 상태와 안전한 재개 지점을 알린다.
+실패하면 추가 쓰기를 반복하지 않고 실제 상태와 재개 지점을 보고한다.
 
 ## 완료 조건
 
-승인한 명세가 대상 Notion 할 일 본문에 정확히 한 번 저장되고 재조회로 확인되면 끝낸다. 구현, 상태 변경, 다음 단계 실행은 별도 스킬에 맡긴다.
+같은 작업 ID의 명세 초안이 정확히 한 번 저장되고 `명세리뷰=리뷰전`으로 검증되면 끝낸다.
 
 ```text
-다음 호출: $notion-implement-task 작업 ID: <정확한 값>
+다음 호출: $notion-review-spec 작업 ID: <정확한 값>
 ```
