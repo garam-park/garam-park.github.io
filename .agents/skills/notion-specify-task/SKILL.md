@@ -1,7 +1,7 @@
 ---
 name: notion-specify-task
 description: >-
-  Turn the existing analysis for exactly one StoryG Blog task identified by an explicit exact task ID into an implementation-ready review draft, save only the managed section of that Notion task body, and set 명세리뷰 to 리뷰전 without waiting for human approval. Use when the user supplies `작업 ID: ID값` and asks to draft, prepare, revise, or automatically continue the task specification workflow. Stop before specification review or implementation.
+  Turn the existing analysis for exactly one StoryG Blog task already in 명세 and identified by an explicit exact task ID into an implementation-ready review draft, save only the managed section of that Notion task body, and set 명세리뷰 to 리뷰전 without waiting for human approval. Use when the user supplies `작업 ID: ID값` and asks to draft, prepare, revise, or automatically continue the task specification workflow. Stop before specification review or implementation.
 ---
 
 # Notion 할 일 명세 초안 작성
@@ -54,8 +54,11 @@ Notion에는 이 저장소 `.codex/config.toml`의 이름이 정확히 `notion`�
 
 - 대상 TODO를 하나로 식별할 수 없음
 - StoryG Blog 작업이 아님
+- 최신 상태가 정확히 `명세`가 아님
 - 분석이 없거나 다른 작업의 결과임
 - 목표 자체를 정해야 하는 중대한 제품 질문이 남아 있음
+
+`백로그`, `시작 전`, `일시중단`을 이 단계에서 `명세`로 바꾸지 않는다. 먼저 `$notion-analyze-task`를 실행한다. `진행 중` 이후 상태도 되돌리지 않는다.
 
 ### 2. 명세 초안 작성
 
@@ -99,12 +102,15 @@ Notion에는 이 저장소 `.codex/config.toml`의 이름이 정확히 `notion`�
 쓰기 직전에 페이지와 스키마를 다시 읽는다.
 
 - 관리 구역이 없으면 본문 끝에 한 번 추가한다.
-- 관리 구역이 하나이고 아직 `검토 초안`이면 해당 구역만 교체한다.
-- 관리 구역이 이미 `확정`이면 자동으로 되돌리지 않는다.
+- 관리 구역이 하나이고 아직 `검토 초안`이면 내용이 달라질 때만 해당 구역을 교체한다.
+- 동일한 검토 초안이면 본문을 다시 쓰지 않고 누락된 `명세리뷰=리뷰전`만 복구한다.
+- 관리 구역이 이미 `확정`이면 본문과 `명세리뷰`를 자동으로 되돌리지 않고 `$notion-review-spec` 또는 `$notion-implement-task`로 인계한다.
 - marker가 둘 이상이면 쓰지 않는다.
 - 사용자 작성 영역과 다른 관리 구역을 덮어쓰지 않는다.
 
-관리 구역을 저장한 뒤 재조회해 초안과 기존 본문 보존을 확인한다. 그 다음 `명세리뷰`가 이미 `리뷰전`이면 중복 쓰지 않고, 다른 값이면 `리뷰전`으로 변경한다.
+본문을 쓰기 직전에 상태가 여전히 `명세`인지 다시 확인한다. 검토 초안인데 `명세리뷰=리뷰완료`이면 본문이나 속성을 자동으로 내리지 않고 불일치를 보고한다.
+
+그 외에는 관리 구역을 저장한 뒤 재조회해 초안과 기존 본문 보존을 확인한다. 검토 초안의 `명세리뷰`가 이미 `리뷰전`이면 중복 쓰지 않고, 비어 있으면 `리뷰전`으로 변경한다.
 
 ### 4. 결과 검증
 
@@ -114,13 +120,14 @@ Notion에는 이 저장소 `.codex/config.toml`의 이름이 정확히 `notion`�
 2. `명세 상태: 검토 초안`임
 3. 저장된 구역이 생성한 초안과 일치함
 4. `명세리뷰`가 `리뷰전`임
-5. 사용자 본문과 다른 속성이 보존됨
+5. `상태`가 `명세`로 유지됨
+6. 사용자 본문과 다른 속성이 보존됨
 
 실패하면 추가 쓰기를 반복하지 않고 실제 상태와 재개 지점을 보고한다.
 
 ## 완료 조건
 
-같은 작업 ID의 명세 초안이 정확히 한 번 저장되고 `명세리뷰=리뷰전`으로 검증되면 끝낸다.
+같은 작업 ID의 명세 초안이 정확히 한 번 저장되고 `상태=명세`, `명세리뷰=리뷰전`으로 검증되면 끝낸다.
 
 ```text
 다음 호출: $notion-review-spec 작업 ID: <정확한 값>

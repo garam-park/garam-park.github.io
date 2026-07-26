@@ -87,9 +87,11 @@ head, base, CI, review thread 중 하나라도 바뀌었거나 확인할 수 없
 - 예상 user ID가 `garam` person인지 확인한다.
 - 담당자가 비어 있거나 `garam`만 있으면 계속한다.
 - 다른 담당자가 있으면 자동 제거하거나 교체하지 말고 사용자에게 확인한다.
-- 기존 댓글에 같은 garam user ID의 실제 mention과 `검토해주세요` 문구가 함께 있으면 댓글 완료로 본다.
+- 기존 댓글에 marker ``[codex-review-request/v1]``, 같은 작업 ID·PR·latest head, garam user ID의 실제 mention, `검토해주세요` 문구가 모두 있으면 현재 head의 댓글 완료로 본다.
 
 표시 문자열 `@garam`만 있는 댓글은 실제 멘션으로 간주하지 않는다.
+
+marker가 없는 기존 mention 댓글은 댓글 생성 시각이 현재 approval-ready 연결 기록보다 늦고 그 뒤 PR head가 바뀌지 않았을 때만 legacy 완료로 인정한다.
 
 ### 4. 속성 갱신
 
@@ -102,20 +104,31 @@ head, base, CI, review thread 중 하나라도 바뀌었거나 확인할 수 없
 
 ### 5. 멘션 댓글 작성
 
-동일 댓글이 없을 때만 페이지 수준 댓글을 rich text로 작성한다.
+동일 실행 키의 댓글이 없을 때만 페이지 수준 댓글을 rich text로 작성한다.
 
-1. 첫 rich text는 user ID `a0ffaf82-2f8c-4df5-ad5f-9c38a03a453a`를 가리키는 실제 `user` mention
-2. 두 번째 rich text는 ` 검토해주세요`
+```text
+[codex-review-request/v1]
 
-댓글 작성 뒤 다시 조회해 mention user ID와 문구가 모두 저장됐는지 확인한다. 단순 텍스트 `@garam 검토해주세요`로 대체하지 않는다.
+작업 ID: TODO-123
+PR: <PR URL>
+head: <latest SHA>
+CI: success
+
+@garam 검토해주세요
+다음 행동: 승인 또는 수정 요청
+```
+
+`@garam` 부분은 문자열이 아니라 user ID `a0ffaf82-2f8c-4df5-ad5f-9c38a03a453a`를 가리키는 실제 `user` mention rich text로 작성한다.
+
+댓글 작성 뒤 marker, 작업 ID, PR, latest head, mention user ID, 문구를 다시 읽어 확인한다. 단순 텍스트 `@garam 검토해주세요`로 대체하지 않는다.
 
 ## 중복 실행과 재개
 
 - 실행 키는 정확한 작업 ID, PR 번호, latest head SHA, garam user ID다.
 - 속성 갱신 뒤 댓글 작성이 실패하면 속성을 되돌리지 않고 댓글 단계부터 재개한다.
 - 이미 속성과 댓글이 모두 일치하면 쓰기 없이 완료로 보고한다.
-- 동일한 mention 댓글을 두 번 만들지 않는다.
-- PR head가 바뀌면 이전 승인 가능 판정을 폐기하고 리뷰 단계로 돌아간다.
+- 동일 실행 키의 mention 댓글을 두 번 만들지 않는다.
+- PR head가 바뀌면 이전 승인 가능 판정과 이전 댓글 키를 폐기하고 리뷰 단계로 돌아간다. 새 head가 다시 승인 가능해지면 새 실행 키로 한 번 알린다.
 
 ## 완료 조건
 
@@ -124,6 +137,6 @@ head, base, CI, review thread 중 하나라도 바뀌었거나 확인할 수 없
 - 대상 작업 ID와 PR 연결이 최신 상태임
 - 담당자에 `garam`만 있음
 - 상태가 정확히 `검토 중`임
-- 실제 garam user mention과 `검토해주세요`가 포함된 페이지 댓글이 정확히 하나 이상 존재함
+- 현재 작업 ID, PR, latest head에 결속된 marker 댓글에 실제 garam user mention과 `검토해주세요`가 있음
 
 merge, 배포, Notion 완료 처리는 별도 단계에 맡긴다.

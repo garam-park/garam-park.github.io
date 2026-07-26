@@ -182,13 +182,15 @@ review thread는 요청을 실제로 충족하고 reviewer 재검증이 끝난 �
 
 ### 7. Notion과 PR 상태 갱신
 
-기존 ``notion-create-project-pr/v1`` 관리 구역이 정확히 하나 있을 때만 head commit, CI, review round와 상태를 최신 외부 상태에 맞춘다.
+기존 ``notion-create-project-pr/v1`` 관리 구역이 정확히 하나 있을 때만 작업 ID를 보존하고 head commit, CI, review round와 상태를 최신 외부 상태에 맞춘다.
 
 - `review: 수정 중`
 - `review: 외부 승인 대기`
 - `review: 승인 가능`
 
 관리 구역이 없거나 중복됐으면 다른 본문을 만들거나 덮어쓰지 말고 연결 문제를 보고한다. 확정 명세와 다른 사용자 영역, Notion 속성은 변경하지 않는다.
+
+작업 ID 필드가 없는 legacy v1 연결은 대상 페이지 ID, branch, PR 본문의 Notion 링크가 모두 일치할 때만 인정하고 이번 정상 갱신에 정확한 작업 ID를 추가한다. 작업 ID가 다른 기록은 덮어쓰지 않는다.
 
 모든 조건을 만족하고 PR이 draft면 ready for review로 전환한다. 실제 GitHub self-approval은 하지 않는다.
 

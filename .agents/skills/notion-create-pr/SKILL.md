@@ -83,6 +83,8 @@ commit 메시지는 변경 성격과 TODO 제목을 반영해 간결하게 작�
 
 PR을 만들기 직전에 같은 head branch의 PR을 다시 조회한다. 없을 때만 draft PR을 생성한다.
 
+PR 생성 요청이 오류나 timeout으로 끝나면 바로 다시 생성하지 않는다. `repo + head branch + base branch`로 다시 조회해 PR이 실제로 생겼는지 확인하고, 하나가 확인되면 그 PR을 성공 결과로 재사용한다.
+
 PR 제목은 `[TODO-<번호>] <할 일 제목>` 형식을 기본으로 하고, 본문에는 다음을 포함한다.
 
 - Notion TODO 링크
@@ -110,6 +112,7 @@ CI 완료를 오래 기다리거나 실패를 수정하지 않는다. 이 단계
 
 `notion-create-project-pr/v1`
 
+- 작업 ID: `TODO-<번호>`
 - 기준 branch: `develop`
 - 작업 branch: `codex/todo-<번호>-<slug>`
 - head commit: `<sha>`
@@ -120,10 +123,11 @@ CI 완료를 오래 기다리거나 실패를 수정하지 않는다. 이 단계
 - marker가 없으면 한 번만 추가한다.
 - marker가 하나면 해당 관리 구역만 교체한다.
 - marker가 둘 이상이면 쓰지 말고 중복을 보고한다.
+- 작업 ID 필드가 없는 기존 v1 기록은 대상 페이지의 exact ID, branch, PR 본문의 Notion 링크가 모두 일치할 때만 legacy 연결로 인정하고 다음 정상 갱신 때 작업 ID를 추가한다.
 - 확정 명세와 사용자 작성 영역을 덮어쓰거나 정리하지 않는다.
 - Notion 상태와 속성은 변경하지 않는다.
 
-갱신 뒤 본문을 재조회해 branch, SHA, PR URL, CI 상태가 실제 외부 상태와 일치하는지 확인한다.
+갱신 뒤 본문을 재조회해 작업 ID, branch, SHA, PR URL, CI 상태가 실제 외부 상태와 일치하는지 확인한다.
 
 ## 중단과 재개
 
@@ -141,7 +145,7 @@ CI 완료를 오래 기다리거나 실패를 수정하지 않는다. 이 단계
 - remote 작업 branch가 local head SHA와 일치함
 - 올바른 head·base의 draft PR이 하나 존재함
 - 초기 CI 상태가 확인됨
-- Notion 연결 관리 구역이 실제 branch, SHA, PR, CI 정보를 가리킴
+- Notion 연결 관리 구역이 정확한 작업 ID와 실제 branch, SHA, PR, CI 정보를 가리킴
 
 리뷰 대응, CI 수정, merge, 배포는 다음 단계 스킬에 맡긴다.
 

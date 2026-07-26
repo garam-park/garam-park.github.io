@@ -1,6 +1,6 @@
 interface:
   display_name: "Notion 자동 작업 큐"
-  short_description: "StoryG Blog 작업을 선택부터 사람 검토 요청까지 반복 처리"
+  short_description: "명세 작업을 우선 재개하고 새 작업을 사람 검토 요청까지 반복 처리"
   default_prompt: "Use $notion-run-queue to process eligible StoryG Blog tasks until the actionable queue is empty."
 
 dependencies:

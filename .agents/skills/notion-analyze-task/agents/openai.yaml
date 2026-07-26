@@ -1,10 +1,10 @@
 interface:
   display_name: "Notion 할 일 명세 분석"
-  short_description: "정확한 작업 ID 한 건의 요구사항과 저장소 영향을 읽기 전용 분석"
+  short_description: "정확한 작업을 명세 상태로 전환하고 요구사항과 저장소 영향 분석"
   default_prompt: "Use $notion-analyze-task with 작업 ID: <ID> to analyze one StoryG Blog task for specification."
 
 dependencies:
   tools:
     - type: "mcp"
       value: "notion"
-      description: "Project-local read-only access to the configured Notion workspace"
+      description: "Project-local Notion MCP for task verification and the 명세 status transition"
