@@ -172,18 +172,31 @@ Apply Node B's unique option-file settings, then restart both nodes:
 sudo systemctl restart mariadb
 ```
 
-Before any write occurs on Node B, copy the GTID value from the recorded `mariadb_backup_binlog_info` into the replica position. Replace the example with the complete GTID set from the backup metadata; do not copy the binlog filename or byte position into this variable.
+Before any write occurs on Node B, confirm that its new binary log and replica state are empty:
 
 ```sql
+SELECT
+  @@global.gtid_binlog_state,
+  @@global.gtid_binlog_pos,
+  @@global.gtid_slave_pos;
+```
+
+All three values must be empty. MariaDB Backup does not copy binary logs, so this clean state is expected after a fresh restore. If any value is nonempty, stop and rebuild Node B from a fresh snapshot. Do not use `RESET MASTER` to force this check to pass.
+
+Copy the complete GTID set from the recorded `mariadb_backup_binlog_info` into both Node B's binary-log history and replica position. Replace the example with the complete metadata value; do not copy the binlog filename or byte position into these variables.
+
+```sql
+SET GLOBAL gtid_binlog_state='101-11-12345';
 SET GLOBAL gtid_slave_pos='101-11-12345';
 
 SELECT
+  @@global.gtid_binlog_state,
+  @@global.gtid_binlog_pos,
   @@global.gtid_slave_pos,
-  @@global.gtid_current_pos,
-  @@global.gtid_binlog_pos;
+  @@global.gtid_current_pos;
 ```
 
-MariaDB Backup records a primary's GTID in the backup metadata, but restoring the physical files does not automatically make that primary GTID Node B's replicated position. Setting `gtid_slave_pos` tells Node B which snapshot transactions are already present. Confirm that no replica connection or thread exists before setting it, and stop if the metadata is missing, malformed, or differs from the position recorded on Node A.
+MariaDB Backup records a primary's GTID in the backup metadata, but restoring the physical files does not automatically restore the primary's binary-log history or make that GTID Node B's replicated position. `gtid_binlog_state` lets Node B, when it acts as a primary, recognize the snapshot history whose binary-log files were not copied. `gtid_slave_pos` records which snapshot transactions are already present in the restored data. Confirm that no replica connection or thread exists before setting them, and stop if the metadata is missing, malformed, or differs from the position recorded on Node A.
 
 Confirm the effective identities:
 
@@ -208,7 +221,7 @@ Compare representative row counts, checksums appropriate to the dataset, the bac
 MariaDB GTIDs use `domain-server-sequence` components. Parse and compare those components instead of trusting an unexamined string comparison. Before the initial ring connections, verify that:
 
 1. Node A's recorded snapshot position matches the complete GTID set in `mariadb_backup_binlog_info`;
-2. Node B's `gtid_slave_pos` contains that same snapshot-derived domain/server/sequence set;
+2. Node B's `gtid_binlog_state` and `gtid_slave_pos` contain that same snapshot-derived domain/server/sequence set;
 3. both nodes' `gtid_current_pos` contain the same snapshot position and neither node has any post-snapshot local GTID;
 4. both nodes contain the same restored data.
 
@@ -216,7 +229,7 @@ The configured `gtid_domain_id` values differ so future local transactions can u
 
 ## Connect both replication directions
 
-`MASTER_USE_GTID=current_pos` is safe here only because writes remain frozen, Node B's `gtid_slave_pos` was initialized from the backup metadata, and the previous step proved that neither node has a post-snapshot local GTID. A local write while replication is stopped changes `gtid_current_pos` to a position the peer may not have; if that happens before both directions are connected, discard this bootstrap attempt and start again from a fresh snapshot.
+`MASTER_USE_GTID=current_pos` is safe here only because writes remain frozen, Node B's `gtid_binlog_state` and `gtid_slave_pos` were initialized from the backup metadata, and the previous step proved that neither node has a post-snapshot local GTID. A local write while replication is stopped changes `gtid_current_pos` to a position the peer may not have; if that happens before both directions are connected, discard this bootstrap attempt and start again from a fresh snapshot.
 
 On Node B, connect to Node A:
 
@@ -355,6 +368,7 @@ Capture `SHOW REPLICA STATUS\G`, the relevant MariaDB error log, both GTID sets,
 - [AUTO_INCREMENT](https://mariadb.com/docs/server/reference/data-types/auto_increment)
 - [SHOW REPLICA STATUS](https://mariadb.com/docs/server/reference/sql-statements/administrative-sql-statements/show/show-replica-status)
 - [Files Created by mariadb-backup](https://mariadb.com/docs/server/server-usage/backup-and-restore/mariadb-backup/files-created-by-mariadb-backup)
+- [Files Backed Up by mariadb-backup](https://mariadb.com/docs/server/server-usage/backup-and-restore/mariadb-backup/files-backed-up-by-mariadb-backup)
 - [Setting up a Replica with mariadb-backup](https://mariadb.com/docs/server/server-usage/backup-and-restore/mariadb-backup/setting-up-a-replica-with-mariadb-backup)
 
 ## Related reading
