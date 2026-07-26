@@ -1,0 +1,10 @@
+interface:
+  display_name: "Notion 명세 멀티 리뷰"
+  short_description: "독립 리뷰와 수정 루프로 명세를 자동 확정하고 리뷰 완료 처리"
+  default_prompt: "Use $notion-review-spec with 작업 ID: <ID> to review and refine the task specification until every approval condition passes."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion"
+      description: "Project-local Notion MCP for specification review and managed updates"
