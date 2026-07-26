@@ -6,10 +6,10 @@ DEFAULT_PACKAGE_SPEC="@notionhq/notion-mcp-server@2.4.1"
 
 if [[ -n "${MCP_NOTION_ENV_FILE:-}" ]]; then
     ENV_FILE="$MCP_NOTION_ENV_FILE"
-elif [[ -f "$SCRIPT_DIR/.env.local" ]]; then
-    ENV_FILE="$SCRIPT_DIR/.env.local"
-else
+elif [[ -f "$SCRIPT_DIR/.env" ]]; then
     ENV_FILE="$SCRIPT_DIR/.env"
+else
+    ENV_FILE="$SCRIPT_DIR/.env.local"
 fi
 
 if [[ -f "$ENV_FILE" ]]; then
