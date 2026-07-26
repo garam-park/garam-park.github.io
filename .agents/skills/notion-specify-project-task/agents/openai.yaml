@@ -1,0 +1,10 @@
+interface:
+  display_name: "Notion 프로젝트 할 일 명세화"
+  short_description: "분석 결과를 승인 후 Notion 할 일 명세로 안전하게 반영"
+  default_prompt: "Use $notion-specify-project-task to turn an approved task analysis into a clear Notion task specification."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion"
+      description: "Project-local Notion MCP for verified task-body updates"
