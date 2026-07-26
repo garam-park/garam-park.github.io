@@ -1,6 +1,7 @@
 ---
 name: notion-analyze-task
-description: Analyze the specification needs of exactly one StoryG Blog Notion task identified by an explicit exact task ID, without selecting a task or changing anything. Use after notion-select-task has returned an ID, or whenever the user supplies `작업 ID: ID값` and wants the task's purpose, scope, requirements, acceptance criteria, repository impact, risks, validation plan, and open questions prepared for specification.
+description: >-
+  Analyze the specification needs of exactly one StoryG Blog Notion task identified by an explicit exact task ID, without selecting a task or changing anything. Use after notion-select-task has returned an ID, or whenever the user supplies `작업 ID: ID값` and wants the task's purpose, scope, requirements, acceptance criteria, repository impact, risks, validation plan, and open questions prepared for specification.
 ---
 
 # Notion 할 일 명세 분석

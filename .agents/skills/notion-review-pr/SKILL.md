@@ -1,6 +1,7 @@
 ---
 name: notion-review-pr
-description: Drive the pull request for exactly one StoryG Blog Notion task identified by an explicit exact task ID to approval-ready quality with a multi-agent review-and-fix loop. Independent reviewers define and judge merge approval conditions while a separate fixer implements verified changes. Repeat until every condition passes, CI is green, and no actionable review thread remains. Use when the user supplies `작업 ID: ID값` plus the existing PR and asks to review, address, fix, or prepare it for approval. Stop before merge or deployment.
+description: >-
+  Drive the pull request for exactly one StoryG Blog Notion task identified by an explicit exact task ID to approval-ready quality with a multi-agent review-and-fix loop. Independent reviewers define and judge merge approval conditions while a separate fixer implements verified changes. Repeat until every condition passes, CI is green, and no actionable review thread remains. Use when the user supplies `작업 ID: ID값` plus the existing PR and asks to review, address, fix, or prepare it for approval. Stop before merge or deployment.
 ---
 
 # Notion 프로젝트 PR 멀티에이전트 리뷰

@@ -1,6 +1,7 @@
 ---
 name: notion-create-pr
-description: Publish the implemented work for exactly one StoryG Blog Notion task identified by an explicit exact task ID by validating its isolated worktree, committing only that task's changes, pushing its branch, creating or reusing a draft pull request, and recording the links in the same Notion task. Use when the user supplies `작업 ID: ID값` and asks to push or create a PR for that implemented task.
+description: >-
+  Publish the implemented work for exactly one StoryG Blog Notion task identified by an explicit exact task ID by validating its isolated worktree, committing only that task's changes, pushing its branch, creating or reusing a draft pull request, and recording the links in the same Notion task. Use when the user supplies `작업 ID: ID값` and asks to push or create a PR for that implemented task.
 ---
 
 # Notion 프로젝트 PR 생성
