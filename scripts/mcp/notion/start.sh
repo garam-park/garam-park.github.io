@@ -18,5 +18,11 @@ if [[ -z "${MCP_NOTION_TOKEN:-}" ]]; then
 fi
 
 export NOTION_TOKEN="$MCP_NOTION_TOKEN"
+export OPENAPI_MCP_HEADERS="$(
+    node -e 'process.stdout.write(JSON.stringify({
+        Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+        "Notion-Version": "2026-03-11",
+    }))'
+)"
 
 exec npx -y "$DEFAULT_PACKAGE_SPEC"
