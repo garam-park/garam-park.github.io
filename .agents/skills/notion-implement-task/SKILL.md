@@ -1,6 +1,7 @@
 ---
 name: notion-implement-task
-description: Implement the approved specification of exactly one StoryG Blog Notion task identified by an explicit exact task ID in an isolated local Git worktree, move that task to in progress, and verify the changes without committing or publishing them. For new or substantially revised posts, also apply the Notion pre-deployment requirements. Use when the user supplies `작업 ID: ID값` and asks to start, implement, continue, or finish that task.
+description: >-
+  Implement the approved specification of exactly one StoryG Blog Notion task identified by an explicit exact task ID in an isolated local Git worktree, move that task to in progress, and verify the changes without committing or publishing them. For new or substantially revised posts, also apply the Notion pre-deployment requirements. Use when the user supplies `작업 ID: ID값` and asks to start, implement, continue, or finish that task.
 ---
 
 # Notion 프로젝트 할 일 구현
@@ -18,9 +19,9 @@ description: Implement the approved specification of exactly one StoryG Blog Not
 
 - 대상 TODO와 확정 명세를 다시 확인한다.
 - 격리된 branch와 worktree를 준비하거나 기존 작업 공간을 재사용한다.
-- Notion `상태`만 `진행 중`으로 변경하고 재조회로 확인한다.
+- Notion `상태`를 `진행 중`으로 변경하고 작업 시작 댓글을 정확히 한 번 남긴 뒤 재조회로 확인한다.
 - 명세 범위의 코드·문서·테스트만 수정하고 검증한다.
-- Notion 본문과 다른 속성을 변경하지 않는다.
+- Notion 본문과 다른 속성, 다른 댓글을 변경하지 않는다.
 - 파일을 stage하거나 commit, push, PR, merge, CI, 배포 작업을 하지 않는다.
 - 기존 worktree, branch, 사용자 변경을 삭제·초기화·덮어쓰지 않는다.
 
@@ -48,12 +49,14 @@ Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `n
 
 1. 할 일 데이터베이스에 속하고 StoryG Blog 프로젝트에 연결됨
 2. 본문에 `## Codex 구현 명세`와 marker ``notion-specify-project-task/v1``가 정확히 하나 있음
-3. 명세에 목표, 요구사항, 완료 조건, 검증 계획이 있음
-4. 구현 방향을 바꾸는 열린 질문이 남아 있지 않음
-5. 미완료 선행 작업이 없음
-6. 상태가 `백로그`, `시작 전`, `일시중단`, `진행 중` 중 하나임
+3. 관리 구역에 `명세 상태: 확정`과 `확정 방식: 자동 멀티에이전트 검토`가 있음
+4. `명세리뷰`가 `리뷰완료`임
+5. 명세에 목표, 요구사항, 완료 조건, 검증 계획이 있음
+6. 구현 방향을 바꾸는 열린 질문이 남아 있지 않음
+7. 미완료 선행 작업이 없음
+8. 상태가 `백로그`, `시작 전`, `일시중단`, `진행 중` 중 하나임
 
-marker는 `$notion-specify-task`가 사용자 승인 뒤 저장한 명세임을 뜻한다. marker가 없거나 중복됐으면 구현하지 않고 명세화 단계로 돌려보낸다. `완료`, `취소`, `보관` 작업은 명시적인 재개 승인 없이는 구현하지 않는다.
+marker는 `$notion-specify-task`가 저장하고 `$notion-review-spec`이 자동 검토한 관리 명세임을 뜻한다. marker가 없거나 중복됐거나 자동 확정 증거가 없으면 구현하지 않고 명세 단계로 돌려보낸다. `완료`, `취소`, `보관` 작업은 명시적인 재개 승인 없이는 구현하지 않는다.
 
 ### 2. 기존 작업 흔적 확인
 
@@ -70,7 +73,24 @@ marker는 `$notion-specify-task`가 사용자 승인 뒤 저장한 명세임을 
 
 worktree 준비가 끝난 뒤에만 Notion `상태`를 `진행 중`으로 변경한다. 이미 `진행 중`이면 중복 갱신하지 않는다. 갱신 뒤 페이지를 다시 읽어 실제 상태를 확인한다.
 
-상태 변경이나 검증에 실패하면 제품 파일을 수정하기 전에 멈춘다.
+기존 페이지 댓글에서 marker ``[codex-task-start/v1]``를 찾는다. 없을 때만 다음 형식의 페이지 댓글을 작성한다. 시각은 실제 시작 시각을 Asia/Seoul 기준으로 기록하고, branch와 worktree는 검증된 실제 값을 사용한다.
+
+```text
+[codex-task-start/v1]
+
+자동 작업을 시작했습니다.
+작업 ID: TODO-123
+시작 시각: 2026-07-26 12:18 KST
+브랜치: codex/todo-123-example
+worktree: .worktrees/todo-123
+```
+
+- 시작 댓글에는 사용자를 멘션하지 않는다.
+- marker가 이미 있으면 같은 댓글을 다시 만들지 않는다.
+- marker가 둘 이상이면 추가 댓글을 만들지 않고 중복을 보고한다.
+- 상태 변경 뒤 댓글 작성이 실패하면 상태를 되돌리지 않고 댓글 단계부터 재개한다.
+
+상태와 시작 댓글을 모두 재조회해 확인한다. 둘 중 하나라도 실패하면 제품 파일을 수정하기 전에 멈춘다.
 
 ### 4. 포스트 작업 조건부 Gate
 
@@ -129,6 +149,7 @@ worktree 준비가 끝난 뒤에만 Notion `상태`를 `진행 중`으로 변경
 - 실행 키는 정확한 작업 ID와 작업 branch다.
 - 기존 worktree에 변경이 있으면 이전 구현으로 간주해 먼저 diff와 상태를 분석한다.
 - 같은 Notion 상태, branch, worktree를 다시 만들거나 갱신하지 않는다.
+- 같은 ``[codex-task-start/v1]`` 댓글을 다시 만들지 않는다.
 - 중단 시 branch와 worktree를 보존하고 실패한 검증 또는 미완료 조건부터 재개한다.
 - 재개할 때 Notion 명세를 다시 읽는다. 기존 구현과 충돌하는 실질적 명세 변경이 있으면 자동 수정하지 말고 알린다.
 - 실패했다고 worktree나 branch를 삭제하거나 변경을 되돌리지 않는다.
@@ -138,6 +159,7 @@ worktree 준비가 끝난 뒤에만 Notion `상태`를 `진행 중`으로 변경
 다음을 모두 만족하면 끝낸다.
 
 - Notion 상태가 `진행 중`
+- 검증된 branch·worktree를 기록한 시작 댓글이 정확히 하나 존재
 - 작업 branch와 격리 worktree가 하나씩 존재
 - 구현 diff가 확정 명세 범위 안에 있음
 - 가능한 검증이 통과하고 미검증 항목이 명시됨
