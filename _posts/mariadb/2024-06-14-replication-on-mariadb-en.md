@@ -172,6 +172,19 @@ Apply Node B's unique option-file settings, then restart both nodes:
 sudo systemctl restart mariadb
 ```
 
+Before any write occurs on Node B, copy the GTID value from the recorded `mariadb_backup_binlog_info` into the replica position. Replace the example with the complete GTID set from the backup metadata; do not copy the binlog filename or byte position into this variable.
+
+```sql
+SET GLOBAL gtid_slave_pos='101-11-12345';
+
+SELECT
+  @@global.gtid_slave_pos,
+  @@global.gtid_current_pos,
+  @@global.gtid_binlog_pos;
+```
+
+MariaDB Backup records a primary's GTID in the backup metadata, but restoring the physical files does not automatically make that primary GTID Node B's replicated position. Setting `gtid_slave_pos` tells Node B which snapshot transactions are already present. Confirm that no replica connection or thread exists before setting it, and stop if the metadata is missing, malformed, or differs from the position recorded on Node A.
+
 Confirm the effective identities:
 
 ```sql
@@ -190,20 +203,20 @@ Node A must report server/domain `11/101` and offset `1`; Node B must report `12
 
 ### 4. Compare data and GTID provenance before connecting
 
-Compare representative row counts, checksums appropriate to the dataset, the backup metadata, and `@@global.gtid_current_pos` on both nodes.
+Compare representative row counts, checksums appropriate to the dataset, the backup metadata, `@@global.gtid_slave_pos` on Node B, and `@@global.gtid_current_pos` on both nodes.
 
-MariaDB GTIDs use `domain-server-sequence` components. Because the nodes have different `gtid_domain_id` values, do **not** require the complete GTID strings to be textually equal. Instead, verify that:
+MariaDB GTIDs use `domain-server-sequence` components. Parse and compare those components instead of trusting an unexamined string comparison. Before the initial ring connections, verify that:
 
-1. every snapshot-derived domain and sequence matches the recorded backup metadata;
-2. both nodes contain the same restored data;
-3. any additional local transaction is expected, documented with its domain/server/sequence, and explained;
-4. no unplanned write occurred after the snapshot.
+1. Node A's recorded snapshot position matches the complete GTID set in `mariadb_backup_binlog_info`;
+2. Node B's `gtid_slave_pos` contains that same snapshot-derived domain/server/sequence set;
+3. both nodes' `gtid_current_pos` contain the same snapshot position and neither node has any post-snapshot local GTID;
+4. both nodes contain the same restored data.
 
-If the data differs, snapshot-derived GTIDs are missing, or an unexplained local GTID exists, stop here. Do not run `CHANGE MASTER TO`.
+The configured `gtid_domain_id` values differ so future local transactions can use domains `101` and `102`; that setting alone does not justify an extra GTID before the ring exists. If the data differs, a snapshot GTID is missing, or either node has any post-snapshot local GTID, stop here. Do not run `CHANGE MASTER TO`, even when the extra transaction is documented. Re-freeze writes and create a fresh snapshot instead.
 
 ## Connect both replication directions
 
-`MASTER_USE_GTID=current_pos` is safe here only because writes remain frozen and the previous step proved the current positions came from the common snapshot plus documented local transactions. Local writes while replication is stopped change `gtid_current_pos`; if that happens, repeat the fail-closed comparison before connecting.
+`MASTER_USE_GTID=current_pos` is safe here only because writes remain frozen, Node B's `gtid_slave_pos` was initialized from the backup metadata, and the previous step proved that neither node has a post-snapshot local GTID. A local write while replication is stopped changes `gtid_current_pos` to a position the peer may not have; if that happens before both directions are connected, discard this bootstrap attempt and start again from a fresh snapshot.
 
 On Node B, connect to Node A:
 
@@ -342,3 +355,8 @@ Capture `SHOW REPLICA STATUS\G`, the relevant MariaDB error log, both GTID sets,
 - [AUTO_INCREMENT](https://mariadb.com/docs/server/reference/data-types/auto_increment)
 - [SHOW REPLICA STATUS](https://mariadb.com/docs/server/reference/sql-statements/administrative-sql-statements/show/show-replica-status)
 - [Files Created by mariadb-backup](https://mariadb.com/docs/server/server-usage/backup-and-restore/mariadb-backup/files-created-by-mariadb-backup)
+- [Setting up a Replica with mariadb-backup](https://mariadb.com/docs/server/server-usage/backup-and-restore/mariadb-backup/setting-up-a-replica-with-mariadb-backup)
+
+## Related reading
+
+- [MariaDB 11 replication setup in Korean]({% link _posts/mariadb/2024-06-14-replication-on-mariadb-kr.md %})
