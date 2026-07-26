@@ -1,6 +1,6 @@
 ---
 name: notion-implement-project-task
-description: Implement an approved StoryG Blog Notion task specification in an isolated local Git worktree, move the task to in progress, and verify the resulting changes without committing or publishing them. Use when the user asks to start, implement, continue, or finish coding a StoryG Blog TODO whose managed Notion specification has already been approved.
+description: Implement an approved StoryG Blog Notion task specification in an isolated local Git worktree, move the task to in progress, and verify the resulting changes without committing or publishing them. For new or substantially revised posts, also apply the pre-deployment requirements from the Notion document "블로그 검색 최적화 확인 사항"; skip that gate for non-post work. Use when the user asks to start, implement, continue, or finish coding a StoryG Blog TODO whose managed Notion specification has already been approved.
 ---
 
 # Notion 프로젝트 할 일 구현
@@ -30,6 +30,8 @@ Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `n
 | 연결 속성 | `프로젝트` |
 | 저장소 | `/Users/garam/ws/garam/garam-park.github.io` |
 | 기본 통합 branch | `develop` |
+| 포스트 Gate 문서 | `블로그 검색 최적화 확인 사항` |
+| 포스트 Gate 페이지 ID | `3a88e829-7400-8131-a07a-ee01c056fc8e` |
 
 ## 실행 순서
 
@@ -63,7 +65,32 @@ worktree 준비가 끝난 뒤에만 Notion `상태`를 `진행 중`으로 변경
 
 상태 변경이나 검증에 실패하면 제품 파일을 수정하기 전에 멈춘다.
 
-### 4. 명세 구현
+### 4. 포스트 작업 조건부 Gate
+
+다음 중 하나면 포스트 작업으로 본다.
+
+- `_posts/**` 또는 `_draft/**`에 새 글을 추가함
+- 기존 글의 기술 내용, 명령, 버전, 구성, 결론, 메타데이터를 실질적으로 개편함
+- Notion 명세가 새 포스트 작성, 포스트 개편, 검색 최적화를 명시함
+
+오탈자·띄어쓰기·링크 한 건 같은 경미한 교정이나 코드·템플릿·인프라 작업이면 포스트 Gate를 생략하고 완료 보고에 이유를 남긴다.
+
+포스트 작업이면 프로젝트 Notion MCP로 Gate 페이지를 최신 상태로 읽는다. 읽을 수 없으면 기준을 추측하거나 오래된 기억으로 구현하지 말고 중단한다.
+
+구현 중 다음 범위를 체크리스트로 함께 적용한다.
+
+- 2장 작성 전 브리프
+- 3장 front matter와 메타데이터
+- 4장 본문 품질
+- 5장 AI 검색 친화성
+- 6장 Google 전용 배포 Gate 중 source·local build에서 확인 가능한 항목
+- 7장 Naver 전용 배포 Gate 중 source·local build에서 확인 가능한 항목
+
+대표 이미지가 없으면 이미지 전용 항목은 조건부 제외한다. 운영 HTTP 200, Search Console, 서치어드바이저처럼 배포 뒤에만 확인 가능한 항목은 `배포 후 확인 대기`로 남긴다. 9장 플랫폼 정비 항목은 현재 명세에 포함되지 않으면 구현 범위를 자동으로 넓히지 않고 후속 과제로 보고한다.
+
+확인 가능한 공통·Google·Naver Gate가 미통과이면 구현 완료로 보고하지 않는다.
+
+### 5. 명세 구현
 
 격리된 worktree 안에서만 작업한다.
 
@@ -76,7 +103,7 @@ worktree 준비가 끝난 뒤에만 Notion `상태`를 `진행 중`으로 변경
 
 파일 수정에는 `apply_patch`를 사용한다. 새 의존성이나 외부 시스템 변경이 필요하면 자동으로 범위를 넓히지 않는다.
 
-### 5. 검증
+### 6. 검증
 
 변경 위험에 비례해 다음을 수행한다.
 
@@ -86,6 +113,7 @@ worktree 준비가 끝난 뒤에만 Notion `상태`를 `진행 중`으로 변경
 4. `git diff --check`
 5. `git status --short`와 diff 전체 검토
 6. 명세의 각 완료 조건 충족 여부 확인
+7. 포스트 작업이면 공통·Google·Naver Gate 판정과 배포 후 확인 대기 항목 정리
 
 검증 명령을 실행할 수 없으면 이유와 미검증 범위를 명시한다. 실패를 숨기거나 완료로 보고하지 않는다.
 
@@ -106,6 +134,7 @@ worktree 준비가 끝난 뒤에만 Notion `상태`를 `진행 중`으로 변경
 - 작업 branch와 격리 worktree가 하나씩 존재
 - 구현 diff가 확정 명세 범위 안에 있음
 - 가능한 검증이 통과하고 미검증 항목이 명시됨
+- 포스트 작업이면 확인 가능한 검색 최적화 Gate가 통과 또는 조건부 통과하고, 비포스트 작업이면 생략 이유가 기록됨
 - 변경 파일, 검증 결과, 남은 위험이 사용자에게 보고됨
 
 파일은 stage하지 않은 상태로 남긴다. commit·push·PR 생성은 다음 단계 스킬에 맡긴다.
