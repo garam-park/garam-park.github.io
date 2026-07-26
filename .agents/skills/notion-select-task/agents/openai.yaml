@@ -1,0 +1,10 @@
+interface:
+  display_name: "Notion 할 일 선택"
+  short_description: "진행 가능한 StoryG Blog 할 일을 비교하고 정확한 작업 ID 제안"
+  default_prompt: "Use $notion-select-task to choose a workable StoryG Blog task and return its exact task ID."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion"
+      description: "Project-local read-only Notion MCP for task selection"

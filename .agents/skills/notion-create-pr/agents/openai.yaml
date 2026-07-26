@@ -1,7 +1,7 @@
 interface:
-  display_name: "Notion 프로젝트 PR 생성"
+  display_name: "Notion PR 생성"
   short_description: "구현 결과를 커밋·push하고 draft PR과 Notion 연결 기록 생성"
-  default_prompt: "Use $notion-create-project-pr to publish an implemented StoryG Blog task as a draft pull request."
+  default_prompt: "Use $notion-create-pr with 작업 ID: <ID> to publish that implemented StoryG Blog task as a draft pull request."
 
 dependencies:
   tools:

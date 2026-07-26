@@ -1,11 +1,18 @@
 ---
-name: notion-create-project-pr
-description: Publish an implemented StoryG Blog Notion task by validating its isolated worktree, committing only the task changes, pushing the task branch, creating or reusing a draft GitHub pull request, and recording the branch, commit, PR, and initial CI link in the Notion task. Use when the user asks to push completed implementation work or create a PR for an implemented StoryG Blog TODO.
+name: notion-create-pr
+description: Publish the implemented work for exactly one StoryG Blog Notion task identified by an explicit exact task ID by validating its isolated worktree, committing only that task's changes, pushing its branch, creating or reusing a draft pull request, and recording the links in the same Notion task. Use when the user supplies `작업 ID: ID값` and asks to push or create a PR for that implemented task.
 ---
 
 # Notion 프로젝트 PR 생성
 
 검증된 구현 결과를 commit·push하고 draft PR을 만든 뒤 Notion 할 일에 연결 정보를 기록하고 멈춘다.
+
+## 작업 ID 계약
+
+- 현재 요청에 `작업 ID: <정확한 값>`이 반드시 있어야 한다.
+- 제목, branch, worktree, 이전 대화만으로 작업 ID를 추론하지 않는다.
+- 입력 ID를 데이터베이스에 exact match하고 TODO, 명세, branch, worktree가 같은 ID를 가리키는지 확인한다.
+- ID가 누락되거나 연결이 다르면 stage, commit, push, PR, Notion 쓰기를 하지 않는다.
 
 ## 작업 경계
 
@@ -17,7 +24,7 @@ description: Publish an implemented StoryG Blog Notion task by validating its is
 - 리뷰 수정, merge, 배포, Notion 완료 처리를 하지 않는다.
 - 사용자의 다른 변경, branch, worktree, commit을 수정하거나 삭제하지 않는다.
 
-이 스킬을 특정 TODO에 실행해 달라는 요청은 해당 변경의 commit·push·draft PR 생성과 Notion 연결 기록을 승인한 것으로 본다. 예상하지 못한 파일이나 범위 밖 변경이 있으면 자동으로 포함하지 말고 사용자에게 확인한다.
+정확한 작업 ID를 포함해 이 스킬을 실행해 달라는 요청은 해당 변경의 commit·push·draft PR 생성과 Notion 연결 기록을 승인한 것으로 본다. 예상하지 못한 파일이나 범위 밖 변경이 있으면 자동으로 포함하지 말고 사용자에게 확인한다.
 
 Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `notion`인 MCP만 사용한다. 노출된 도구 이름이 있다면 `mcp__notion__...`만 사용한다. 다른 Notion 플러그인, `mcp__codex_apps__notion`, 브라우저 자동화, 직접 API 호출로 우회하지 않는다.
 
@@ -38,7 +45,7 @@ GitHub에는 연결된 GitHub 도구를 우선 사용하고, 필요한 기능이
 
 ### 1. 대상과 사전 조건 확인
 
-대상 TODO, 작업 branch, worktree를 하나로 식별하고 다음을 확인한다.
+입력한 작업 ID로 대상 TODO, 작업 branch, worktree를 하나로 식별하고 다음을 확인한다.
 
 1. TODO가 StoryG Blog에 연결되고 상태가 `진행 중`임
 2. 본문에 확정 명세 marker ``notion-specify-project-task/v1``가 정확히 하나 있음
@@ -136,3 +143,7 @@ CI 완료를 오래 기다리거나 실패를 수정하지 않는다. 이 단계
 - Notion 연결 관리 구역이 실제 branch, SHA, PR, CI 정보를 가리킴
 
 리뷰 대응, CI 수정, merge, 배포는 다음 단계 스킬에 맡긴다.
+
+```text
+다음 호출: $notion-review-pr 작업 ID: <정확한 값> PR: <PR URL>
+```

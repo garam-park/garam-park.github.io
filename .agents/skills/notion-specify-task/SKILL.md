@@ -1,15 +1,23 @@
 ---
-name: notion-specify-project-task
-description: Turn an existing StoryG Blog task analysis into a clear implementation specification and update only the managed section of the linked Notion task body after explicit user approval. Use when the user asks to organize analyzed findings in a Notion TODO, prepare an implementation-ready task description, revise an existing managed specification, or save an approved specification without starting implementation.
+name: notion-specify-task
+description: Turn an existing StoryG Blog task analysis into a clear implementation specification for exactly one task identified by an explicit exact task ID, then update only the managed section of that Notion task body after ID-bound user approval. Use when the user supplies `작업 ID: ID값` and asks to organize the matching analysis, prepare or revise an implementation-ready specification, or save an approved specification without starting implementation.
 ---
 
 # Notion 프로젝트 할 일 명세화
 
 분석 결과를 구현 가능한 명세로 정리하고, 사용자가 승인한 내용만 해당 Notion 할 일 본문에 반영한 뒤 멈춘다.
 
+## 작업 ID 계약
+
+- 현재 요청에 `작업 ID: <정확한 값>`과 같은 ID의 기존 분석 결과가 반드시 있어야 한다.
+- 이전 대화, 제목, URL, 페이지 UUID만으로 대상을 추론하지 않는다.
+- 데이터베이스의 작업 식별자 속성에 exact match해 한 페이지와 StoryG Blog relation을 확인한다.
+- 명세 저장 승인에도 같은 작업 ID가 명시돼야 한다.
+- ID가 누락되거나 분석·페이지·승인 ID가 다르면 쓰지 않는다.
+
 ## 작업 경계
 
-- 입력으로 기존 분석 결과와 대상 TODO ID 또는 Notion 페이지를 요구한다.
+- 입력으로 정확한 작업 ID와 같은 ID의 기존 분석 결과를 요구한다.
 - 승인 전에는 Notion을 변경하지 않는다.
 - 승인 후에는 대상 할 일 본문의 관리 구역만 생성하거나 갱신한다.
 - Notion 상태, `명세리뷰`를 포함한 속성, 다른 페이지를 변경하지 않는다.
@@ -34,7 +42,7 @@ Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `n
 
 ### 1. 입력 검증
 
-분석 결과에서 확인된 사실, 추론, 열린 질문을 구분한다. 대상 페이지의 속성과 현재 본문을 읽어 분석 대상과 실제 TODO가 같은지 확인한다.
+입력한 작업 ID를 exact match한다. 분석 결과에서 확인된 사실, 추론, 열린 질문을 구분하고 분석에 기록된 ID와 실제 TODO ID가 모두 같은지 확인한다.
 
 다음 경우에는 본문을 갱신하지 않는다.
 
@@ -81,9 +89,9 @@ Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `n
 
 대상 TODO와 본문에 들어갈 관리 구역 전체를 사용자에게 보여 주고 다음을 명시적으로 확인한다.
 
-> 이 명세로 Notion 할 일 본문을 갱신할까요?
+> 작업 ID `<정확한 값>`의 Notion 본문을 이 명세로 갱신할까요? 승인 답변에 같은 작업 ID를 포함해 주세요.
 
-“전체 진행”, 이전 단계 승인, 모호한 긍정은 본문 갱신 승인으로 간주하지 않는다. 승인은 정확한 TODO와 제시한 명세 내용에만 유효하다. 승인 뒤 내용이 실질적으로 바뀌면 다시 승인받는다.
+“전체 진행”, 이전 단계 승인, ID 없는 긍정은 본문 갱신 승인으로 간주하지 않는다. 승인은 답변에 명시된 정확한 작업 ID와 제시한 명세 내용에만 유효하다. 승인 뒤 내용이 실질적으로 바뀌면 다시 승인받는다.
 
 ### 4. 본문 갱신
 
@@ -112,3 +120,7 @@ Notion에는 이 저장소 `.codex/config.toml`의 서버 이름이 정확히 `n
 ## 완료 조건
 
 승인한 명세가 대상 Notion 할 일 본문에 정확히 한 번 저장되고 재조회로 확인되면 끝낸다. 구현, 상태 변경, 다음 단계 실행은 별도 스킬에 맡긴다.
+
+```text
+다음 호출: $notion-implement-task 작업 ID: <정확한 값>
+```

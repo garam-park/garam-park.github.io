@@ -1,15 +1,22 @@
 ---
-name: notion-review-project-pr
-description: Drive a StoryG Blog pull request to approval-ready quality with a multi-agent review-and-fix loop. Independent read-only reviewers inspect the latest PR head from specification, correctness, test, security, reliability, and applicable post-quality perspectives; they define and judge merge approval conditions, while a separate fixer agent implements verified changes on the existing task branch. Repeat with fresh review rounds until every reviewer-owned condition passes, CI is green, and no actionable review thread remains. Use when the user asks to review, address, fix, or prepare an existing StoryG Blog PR for approval. Stop before merge or deployment.
+name: notion-review-pr
+description: Drive the pull request for exactly one StoryG Blog Notion task identified by an explicit exact task ID to approval-ready quality with a multi-agent review-and-fix loop. Independent reviewers define and judge merge approval conditions while a separate fixer implements verified changes. Repeat until every condition passes, CI is green, and no actionable review thread remains. Use when the user supplies `작업 ID: ID값` plus the existing PR and asks to review, address, fix, or prepare it for approval. Stop before merge or deployment.
 ---
 
 # Notion 프로젝트 PR 멀티에이전트 리뷰
 
 독립 리뷰 에이전트들이 merge 승인 조건을 만들고 판정하게 한다. 별도 수정 에이전트는 그 조건을 충족하도록 수정하되 스스로 승인하지 못하게 한다. 최신 head가 모든 조건을 만족할 때까지 반복하고 merge 전에 멈춘다.
 
+## 작업 ID 계약
+
+- 현재 요청에 `작업 ID: <정확한 값>`과 기존 PR 번호 또는 URL이 반드시 있어야 한다.
+- PR, branch, 이전 대화만으로 작업 ID를 추론하지 않는다.
+- 입력 ID를 데이터베이스에 exact match하고 TODO, 확정 명세, PR 연결 기록, branch가 모두 같은 ID를 가리키는지 확인한다.
+- ID나 PR이 누락되거나 연결이 다르면 reviewer·수정 에이전트를 만들거나 외부 상태를 변경하지 않는다.
+
 ## 권한과 경계
 
-특정 TODO와 PR에 이 스킬을 실행해 달라는 요청은 다음을 승인한 것으로 본다.
+정확한 작업 ID와 PR을 포함해 이 스킬을 실행해 달라는 요청은 다음을 승인한 것으로 본다.
 
 - 리뷰 에이전트 생성과 읽기 전용 분석
 - 기존 작업 branch와 worktree에서 확정 명세 범위의 수정
@@ -103,7 +110,7 @@ notes: <merge 차단이 아닌 관찰>
 
 ### 1. 대상과 snapshot 확인
 
-다음을 읽고 하나의 검토 대상을 확정한다.
+입력한 작업 ID와 PR을 기준으로 다음을 읽고 하나의 검토 대상을 확정한다.
 
 1. TODO가 StoryG Blog에 연결되고 상태가 `진행 중`임
 2. TODO 본문에 확정 명세 marker ``notion-specify-project-task/v1``가 하나 있음
@@ -200,7 +207,7 @@ review thread는 요청을 실제로 충족하고 reviewer 재검증이 끝난 �
 
 ## 중단과 재개
 
-- 실행 키는 TODO ID, PR 번호, latest head SHA, review round다.
+- 실행 키는 정확한 작업 ID, PR 번호, latest head SHA, review round다.
 - 조건부와 reviewer 판정은 head SHA별로 구분한다.
 - push 뒤 중단됐으면 기존 PR과 branch에서 재개하고 중복 commit·push를 만들지 않는다.
 - reviewer 또는 수정 에이전트가 실패하면 완료된 결과를 보존하고 해당 역할만 다시 실행한다.

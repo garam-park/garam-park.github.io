@@ -1,7 +1,7 @@
 interface:
-  display_name: "Notion 프로젝트 PR 멀티 리뷰"
+  display_name: "Notion PR 멀티 리뷰"
   short_description: "독립 리뷰와 수정 루프를 반복해 PR을 승인 가능 상태로 준비"
-  default_prompt: "Use $notion-review-project-pr to run independent multi-agent reviews and fix the StoryG Blog pull request until every approval condition passes."
+  default_prompt: "Use $notion-review-pr with 작업 ID: <ID> and PR: <number-or-URL> to review and fix it until every approval condition passes."
 
 dependencies:
   tools:

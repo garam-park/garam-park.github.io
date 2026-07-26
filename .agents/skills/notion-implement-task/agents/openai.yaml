@@ -1,7 +1,7 @@
 interface:
-  display_name: "Notion 프로젝트 할 일 구현"
+  display_name: "Notion 할 일 구현"
   short_description: "확정 명세와 포스트 검색 Gate를 작업 브랜치에서 구현하고 검증"
-  default_prompt: "Use $notion-implement-project-task to implement and verify an approved StoryG Blog task specification."
+  default_prompt: "Use $notion-implement-task with 작업 ID: <ID> to implement and verify that approved StoryG Blog task specification."
 
 dependencies:
   tools:
