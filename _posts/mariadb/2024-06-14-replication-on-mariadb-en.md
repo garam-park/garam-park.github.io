@@ -100,13 +100,34 @@ auto_increment_offset=2
 
 The increment of `2` gives Node A odd generated IDs and Node B even generated IDs. It reduces `AUTO_INCREMENT` collisions, but it does not resolve conflicting updates, explicit duplicate keys, or divergent DDL.
 
-Do not restart Node B with an empty or unrelated data directory yet. The safe bootstrap order below restores the shared snapshot before the final Node B start.
+Do not restart Node B with an empty or unrelated data directory yet. Keep it stopped until the shared snapshot has been restored.
+
+Stop application and maintenance writes to Node A, apply its option-file settings, and restart MariaDB on Node A before creating the replication accounts or taking the backup:
+
+```bash
+sudo systemctl restart mariadb
+```
+
+Verify the effective Node A settings:
+
+```sql
+SELECT
+  @@global.server_id,
+  @@global.gtid_domain_id,
+  @@global.log_bin,
+  @@global.log_slave_updates,
+  @@global.gtid_strict_mode,
+  @@global.auto_increment_increment,
+  @@global.auto_increment_offset;
+```
+
+Require server/domain `11/101`, binary logging and `log_slave_updates` enabled, strict GTID mode enabled, increment `2`, and offset `1`. If any value differs, stop and fix the option-file loading before creating accounts or taking a backup.
 
 ## Bootstrap both nodes from one snapshot
 
 ### 1. Freeze writes and create the replication accounts
 
-Stop application and maintenance writes on both nodes. On canonical Node A, create only the accounts that the two peer addresses need:
+Keep application and maintenance writes frozen. On canonical Node A, create only the accounts that the two peer addresses need:
 
 ```sql
 CREATE USER 'repl_ring'@'10.0.0.11' IDENTIFIED BY 'replace-with-a-secret';
@@ -166,10 +187,10 @@ sudo mariadb-backup \
 sudo chown -R mysql:mysql /var/lib/mysql
 ```
 
-Apply Node B's unique option-file settings, then restart both nodes:
+Apply Node B's unique option-file settings, then start Node B. Leave Node A running with the settings verified before the backup:
 
 ```bash
-sudo systemctl restart mariadb
+sudo systemctl start mariadb
 ```
 
 Before any write occurs on Node B, confirm that its new binary log and replica state are empty:
