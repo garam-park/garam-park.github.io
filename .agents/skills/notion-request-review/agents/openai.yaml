@@ -1,0 +1,13 @@
+interface:
+  display_name: "Notion 검토 요청"
+  short_description: "승인 가능한 작업을 garam에게 배정하고 검토 댓글로 알림"
+  default_prompt: "Use $notion-request-review with 작업 ID: <ID> and PR: <URL> to assign the approved task to garam and request review."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion"
+      description: "Project-local Notion MCP for task assignment, status, and mention comments"
+    - type: "mcp"
+      value: "github"
+      description: "GitHub access for approval-ready PR verification"

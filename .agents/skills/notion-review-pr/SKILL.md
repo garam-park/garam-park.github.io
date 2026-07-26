@@ -112,7 +112,7 @@ notes: <merge 차단이 아닌 관찰>
 
 입력한 작업 ID와 PR을 기준으로 다음을 읽고 하나의 검토 대상을 확정한다.
 
-1. TODO가 StoryG Blog에 연결되고 상태가 `진행 중`임
+1. TODO가 StoryG Blog에 연결되고 상태가 `진행 중` 또는 `검토 중`임
 2. TODO 본문에 확정 명세 marker ``notion-specify-project-task/v1``가 하나 있음
 3. PR 또는 Notion 연결 기록의 TODO ID와 branch가 일치함
 4. local worktree가 PR head branch에 연결됨
@@ -217,3 +217,7 @@ review thread는 요청을 실제로 충족하고 reviewer 재검증이 끝난 �
 ## 완료 조건
 
 최신 head에 대해 모든 독립 reviewer가 자기 승인 조건을 PASS로 판정하고, 필수 CI와 외부 review thread가 정리되어 실제 사람이 승인할 수 있는 상태가 되면 끝낸다. merge와 배포는 별도 단계에 맡긴다.
+
+```text
+다음 호출: $notion-request-review 작업 ID: <정확한 값> PR: <PR URL>
+```
