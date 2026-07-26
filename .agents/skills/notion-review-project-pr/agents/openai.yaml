@@ -1,7 +1,7 @@
 interface:
-  display_name: "Notion 프로젝트 PR 리뷰"
-  short_description: "확정 명세와 포스트 검색 Gate 기준으로 PR 구현 품질 검토"
-  default_prompt: "Use $notion-review-project-pr to review a StoryG Blog pull request against its approved Notion specification."
+  display_name: "Notion 프로젝트 PR 멀티 리뷰"
+  short_description: "독립 리뷰와 수정 루프를 반복해 PR을 승인 가능 상태로 준비"
+  default_prompt: "Use $notion-review-project-pr to run independent multi-agent reviews and fix the StoryG Blog pull request until every approval condition passes."
 
 dependencies:
   tools:
