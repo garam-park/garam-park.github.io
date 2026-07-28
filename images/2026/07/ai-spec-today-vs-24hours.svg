@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+  <title id="title">당일을 날짜 기준과 최근 24시간 기준으로 해석한 비교</title>
+  <desc id="desc">날짜 기준은 오늘 자정부터 현재까지를 의미하고 자정마다 범위가 바뀐다. 시간 기준은 현재로부터 과거 24시간을 의미하며 고정된 길이의 이동 구간이다.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7faf8; }
+      .panel { fill: #ffffff; stroke: #c9d7d0; stroke-width: 2; }
+      .question { fill: #173f2d; font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .label { fill: #173f2d; font: 650 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .tick { fill: #4c6258; font: 500 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .note { fill: #4c6258; font: 500 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .axis { stroke: #557064; stroke-width: 4; stroke-linecap: round; }
+      .mark { stroke: #557064; stroke-width: 3; }
+      .range-date { fill: #fff3cf; stroke: #c3a652; stroke-width: 2; }
+      .range-time { fill: #e8f6ef; stroke: #3f8f68; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="960" height="520" rx="28"/>
+  <rect class="panel" x="38" y="36" width="884" height="448" rx="24"/>
+
+  <text class="question" x="480" y="96">“당일”은 어느 범위일까?</text>
+
+  <text class="label" x="92" y="176">날짜 기준</text>
+  <rect class="range-date" x="350" y="142" width="500" height="58" rx="18"/>
+  <line class="axis" x1="350" y1="214" x2="850" y2="214"/>
+  <line class="mark" x1="350" y1="202" x2="350" y2="226"/>
+  <line class="mark" x1="850" y1="202" x2="850" y2="226"/>
+  <text class="tick" x="350" y="256">오늘 00:00</text>
+  <text class="tick" x="850" y="256">현재</text>
+  <text class="note" x="92" y="251">자정마다 범위가 바뀜</text>
+
+  <text class="label" x="92" y="342">시간 기준</text>
+  <rect class="range-time" x="350" y="308" width="500" height="58" rx="18"/>
+  <line class="axis" x1="350" y1="380" x2="850" y2="380"/>
+  <line class="mark" x1="350" y1="368" x2="350" y2="392"/>
+  <line class="mark" x1="850" y1="368" x2="850" y2="392"/>
+  <text class="tick" x="350" y="422">24시간 전</text>
+  <text class="tick" x="850" y="422">현재</text>
+  <text class="note" x="92" y="417">고정된 24시간 구간</text>
+</svg>
