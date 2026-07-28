@@ -1,0 +1,13 @@
+interface:
+  display_name: "Notion PR 생성"
+  short_description: "구현 결과를 커밋·push하고 draft PR과 Notion 연결 기록 생성"
+  default_prompt: "Use $notion-create-pr with 작업 ID: <ID> to publish that implemented StoryG Blog task as a draft pull request."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion"
+      description: "Project-local Notion MCP for task and PR linkage"
+    - type: "mcp"
+      value: "github"
+      description: "GitHub access for branch, pull request, and check metadata"

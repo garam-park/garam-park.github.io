@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1420" role="img" aria-labelledby="title desc">
+  <title id="title">요구사항 처리 워크플로우 변경 전과 후</title>
+  <desc id="desc">변경 전에는 비개발자의 요청을 특정 개발자가 해석해 GitHub로 전달하면서 담당자 의존 위험이 생겼다. 변경 후에는 Notion 요청을 AI가 분석하고 사람이 판단해 확정 명세를 만든 뒤 GitHub에서 구현과 리뷰를 진행한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#557064"/>
+    </marker>
+    <style>
+      .bg { fill: #f7faf8; }
+      .panel { fill: #ffffff; stroke: #c9d7d0; stroke-width: 2; }
+      .node { fill: #eef5f1; stroke: #8dac9d; stroke-width: 2; }
+      .node-risk { fill: #fff2f0; stroke: #c46b62; stroke-width: 3; }
+      .node-ai { fill: #edf4fb; stroke: #7399bd; stroke-width: 2; }
+      .node-human { fill: #fff8df; stroke: #c3a652; stroke-width: 2; }
+      .node-spec { fill: #e8f6ef; stroke: #3f8f68; stroke-width: 3; }
+      .heading { fill: #173f2d; font: 700 36px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .label { fill: #173f2d; font: 650 29px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .sub { fill: #4c6258; font: 500 23px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .risk { fill: #9d3f39; font: 650 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .caption { fill: #365346; font: 600 25px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-anchor: middle; }
+      .arrow { stroke: #557064; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="960" height="1420" rx="28"/>
+
+  <rect class="panel" x="40" y="38" width="880" height="550" rx="24"/>
+  <text class="heading" x="80" y="96">변경 전 — 특정 사람이 연결</text>
+
+  <rect class="node" x="170" y="130" width="620" height="92" rx="18"/>
+  <text class="label" x="480" y="185">비개발자의 요청</text>
+
+  <path class="arrow" d="M480 224 L480 265"/>
+
+  <rect class="node-risk" x="170" y="275" width="620" height="118" rx="18"/>
+  <text class="label" x="480" y="326">특정 개발자의 해석·전달</text>
+  <text class="sub" x="480" y="362">배경과 결정 과정이 개인에게 쌓임</text>
+
+  <path class="arrow" d="M480 396 L480 437"/>
+
+  <rect class="node" x="170" y="447" width="620" height="82" rx="18"/>
+  <text class="label" x="480" y="498">GitHub 구현·리뷰</text>
+
+  <text class="risk" x="480" y="570">담당자 부재·교체 시 맥락 복원 비용 발생</text>
+
+  <rect class="panel" x="40" y="610" width="880" height="760" rx="24"/>
+  <text class="heading" x="80" y="648">변경 후 — 역할을 나눈 흐름</text>
+
+  <rect class="node" x="170" y="682" width="620" height="88" rx="18"/>
+  <text class="label" x="480" y="737">Notion에 요청·대화 기록</text>
+
+  <path class="arrow" d="M480 773 L480 814"/>
+
+  <rect class="node-ai" x="170" y="824" width="620" height="105" rx="18"/>
+  <text class="label" x="480" y="869">AI가 코드와 요청 분석</text>
+  <text class="sub" x="480" y="902">모호한 부분을 선택지와 질문으로 변환</text>
+
+  <path class="arrow" d="M480 932 L480 973"/>
+
+  <rect class="node-human" x="170" y="983" width="620" height="88" rx="18"/>
+  <text class="label" x="480" y="1038">사람이 업무 의도에 맞게 판단</text>
+
+  <path class="arrow" d="M480 1074 L480 1115"/>
+
+  <rect class="node-spec" x="170" y="1125" width="620" height="88" rx="18"/>
+  <text class="label" x="480" y="1180">결정 근거가 남은 확정 명세</text>
+
+  <path class="arrow" d="M480 1216 L480 1257"/>
+
+  <rect class="node" x="170" y="1267" width="620" height="82" rx="18"/>
+  <text class="label" x="480" y="1318">GitHub 구현·리뷰</text>
+
+</svg>

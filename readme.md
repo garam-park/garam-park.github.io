@@ -68,5 +68,5 @@ docker compose -f docker-compose.dev.yml up --build
 
 ### 레지스트리(ghcr.io) 배포
 
-`master` 브랜치에 push 하면 GitHub Actions(`.github/workflows/docker-publish.yml`)가
+`main` 브랜치에 push 하면 GitHub Actions(`.github/workflows/docker-publish.yml`)가
 이미지를 빌드해 `ghcr.io/garam-park/blog:latest` 로 자동 푸시한다.

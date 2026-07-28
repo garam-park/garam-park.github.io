@@ -1,0 +1,10 @@
+interface:
+  display_name: "Notion 주제 검토 요청"
+  short_description: "진행 불가 작업을 garam에게 주제 검토로 안전하게 인계"
+  default_prompt: "Use $notion-request-topic-review with 작업 ID: <ID> and a concrete reason to assign the task to garam and request topic review."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion"
+      description: "Project-local Notion MCP for task status, assignment, and mention comments"
