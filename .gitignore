@@ -9,5 +9,6 @@ ncftp-push.sh
 vendor
 node_modules
 scripts/mcp/notion/.env
+scripts/mcp/notion/.env.local
 
 /.worktrees/

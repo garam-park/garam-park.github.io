@@ -7,6 +7,7 @@ permalink: /20260728/ai-productivity-bottleneck-specification
 categories: ai productivity collaboration
 tags: [AI, 생산성, 요구사항, 명세, Notion, GitHub, 협업]
 lang: ko
+image: /images/2026/07/20260728-ai-requirements-specification-editorial.png
 description: "AI가 구현을 빠르게 한 뒤 요구사항 해석이 새로운 병목이 된 PoC에서, Notion과 AI 명세화를 이용해 특정 사람에게 집중된 워크플로우 리스크를 줄인 경험을 정리합니다."
 excerpt: "AI 생산성의 병목은 코드 작성보다 앞에 있었습니다. 익숙한 Notion을 공용 입구로 두고, AI가 모호한 요청을 질문과 명세로 바꾸게 한 PoC 경험입니다."
 ---

@@ -80,6 +80,8 @@ log_bin=mariadb-bin
 binlog_format=ROW
 log_slave_updates=ON
 gtid_strict_mode=ON
+gtid_ignore_duplicates=ON
+slave_type_conversions=ALL_NON_LOSSY,ALL_LOSSY
 auto_increment_increment=2
 auto_increment_offset=1
 ```
@@ -94,6 +96,8 @@ log_bin=mariadb-bin
 binlog_format=ROW
 log_slave_updates=ON
 gtid_strict_mode=ON
+gtid_ignore_duplicates=ON
+slave_type_conversions=ALL_NON_LOSSY,ALL_LOSSY
 auto_increment_increment=2
 auto_increment_offset=2
 ```
@@ -117,11 +121,13 @@ SELECT
   @@global.log_bin,
   @@global.log_slave_updates,
   @@global.gtid_strict_mode,
+  @@global.gtid_ignore_duplicates,
+  @@global.slave_type_conversions,
   @@global.auto_increment_increment,
   @@global.auto_increment_offset;
 ```
 
-Require server/domain `11/101`, binary logging and `log_slave_updates` enabled, strict GTID mode enabled, increment `2`, and offset `1`. If any value differs, stop and fix the option-file loading before creating accounts or taking a backup.
+Require server/domain `11/101`, binary logging, `log_slave_updates`, strict GTID mode, and duplicate GTID handling enabled; require both non-lossy and lossy replica type conversions, increment `2`, and offset `1`. If any value differs, stop and fix the option-file loading before creating accounts or taking a backup.
 
 ## Bootstrap both nodes from one snapshot
 
@@ -228,6 +234,8 @@ SELECT
   @@global.log_bin,
   @@global.log_slave_updates,
   @@global.gtid_strict_mode,
+  @@global.gtid_ignore_duplicates,
+  @@global.slave_type_conversions,
   @@global.auto_increment_increment,
   @@global.auto_increment_offset,
   @@global.gtid_current_pos;
