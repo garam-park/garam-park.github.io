@@ -519,6 +519,7 @@ a.sidebar-nav-item:focus {
 /* 목록 썸네일 — 제목 위 배너 */
 .post-thumb-link {
   display: block;
+  aspect-ratio: 16 / 9;
   margin-bottom: 1.1rem;
   border-radius: 12px;
   overflow: hidden;
@@ -529,7 +530,8 @@ a.sidebar-nav-item:focus {
 .post-thumb {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  margin: 0;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   background: var(--color-dark);
