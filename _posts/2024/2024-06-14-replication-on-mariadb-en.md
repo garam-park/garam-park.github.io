@@ -402,4 +402,4 @@ Capture `SHOW REPLICA STATUS\G`, the relevant MariaDB error log, both GTID sets,
 
 ## Related reading
 
-- [MariaDB 11 replication setup in Korean]({% link _posts/mariadb/2024-06-14-replication-on-mariadb-kr.md %})
+- [MariaDB 11 replication setup in Korean]({% link _posts/2024/2024-06-14-replication-on-mariadb-kr.md %})
